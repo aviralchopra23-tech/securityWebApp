@@ -1,0 +1,176 @@
+/* ==========================================
+   OWNER HOME — FORCE LIGHT SURFACE CONTEXT
+   (Overrides global dark root safely)
+========================================== */
+
+.owner-home {
+  color-scheme: light;
+  color: #0f172a;
+}
+
+
+
+
+.owner-home {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  animation: fadeUp 0.6s ease-out;
+}
+
+/* ===============================
+   HERO
+================================ */
+
+.owner-hero {
+  padding: 34px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.owner-hero-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #1e3a8a, #6366f1);
+
+  /* Standard */
+  background-clip: text;
+
+  /* WebKit */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.owner-subtitle {
+  margin-top: 10px;
+  max-width: 640px;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* ===============================
+   GRID
+================================ */
+
+.owner-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+/* ===============================
+   CARDS — CONNECTED TO PAGE
+================================ */
+
+.owner-home .owner-card {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f8fafc 100%
+  );
+
+  color: #0f172a;
+
+  border-radius: 16px;
+  padding: 26px;
+
+  border: 1px solid #e2e8f0;
+
+  box-shadow:
+    0 6px 18px rgba(15, 23, 42, 0.08),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.owner-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 16px 32px rgba(15, 23, 42, 0.12),
+    0 4px 8px rgba(15, 23, 42, 0.06);
+  border-color: #c7d2fe;
+}
+
+/* ===============================
+   ACCENT TOP BORDERS
+================================ */
+
+.accent-blue {
+  border-top: 4px solid #3b82f6;
+}
+
+.accent-indigo {
+  border-top: 4px solid #6366f1;
+}
+
+.accent-purple {
+  border-top: 4px solid #8b5cf6;
+}
+
+.accent-emerald {
+  border-top: 4px solid #10b981;
+}
+
+/* ===============================
+   CARD TEXT
+================================ */
+
+.owner-card h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.owner-card p {
+  font-size: 0.92rem;
+  color: #004bad;
+  line-height: 1.55;
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media (max-width: 768px) {
+  .owner-home {
+    gap: 28px;
+  }
+
+  .owner-hero {
+    padding: 26px;
+  }
+
+  .owner-hero-title {
+    font-size: 1.55rem;
+  }
+
+  .owner-card {
+    padding: 24px;
+  }
+}
+
+.owner-home .owner-card p {
+  color: #475569;     /* readable slate */
+  opacity: 1;         /* 🔑 critical fix */
+}

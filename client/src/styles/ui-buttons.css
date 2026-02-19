@@ -1,0 +1,103 @@
+/* ======================================================
+   UI BUTTONS (Shared, Role-Neutral)
+   Secondary & Danger only
+====================================================== */
+
+/* ===============================
+   SECONDARY BUTTON
+=============================== */
+
+.btn-secondary {
+  background: #ffffff;
+  color: #1e40af;
+
+  border: 2px solid #c7d2fe;
+  border-radius: 12px;
+
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 20px;
+  width: 75px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 14px rgba(15, 23, 42, 0.06);
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: #eef2ff;
+  box-shadow:
+    0 10px 20px rgba(99, 102, 241, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #cbd5f5;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   DANGER BUTTON
+=============================== */
+
+.btn-danger {
+  background: #ffffff;
+  color: #991b1b;
+
+  border: 2px solid #fecaca;
+  border-radius: 12px;
+
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 14px rgba(15, 23, 42, 0.06);
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.btn-danger:hover {
+  background: #fef2f2;
+  box-shadow:
+    0 10px 20px rgba(239, 68, 68, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-danger:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-color: #fecaca;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Button for Guard pay period - submit */
+#btn-primarypay, #supsubbtn{
+
+   margin-top : 10px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 14px;
+    background: #eff0f7;
+    color: #163065;
+    border: 1.5px solid #0240a4;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+    transition: box-shadow 0.25s ease, transform 0.15s ease, background 0.2s ease;
+  }

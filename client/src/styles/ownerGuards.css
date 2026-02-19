@@ -1,0 +1,254 @@
+/* ======================================================
+   OWNER – GUARDS
+   ENTERPRISE LIGHT THEME (FINAL)
+====================================================== */
+
+.guards-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: #111827;
+}
+
+/* ================= TITLES ================= */
+
+.guards-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 6px;
+}
+
+/* ================= FORM CARD ================= */
+
+.form-row {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+
+  align-items: center;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+/* ================= INPUTS — FORCE LIGHT ================= */
+
+.guards-page input {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+
+  border: 1px solid #d1d5db !important;
+  border-radius: 10px;
+
+  height: 38px;
+  padding: 0 14px;
+  font-size: 14px;
+
+  box-shadow: none;
+}
+
+.guards-page input::placeholder {
+  color: #9ca3af;
+}
+
+.guards-page input:focus {
+  outline: none;
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+}
+
+/* ================= CHECKBOX GROUP ================= */
+
+.checkbox-group,
+.edit-locations {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.checkbox-group strong,
+.edit-locations strong {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.checkbox-item {
+  font-size: 13px;
+  color: #111827;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ================= PRIMARY ACTION ================= */
+
+.primary-btn {
+  align-self: flex-start;
+
+  height: 34px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: 1px solid #6366f1;
+
+  background: #6366f1;
+  color: #ffffff;
+
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.primary-btn:hover {
+  background: #4f46e5;
+}
+
+/* ================= GUARD LIST ================= */
+
+.guard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.guard-item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px 18px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+/* ================= INFO ================= */
+
+.guard-info {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* ================= ACTION GROUP ================= */
+
+.action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-save,
+.btn-cancel {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-edit:hover {
+  background: #e0f2fe;
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
+}
+
+.btn-save:hover {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.btn-cancel:hover {
+  background: #f3f4f6;
+}
+
+/* ================= EDIT MODE ================= */
+
+.edit-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .guard-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-group {
+    margin-top: 10px;
+  }
+}
+
+/* ======================================================
+   CHECKBOX FIX — RESTORE MULTI-SELECT BEHAVIOR
+   Prevent text-input styles from affecting checkboxes
+====================================================== */
+
+/* Reset checkbox sizing & appearance */
+.guards-page input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+
+  background: #ffffff;
+  border: 1px solid #cbd5f5;
+  border-radius: 4px;
+
+  appearance: auto;          /* 🔑 restore native checkbox */
+  -webkit-appearance: auto;
+  accent-color: #6366f1;     /* modern, accessible */
+}
+
+/* Ensure checkbox labels align nicely */
+.checkbox-item {
+  align-items: center;
+  gap: 8px;
+}

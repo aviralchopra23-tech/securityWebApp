@@ -1,0 +1,232 @@
+/* ======================================================
+   SCHEDULE UI — INPUT STYLE (PROFESSIONAL)
+====================================================== */
+
+.schedule-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ================= DAY CARD ================= */
+
+.day-card {
+  background: #ffffff;
+  border: 1px solid #dde3ea;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  box-shadow:
+    0 6px 16px rgba(15, 23, 42, 0.06),
+    0 2px 4px rgba(15, 23, 42, 0.04);
+}
+
+.day-card.compact {
+  padding: 12px 14px;
+}
+
+.day-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+/* ================= SHIFT ROW ================= */
+
+/* DEFAULT (DESKTOP / LARGE SCREENS) — UNCHANGED */
+.shift-row.compact-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.shift-row.compact-row:last-child {
+  margin-bottom: 0;
+}
+
+/* ================= INPUT STYLE ================= */
+
+.shift-input {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+/* Guard name aligns right */
+.guard-input {
+  text-align: right;
+}
+
+/* ================= GUARD COLOR CODING ================= */
+
+.guard-0 .shift-input {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.guard-1 .shift-input {
+  background: #ecfeff;
+  border-color: #67e8f9;
+}
+
+.guard-2 .shift-input {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.guard-3 .shift-input {
+  background: #fff7ed;
+  border-color: #fdba74;
+}
+
+.guard-4 .shift-input {
+  background: #fdf2f8;
+  border-color: #f9a8d4;
+}
+
+.guard-5 .shift-input {
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+}
+
+.guard-x .shift-input {
+  background: #f8fafc;
+}
+
+/* ================= EMPTY ================= */
+
+.no-shifts {
+  font-size: 14px;
+  color: #94a3b8;
+  padding: 4px 0;
+}
+
+/* ======================================================
+   PAY PERIOD LIST — MOBILE SAFE ENHANCEMENTS
+   (NO DESKTOP CHANGES)
+====================================================== */
+
+/* Shared structure */
+.shift-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 10px;
+}
+
+/* Main content group */
+.shift-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Time badge already exists — refine spacing */
+.time-badge {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
+/* Location text */
+.guard-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+/* Actions */
+.shift-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ================= MOBILE LABELS ================= */
+
+.shift-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+/* Hidden by default (desktop) */
+.mobile-only {
+  display: none;
+}
+
+/* ======================================================
+   MOBILE BREAKPOINT ONLY
+   Desktop remains untouched
+====================================================== */
+
+@media (max-width: 768px) {
+  .shift-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .shift-main {
+    gap: 6px;
+  }
+
+  .shift-actions {
+    margin-top: 10px;
+    justify-content: flex-start;
+  }
+
+  .shift-actions button {
+    flex: 1;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+}
+
+/* ======================================================
+   PAY PERIOD TIME DISPLAY — REMOVE PILL STYLE
+   Enterprise / Report-style rows
+====================================================== */
+
+.time-badge {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #e5e7eb;
+
+  display: block;
+  line-height: 1.4;
+}
+
+/* Add subtle separation instead of pill */
+.shift-row {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Improve hierarchy */
+.shift-main {
+  gap: 2px;
+}
+
+/* Location looks like metadata, not badge */
+.guard-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #cbd5f5;
+}

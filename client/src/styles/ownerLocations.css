@@ -1,0 +1,235 @@
+/* ======================================================
+   OWNER – LOCATIONS (Enterprise Light Theme)
+====================================================== */
+
+.locations-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Page title */
+
+.locations-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+/* ===============================
+   CREATE LOCATION FORM
+=============================== */
+
+.location-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 14px;
+
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 10px;
+
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.location-form input {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #111827;
+
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.location-form input::placeholder {
+  color: #9ca3af;
+}
+
+.location-form input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.location-form button {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: none;
+
+  background: #6366f1;
+  color: #ffffff;
+
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.location-form button:hover {
+  background: #4f46e5;
+}
+
+.location-form button:active {
+  transform: translateY(1px);
+}
+
+/* ===============================
+   LOCATION LIST
+=============================== */
+
+.location-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.location-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 18px;
+
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.location-item:hover {
+  border-color: #c7d2fe;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Info section */
+
+.location-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+
+  cursor: pointer;
+}
+
+.location-sub {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+/* ===============================
+   ACTION BUTTONS
+=============================== */
+
+.location-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-edit {
+  color: #4338ca;
+}
+
+.btn-edit:hover {
+  background: #eef2ff;
+  border-color: #6366f1;
+}
+
+.btn-delete {
+  color: #b91c1c;
+}
+
+.btn-delete:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+/* ===============================
+   EDIT MODE
+=============================== */
+
+.edit-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto auto;
+  gap: 10px;
+}
+
+.edit-form input {
+  padding: 8px 10px;
+  font-size: 14px;
+
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #111827;
+}
+
+/* ======================================================
+   SHORT HEIGHT SCREENS
+====================================================== */
+
+@media (max-height: 700px) {
+  .location-form {
+    padding: 14px;
+  }
+
+  .location-item {
+    padding: 12px 14px;
+  }
+}
+
+/* ======================================================
+   NARROW SCREENS (FIX CREATE BUTTON OVERFLOW)
+   Desktop remains unchanged
+====================================================== */
+
+@media (max-width: 640px) {
+  .location-form {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "name address"
+      "button button";
+  }
+
+  .location-form input:nth-child(1) {
+    grid-area: name;
+  }
+
+  .location-form input:nth-child(2) {
+    grid-area: address;
+  }
+
+  .location-form button {
+    grid-area: button;
+    width: 100%;
+  }
+}

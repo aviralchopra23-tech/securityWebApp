@@ -1,0 +1,190 @@
+/* ======================================================
+   OWNER – SUPERVISORS
+   ENTERPRISE LIGHT SURFACE (FINAL)
+====================================================== */
+
+.supervisors-page {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  color: #111827;
+}
+
+/* ================= TITLES ================= */
+
+.supervisors-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+/* ================= FORM CARD ================= */
+
+.form-row {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px 22px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+
+  align-items: center;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+/* ================= INPUTS — FORCE LIGHT ================= */
+/* This MUST override global dark theme */
+
+.supervisors-page input,
+.supervisors-page select,
+.supervisors-page textarea {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+
+  border: 1px solid #d1d5db !important;
+  border-radius: 10px;
+
+  height: 38px;
+  padding: 0 14px;
+  font-size: 14px;
+
+  box-shadow: none;
+}
+
+.supervisors-page input::placeholder {
+  color: #9ca3af;
+}
+
+.supervisors-page input:focus,
+.supervisors-page select:focus,
+.supervisors-page textarea:focus {
+  outline: none;
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+}
+
+/* ================= PRIMARY FORM BUTTONS ================= */
+/* Compact, right-aligned, enterprise standard */
+
+.users-content .supervisors-page .form-row button {
+  height: 34px;
+  padding: 0 16px;
+
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+
+  border-radius: 8px;
+
+  width: fit-content;
+  justify-self: end;
+  align-self: center;
+}
+
+/* ================= SUPERVISOR LIST ================= */
+
+.supervisor-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.supervisor-item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px 18px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+/* ================= INFO ================= */
+
+.supervisor-info {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.assigned-badge {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* ================= ACTION BUTTONS ================= */
+
+.action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.action-group button {
+  background: #ffffff;
+  color: #374151;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.action-group .btn-edit:hover {
+  background: #e0f2fe;
+}
+
+.action-group .btn-delete:hover {
+  background: #fee2e2;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .users-content .supervisors-page .form-row button {
+    justify-self: start;
+  }
+
+  .supervisor-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-group {
+    margin-top: 10px;
+  }
+}

@@ -1,0 +1,161 @@
+/* ======================================================
+   ANNOUNCEMENTS — ENTERPRISE / INTERNAL NOTICE BOARD
+====================================================== */
+
+.main-content .schedule-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 22px 20px;
+  color: #0f172a;
+}
+
+/* ===============================
+   PAGE TITLE
+=============================== */
+
+.main-content .schedule-container h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #020308;
+  letter-spacing: -0.2px;
+}
+
+/* ===============================
+   CREATE ANNOUNCEMENT (SECONDARY)
+=============================== */
+
+.main-content .schedule-card:has(input),
+.main-content .schedule-card:has(textarea) {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+}
+
+/* ===============================
+   ANNOUNCEMENT RECORD
+=============================== */
+
+.main-content .schedule-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+
+  box-shadow: none;
+  transition: none;
+}
+
+/* ===============================
+   TITLE
+=============================== */
+
+.main-content .schedule-card h3 {
+  font-size: 15.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #020308;
+}
+
+/* ===============================
+   MESSAGE
+=============================== */
+
+.main-content .schedule-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+/* ===============================
+   META INFO — AUDIT STYLE
+=============================== */
+
+.main-content .schedule-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+
+  margin-top: 8px;
+  padding-top: 8px;
+
+  border-top: 1px solid #e5e7eb;
+
+  font-size: 12px;
+  color: #475569;
+}
+
+.main-content .schedule-meta span {
+  white-space: nowrap;
+}
+
+/* ===============================
+   INPUTS
+=============================== */
+
+.main-content .schedule-input {
+  width: 100%;
+  padding: 9px 11px;
+  margin-bottom: 10px;
+
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  font-size: 13.5px;
+}
+
+.main-content .schedule-input::placeholder {
+  color: #94a3b8;
+}
+
+.main-content .schedule-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+/* ===============================
+   BUTTON — INTERNAL TOOL STYLE
+=============================== */
+
+.main-content .primary-btn {
+  margin-top: 6px;
+  padding: 8px 14px;
+
+  background: #1e40af;
+  color: #ffffff;
+
+  border: 1px solid #1e3a8a;
+  border-radius: 6px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.main-content .primary-btn:hover {
+  background: #1e3a8a;
+}
+
+.main-content .primary-btn:disabled {
+  background: #94a3b8;
+  border-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   EMPTY STATE
+=============================== */
+
+.main-content .schedule-container > p {
+  font-size: 13.5px;
+  color: #64748b;
+}

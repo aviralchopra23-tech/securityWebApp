@@ -1,0 +1,104 @@
+/* ======================================================
+   OWNER — LOCATION DETAILS (ENTERPRISE)
+====================================================== */
+
+.owner-location-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  color: #0f172a;
+}
+
+/* ================= HEADER ================= */
+
+.owner-location-header {
+  margin-bottom: 24px;
+}
+
+.owner-location-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #020308;
+}
+
+/* ================= SECTIONS ================= */
+
+.owner-location-section {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.owner-location-section:last-child {
+  border-bottom: none;
+}
+
+/* ================= DETAILS ================= */
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.detail-value {
+  font-size: 14px;
+  color: #0f172a;
+}
+
+/* ================= GUARDS ================= */
+
+.owner-location-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.guard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.guard-list-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.guard-list-item:last-child {
+  border-bottom: none;
+}
+
+.guard-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #020308;
+}
+
+.guard-email {
+  font-size: 13px;
+  color: #475569;
+}
+
+/* ================= STATES ================= */
+
+.muted-text {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.owner-loading,
+.owner-error {
+  padding: 20px;
+  font-size: 14px;
+  color: #475569;
+}

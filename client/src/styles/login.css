@@ -1,0 +1,152 @@
+/* ================================
+   LOGIN PAGE – PROFESSIONAL LIGHT
+================================ */
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6f8;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.loginCard {
+  width: 420px;
+  padding: 40px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.securityHeader {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.securityBadge {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2ff;
+  color: #1e40af;
+  border-radius: 14px;
+}
+
+.loginTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.loginTitle span {
+  color: #1e40af;
+}
+
+.loginSubtitle {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* ================================
+   FORM
+================================ */
+
+.formGroup {
+  margin-bottom: 18px;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #475569;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #cbd5f5;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #1e40af;
+  box-shadow: 0 0 0 1px rgba(30, 64, 175, 0.3);
+}
+
+/* ================================
+   PASSWORD
+================================ */
+
+.passwordWrapper {
+  position: relative;
+}
+
+.toggleBtn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #1e40af;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ================================
+   BUTTON
+================================ */
+
+.loginBtn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #1e40af;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.loginBtn:hover {
+  background: #1d4ed8;
+}
+
+.loginBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ================================
+   ERROR & FOOTER
+================================ */
+
+.loginError {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.loginFooter {
+  margin-top: 22px;
+  font-size: 12px;
+  text-align: center;
+  color: #64748b;
+}
