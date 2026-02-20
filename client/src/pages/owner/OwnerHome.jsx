@@ -1,3 +1,4 @@
+import king from "../../assets/king.png";
 import "../../styles/ownerHome.css";
 
 export default function OwnerHome() {

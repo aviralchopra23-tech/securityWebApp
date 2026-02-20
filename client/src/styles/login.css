@@ -44,7 +44,7 @@
 }
 
 .loginTitle span {
-  color: #1e40af;
+  color: #8b0d0d;
 }
 
 .loginSubtitle {
@@ -73,15 +73,15 @@
   padding: 12px 14px;
   border-radius: 10px;
   background: #ffffff;
-  border: 1px solid #cbd5f5;
+  border: 1px solid #f5cbcb;
   font-size: 14px;
   color: #0f172a;
 }
 
 .formGroup input:focus {
   outline: none;
-  border-color: #1e40af;
-  box-shadow: 0 0 0 1px rgba(30, 64, 175, 0.3);
+  border-color: #af1e1e;
+  box-shadow: 0 0 0 1px rgba(175, 30, 30, 0.3);
 }
 
 /* ================================
@@ -99,7 +99,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #1e40af;
+  color: #920606;
   font-size: 13px;
   cursor: pointer;
 }
@@ -114,7 +114,7 @@
   padding: 14px;
   border-radius: 12px;
   border: none;
-  background: #1e40af;
+  background: #7a0606;
   color: #ffffff;
   font-weight: 600;
   font-size: 15px;
@@ -122,7 +122,7 @@
 }
 
 .loginBtn:hover {
-  background: #1d4ed8;
+  background: #d81d1d;
 }
 
 .loginBtn:disabled {

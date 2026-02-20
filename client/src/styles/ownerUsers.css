@@ -12,7 +12,7 @@
 /* ================= PAGE TITLE ================= */
 
 .users-title {
-  font-size: 18px;
+  font-size: 28px;
   font-weight: 600;
   color: #111827;
   margin-bottom: 4px;
@@ -51,7 +51,7 @@
 
 .role-btn.active {
   background: #eef2ff;
-  color: #4338ca;
+  color: #7a0505;
   font-weight: 600;
 }
 
@@ -115,7 +115,7 @@
 }
 
 .users-content button:hover {
-  background: #0d9488;
+  background: #a70202;
 }
 
 .users-content button:active {

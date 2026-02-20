@@ -1,23 +1,25 @@
+// src/routes/payPeriodRoutes.js
 const express = require("express");
 const router = express.Router();
 
 const { protect } = require("../middleware/authMiddleware");
 const { allowRoles } = require("../middleware/roleMiddleware");
-
 const {
   createShiftEntry,
   getShiftsForPayPeriod,
   submitPayPeriod,
-  getOwnerPayPeriodReport,
-  updateShiftEntry,
-  deleteShiftEntry
-} = require("../controllers/payPeriodController");
+  getCurrentPayPeriodStatus
+} = require("../controllers/guardController");
 
-/* ================================
-   GUARD + SUPERVISOR
-================================ */
+// report endpoint lives in payPeriodController
+const { getOwnerPayPeriodReport } = require("../controllers/payPeriodController");
 
-// Create a past shift entry
+/* ================= PAY PERIOD ROUTES ================= */
+
+/**
+ * POST /api/payperiod/shifts
+ * Create a new shift (GUARD or SUPERVISOR)
+ */
 router.post(
   "/shifts",
   protect,
@@ -25,7 +27,10 @@ router.post(
   createShiftEntry
 );
 
-// Get shifts for a specific pay period
+/**
+ * GET /api/payperiod/shifts
+ * Get shifts for selected pay period
+ */
 router.get(
   "/shifts",
   protect,
@@ -33,23 +38,10 @@ router.get(
   getShiftsForPayPeriod
 );
 
-// ✅ UPDATE shift
-router.put(
-  "/shifts/:id",
-  protect,
-  allowRoles("GUARD", "SUPERVISOR"),
-  updateShiftEntry
-);
-
-// ✅ DELETE shift
-router.delete(
-  "/shifts/:id",
-  protect,
-  allowRoles("GUARD", "SUPERVISOR"),
-  deleteShiftEntry
-);
-
-// Submit a pay period (locks shifts)
+/**
+ * POST /api/payperiod/submit
+ * Submit a pay period
+ */
 router.post(
   "/submit",
   protect,
@@ -57,12 +49,23 @@ router.post(
   submitPayPeriod
 );
 
-/* ================================
-   OWNER
-================================ */
-
+/**
+ * GET /api/payperiod/status
+ * Get current pay period submission status
+ */
 router.get(
-  "/reports",
+  "/status",
+  protect,
+  allowRoles("GUARD", "SUPERVISOR"),
+  getCurrentPayPeriodStatus
+);
+
+/**
+ * GET /api/payperiod/report
+ * Owner-only dashboard data: submitted periods + pending users
+ */
+router.get(
+  "/report",
   protect,
   allowRoles("OWNER"),
   getOwnerPayPeriodReport

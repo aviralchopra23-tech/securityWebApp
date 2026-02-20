@@ -1,18 +1,24 @@
+// src/pages/supervisor/SupervisorAnnouncements.jsx
 import { useEffect, useState } from "react";
 import { getAnnouncements, createAnnouncement } from "../../api/announcementApi";
+import "../../styles/supervisorAnnouncements.css"; // ensure this file exists
 
-export default function Announcements({ canCreate }) {
+// React Icons
+import { FaUser, FaClock, FaMapMarkerAlt, FaBullhorn } from "react-icons/fa";
+
+export default function SupervisorAnnouncements({ canCreate }) {
   const [announcements, setAnnouncements] = useState([]);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Fetch all announcements
   const fetchAnnouncements = async () => {
     try {
       const res = await getAnnouncements();
       setAnnouncements(res.data);
     } catch (err) {
-      console.error("Failed to load announcements");
+      console.error("Failed to load announcements", err);
     }
   };
 
@@ -20,6 +26,7 @@ export default function Announcements({ canCreate }) {
     fetchAnnouncements();
   }, []);
 
+  // Create announcement
   const handleCreate = async () => {
     if (!title || !message) return;
 
@@ -28,44 +35,51 @@ export default function Announcements({ canCreate }) {
       await createAnnouncement({
         title,
         message,
-        locationScope: "SPECIFIC", // supervisor enforced by backend
+        locationScope: "SPECIFIC",
       });
-
       setTitle("");
       setMessage("");
       fetchAnnouncements();
     } catch (err) {
-      console.error("Create announcement failed");
+      console.error("Create announcement failed", err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="schedule-container">
-      <h2>📢 Announcements</h2>
+    <div className="supervisor-content">
+      <h2>
+        <FaBullhorn style={{ marginRight: "6px" }} /> Announcements
+      </h2>
 
+      {/* CREATE ANNOUNCEMENT */}
       {canCreate && (
-        <div className="schedule-card">
+        <div className="supervisor-card">
           <h3>Create Announcement</h3>
 
           <input
-            className="schedule-input"
+            className="supervisor-input"
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-
           <textarea
-            className="schedule-input"
-            placeholder="Message"
+            className="supervisor-input"
             rows="4"
+            placeholder="Message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
 
+          {/* Dummy Scope row for visual consistency */}
+          <div className="supervisor-scope">
+            <span>Scope:</span>
+            <span>Specific Location</span>
+          </div>
+
           <button
-            className="primary-btn"
+            className="supervisor-btn"
             onClick={handleCreate}
             disabled={loading}
           >
@@ -74,18 +88,23 @@ export default function Announcements({ canCreate }) {
         </div>
       )}
 
+      {/* ANNOUNCEMENTS LIST */}
       {announcements.map((a) => (
-        <div key={a._id} className="schedule-card">
-          <h3>📢 {a.title}</h3>
+        <div key={a._id} className="supervisor-card">
+          <h3>
+            <FaBullhorn style={{ marginRight: "6px" }} /> {a.title}
+          </h3>
           <p>{a.message}</p>
-
-          <div className="schedule-meta">
-            <span>👤 {a.createdByRole}</span>
+          <div className="supervisor-meta">
             <span>
-              🕒 {new Date(a.createdAt).toLocaleString()}
+              <FaUser /> {a.createdByRole}
             </span>
             <span>
-              📍 {a.locationScope === "ALL" ? "All Locations" : "Specific Location"}
+              <FaClock /> {new Date(a.createdAt).toLocaleString()}
+            </span>
+            <span>
+              <FaMapMarkerAlt />{" "}
+              {a.locationScope === "ALL" ? "All Locations" : "Specific Location"}
             </span>
           </div>
         </div>

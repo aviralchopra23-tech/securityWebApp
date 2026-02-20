@@ -33,7 +33,7 @@
 .owner-hero-title {
   font-size: 1.8rem;
   font-weight: 800;
-  background: linear-gradient(90deg, #1e3a8a, #6366f1);
+  background: linear-gradient(90deg, #8a1e1e, #f17f63);
 
   /* Standard */
   background-clip: text;
@@ -174,3 +174,4 @@
   color: #475569;     /* readable slate */
   opacity: 1;         /* 🔑 critical fix */
 }
+

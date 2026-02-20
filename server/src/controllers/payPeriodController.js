@@ -2,8 +2,16 @@ const GuardShiftEntry = require("../models/GuardShiftEntry");
 const PayPeriodSubmission = require("../models/PayPeriodSubmission");
 const User = require("../models/User");
 
+// helper to safely send an error response when `next` may not be available
+const sendError = (res, err) => {
+  console.error(err);
+  if (res && typeof res.status === "function" && typeof res.json === "function") {
+    return res.status(err.statusCode || 500).json({ message: err.message || "Server Error" });
+  }
+};
+
 /* ================================
-   Pay Period Helpers
+   Helper Functions
 ================================ */
 
 const startOfDay = d => {
@@ -18,6 +26,7 @@ const endOfDay = d => {
   return x;
 };
 
+// Returns { start, end } for 1–15 or 16–end-of-month
 const resolvePayPeriod = date => {
   const d = new Date(date);
   const year = d.getFullYear();
@@ -25,62 +34,40 @@ const resolvePayPeriod = date => {
   const day = d.getDate();
 
   if (day <= 15) {
-    return {
-      start: startOfDay(new Date(year, month, 1)),
-      end: endOfDay(new Date(year, month, 15))
-    };
+    return { start: startOfDay(new Date(year, month, 1)), end: endOfDay(new Date(year, month, 15)) };
+  } else {
+    return { start: startOfDay(new Date(year, month, 16)), end: endOfDay(new Date(year, month + 1, 0)) };
   }
-
-  return {
-    start: startOfDay(new Date(year, month, 16)),
-    end: endOfDay(new Date(year, month + 1, 0))
-  };
 };
 
-const diffHours = (start, end) =>
-  (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+const diffHours = (start, end) => (end.getTime() - start.getTime()) / (1000 * 60 * 60);
 
 /* ================================
-   GUARD / SUPERVISOR
    Create Shift Entry
 ================================ */
-
-exports.createShiftEntry = async (req, res) => {
+exports.createShiftEntry = async (req, res, next) => {
   try {
     const { id, role } = req.user;
-
-    if (!["GUARD", "SUPERVISOR"].includes(role)) {
+    if (!["GUARD", "SUPERVISOR"].includes(role))
       return res.status(403).json({ message: "Access denied" });
-    }
 
     const { locationId, startDateTime, endDateTime } = req.body;
-
     const start = new Date(startDateTime);
     let end = new Date(endDateTime);
-
-    if (start > new Date()) {
-      return res.status(400).json({
-        message: "Future shifts cannot be entered"
-      });
-    }
-
-    if (end <= start) {
-      end.setDate(end.getDate() + 1);
-    }
+    if (end <= start) end.setDate(end.getDate() + 1);
 
     const { start: ppStart, end: ppEnd } = resolvePayPeriod(start);
 
-    const alreadySubmitted = await PayPeriodSubmission.findOne({
-      userId: id,
-      payPeriodStart: ppStart,
-      payPeriodEnd: ppEnd
-    });
+    const prevDate = new Date(ppStart);
+    prevDate.setDate(prevDate.getDate() - 1);
+    const { start: prevStart, end: prevEnd } = resolvePayPeriod(prevDate);
 
-    if (alreadySubmitted) {
-      return res.status(400).json({
-        message: "Pay period already submitted. Shifts are locked."
-      });
-    }
+    const prevSubmitted = await PayPeriodSubmission.findOne({ userId: id, payPeriodStart: prevStart, payPeriodEnd: prevEnd });
+    if (!prevSubmitted && prevStart < ppStart)
+      return res.status(400).json({ message: "Submit previous pay period before adding new shifts." });
+
+    const currentSubmitted = await PayPeriodSubmission.findOne({ userId: id, payPeriodStart: ppStart, payPeriodEnd: ppEnd });
+    if (currentSubmitted) return res.status(400).json({ message: "Shifts for this pay period are locked." });
 
     const entry = await GuardShiftEntry.create({
       userId: id,
@@ -89,157 +76,116 @@ exports.createShiftEntry = async (req, res) => {
       startDateTime: start,
       endDateTime: end,
       payPeriodStart: ppStart,
-      payPeriodEnd: ppEnd
+      payPeriodEnd: ppEnd,
+      isLocked: false
     });
 
     res.status(201).json(entry);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return sendError(res, err);
   }
 };
 
 /* ================================
-   GUARD / SUPERVISOR
-   UPDATE Shift Entry
+   Update Shift Entry
 ================================ */
-
-exports.updateShiftEntry = async (req, res) => {
+exports.updateShiftEntry = async (req, res, next) => {
   try {
     const { id: userId, role } = req.user;
     const { id } = req.params;
     const { locationId, startDateTime, endDateTime } = req.body;
 
-    if (!["GUARD", "SUPERVISOR"].includes(role)) {
-      return res.status(403).json({ message: "Access denied" });
-    }
+    if (!["GUARD", "SUPERVISOR"].includes(role)) return res.status(403).json({ message: "Access denied" });
 
     const shift = await GuardShiftEntry.findById(id);
-    if (!shift) {
-      return res.status(404).json({ message: "Shift not found" });
-    }
-
-    if (shift.userId.toString() !== userId) {
-      return res.status(403).json({ message: "Not your shift" });
-    }
-
-    if (shift.isLocked) {
-      return res.status(400).json({ message: "Shift is locked" });
-    }
+    if (!shift) return res.status(404).json({ message: "Shift not found" });
+    if (shift.userId.toString() !== userId) return res.status(403).json({ message: "Not your shift" });
+    if (shift.isLocked) return res.status(400).json({ message: "Shift is locked" });
 
     const start = new Date(startDateTime);
     let end = new Date(endDateTime);
-
-    if (start > new Date()) {
-      return res.status(400).json({ message: "Future shifts not allowed" });
-    }
-
-    if (end <= start) {
-      end.setDate(end.getDate() + 1);
-    }
+    if (end <= start) end.setDate(end.getDate() + 1);
 
     const { start: ppStart, end: ppEnd } = resolvePayPeriod(start);
-
-    if (
-      ppStart.getTime() !== shift.payPeriodStart.getTime() ||
-      ppEnd.getTime() !== shift.payPeriodEnd.getTime()
-    ) {
-      return res.status(400).json({
-        message: "Cannot move shift to a different pay period"
-      });
-    }
+    if (ppStart.getTime() !== shift.payPeriodStart.getTime() || ppEnd.getTime() !== shift.payPeriodEnd.getTime())
+      return res.status(400).json({ message: "Cannot move shift to a different pay period" });
 
     shift.locationId = locationId;
     shift.startDateTime = start;
     shift.endDateTime = end;
-
     await shift.save();
+
     res.json(shift);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return sendError(res, err);
   }
 };
 
 /* ================================
-   GUARD / SUPERVISOR
-   DELETE Shift Entry
+   Delete Shift Entry
 ================================ */
-
-exports.deleteShiftEntry = async (req, res) => {
+exports.deleteShiftEntry = async (req, res, next) => {
   try {
     const { id: userId, role } = req.user;
     const { id } = req.params;
 
-    if (!["GUARD", "SUPERVISOR"].includes(role)) {
-      return res.status(403).json({ message: "Access denied" });
-    }
+    if (!["GUARD", "SUPERVISOR"].includes(role)) return res.status(403).json({ message: "Access denied" });
 
     const shift = await GuardShiftEntry.findById(id);
-    if (!shift) {
-      return res.status(404).json({ message: "Shift not found" });
-    }
-
-    if (shift.userId.toString() !== userId) {
-      return res.status(403).json({ message: "Not your shift" });
-    }
-
-    if (shift.isLocked) {
-      return res.status(400).json({ message: "Shift is locked" });
-    }
+    if (!shift) return res.status(404).json({ message: "Shift not found" });
+    if (shift.userId.toString() !== userId) return res.status(403).json({ message: "Not your shift" });
+    if (shift.isLocked) return res.status(400).json({ message: "Shift is locked" });
 
     await shift.deleteOne();
     res.json({ message: "Shift deleted" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return sendError(res, err);
   }
 };
 
 /* ================================
-   GUARD / SUPERVISOR
    Get Shifts For Pay Period
 ================================ */
-
-exports.getShiftsForPayPeriod = async (req, res) => {
+exports.getShiftsForPayPeriod = async (req, res, next) => {
   try {
     const { id } = req.user;
     const { date } = req.query;
 
-    const { start, end } = resolvePayPeriod(new Date(date));
+    const { start, end } = resolvePayPeriod(date);
+    const shifts = await GuardShiftEntry.find({ userId: id, payPeriodStart: start, payPeriodEnd: end })
+      .populate("locationId", "name");
 
-    const shifts = await GuardShiftEntry.find({
-      userId: id,
-      payPeriodStart: start,
-      payPeriodEnd: end
-    }).populate("locationId", "name");
+    const submitted = await PayPeriodSubmission.findOne({ userId: id, payPeriodStart: start, payPeriodEnd: end });
 
-    res.json({ payPeriodStart: start, payPeriodEnd: end, shifts });
+    res.json({ payPeriodStart: start, payPeriodEnd: end, shifts, submitted: !!submitted });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return sendError(res, err);
   }
 };
 
 /* ================================
-   GUARD / SUPERVISOR
    Submit Pay Period
 ================================ */
-
-exports.submitPayPeriod = async (req, res) => {
+exports.submitPayPeriod = async (req, res, next) => {
   try {
     const { id, role } = req.user;
-    const { payPeriodStart, payPeriodEnd, paycheckCollectionLocationId } = req.body;
+    const { paycheckCollectionLocationId, payPeriodStart, payPeriodEnd } = req.body;
 
-    const shifts = await GuardShiftEntry.find({
-      userId: id,
-      payPeriodStart,
-      payPeriodEnd,
-      isLocked: false
-    });
+    const ppStart = payPeriodStart ? new Date(payPeriodStart) : resolvePayPeriod(new Date()).start;
+    const ppEnd = payPeriodEnd ? new Date(payPeriodEnd) : resolvePayPeriod(new Date()).end;
 
-    if (!shifts.length) {
-      return res.status(400).json({ message: "No shifts to submit" });
-    }
+    const prevDate = new Date(ppStart);
+    prevDate.setDate(prevDate.getDate() - 1);
+    const { start: prevStart, end: prevEnd } = resolvePayPeriod(prevDate);
+    const prevSubmitted = await PayPeriodSubmission.findOne({ userId: id, payPeriodStart: prevStart, payPeriodEnd: prevEnd });
+    if (!prevSubmitted && prevStart < ppStart)
+      return res.status(400).json({ message: "Submit previous pay period first." });
 
-    const submittedShifts = [];
+    const shifts = await GuardShiftEntry.find({ userId: id, payPeriodStart: ppStart, payPeriodEnd: ppEnd, isLocked: false });
+    if (!shifts.length) return res.status(400).json({ message: "No shifts to submit" });
+
     let totalHours = 0;
+    const submittedShifts = [];
 
     shifts.forEach(shift => {
       let curStart = new Date(shift.startDateTime);
@@ -248,7 +194,6 @@ exports.submitPayPeriod = async (req, res) => {
       while (curStart < finalEnd) {
         const dayEnd = endOfDay(curStart);
         const segEnd = finalEnd < dayEnd ? finalEnd : dayEnd;
-
         const hours = diffHours(curStart, segEnd);
         totalHours += hours;
 
@@ -267,30 +212,52 @@ exports.submitPayPeriod = async (req, res) => {
     await PayPeriodSubmission.create({
       userId: id,
       roleAtSubmission: role,
-      payPeriodStart,
-      payPeriodEnd,
+      payPeriodStart: ppStart,
+      payPeriodEnd: ppEnd,
       shifts: submittedShifts,
       totalHours,
       paycheckCollectionLocationId
     });
 
-    await GuardShiftEntry.updateMany(
-      { userId: id, payPeriodStart, payPeriodEnd },
-      { $set: { isLocked: true } }
-    );
+    await GuardShiftEntry.updateMany({ userId: id, payPeriodStart: ppStart, payPeriodEnd: ppEnd }, { $set: { isLocked: true } });
 
     res.json({ message: "Pay period submitted successfully" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return sendError(res, err);
   }
 };
 
 /* ================================
-   OWNER
-   Pay Period Reports
+   Current Pay Period Status
 ================================ */
+exports.getCurrentPayPeriodStatus = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const today = new Date();
+    const { start: currentStart, end: currentEnd } = resolvePayPeriod(today);
 
-exports.getOwnerPayPeriodReport = async (req, res) => {
+    const prevDate = new Date(currentStart);
+    prevDate.setDate(prevDate.getDate() - 1);
+    const { start: prevStart, end: prevEnd } = resolvePayPeriod(prevDate);
+
+    const prevSubmitted = await PayPeriodSubmission.findOne({ userId: id, payPeriodStart: prevStart, payPeriodEnd: prevEnd });
+    const currentSubmitted = await PayPeriodSubmission.findOne({ userId: id, payPeriodStart: currentStart, payPeriodEnd: currentEnd });
+    const prevPending = prevStart < currentStart && !prevSubmitted;
+
+    res.json({
+      prevUnsubmitted: prevPending,
+      currentSubmitted: !!currentSubmitted,
+      currentPayPeriod: { start: currentStart, end: currentEnd }
+    });
+  } catch (err) {
+    return sendError(res, err);
+  }
+};
+
+/* ================================
+   Owner Pay Period Report
+================================ */
+exports.getOwnerPayPeriodReport = async (req, res, next) => {
   try {
     const submissions = await PayPeriodSubmission.find()
       .populate("userId", "firstName lastName role")
@@ -300,12 +267,13 @@ exports.getOwnerPayPeriodReport = async (req, res) => {
 
     res.json({
       submitted: submissions,
-      pendingUsers: users.filter(
-        u =>
-          !submissions.some(s => s.userId._id.toString() === u._id.toString())
-      )
+      pendingUsers: users.filter(u =>
+  !submissions.some(s =>
+    s.userId?._id?.toString() === u._id.toString()
+  )
+)
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return sendError(res, err);
   }
 };

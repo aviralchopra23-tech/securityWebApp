@@ -14,8 +14,9 @@ export const createLocation = async (data) => {
   return res.data;
 };
 
+// Updated assignSupervisor endpoint
 export const assignSupervisor = async (data) => {
-  const res = await api.post("/locations/assign-supervisor", data);
+  const res = await api.post("/users/assign-supervisor", data);
   return res.data;
 };
 
@@ -63,7 +64,6 @@ export const deleteUser = async (id) => {
   return res.data;
 };
 
-// Create guard (OWNER only)
 export const createGuard = async (data) => {
   const res = await api.post("/users/guards", data);
   return res.data;

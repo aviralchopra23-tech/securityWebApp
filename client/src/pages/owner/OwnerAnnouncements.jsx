@@ -3,6 +3,8 @@ import { getAnnouncements, createAnnouncement } from "../../api/announcementApi"
 import API from "../../api/axios";
 import "../../styles/ownerAnnouncements.css";
 
+// React Icons
+import { FaUser, FaClock, FaMapMarkerAlt, FaBullhorn } from "react-icons/fa";
 
 export default function OwnerAnnouncements() {
   const [announcements, setAnnouncements] = useState([]);
@@ -13,7 +15,7 @@ export default function OwnerAnnouncements() {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch all locations (Owner already has access)
+  // Fetch all locations
   const fetchLocations = async () => {
     try {
       const res = await API.get("/locations");
@@ -47,19 +49,16 @@ export default function OwnerAnnouncements() {
 
     try {
       setLoading(true);
-
       await createAnnouncement({
         title,
         message,
         locationScope: scope,
         locationIds: scope === "SPECIFIC" ? selectedLocations : [],
       });
-
       setTitle("");
       setMessage("");
       setScope("ALL");
       setSelectedLocations([]);
-
       fetchAnnouncements();
     } catch (err) {
       console.error("Create announcement failed", err);
@@ -83,14 +82,12 @@ export default function OwnerAnnouncements() {
       {/* CREATE ANNOUNCEMENT */}
       <div className="owner-card">
         <h3>Create Announcement</h3>
-
         <input
           className="owner-input"
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-
         <textarea
           className="owner-input"
           rows="4"
@@ -106,32 +103,30 @@ export default function OwnerAnnouncements() {
               type="radio"
               checked={scope === "ALL"}
               onChange={() => setScope("ALL")}
-            />
-            {" "}All Locations
+            />{" "}
+            All Locations
           </label>
-
           <label style={{ marginLeft: "20px" }}>
             <input
               type="radio"
               checked={scope === "SPECIFIC"}
               onChange={() => setScope("SPECIFIC")}
-            />
-            {" "}Specific Locations
+            />{" "}
+            Specific Locations
           </label>
         </div>
 
         {/* LOCATION MULTI-SELECT */}
         {scope === "SPECIFIC" && (
           <div className="owner-locations">
-
             {locations.map((loc) => (
               <label key={loc._id} style={{ display: "block" }}>
                 <input
                   type="checkbox"
                   checked={selectedLocations.includes(loc._id)}
                   onChange={() => toggleLocation(loc._id)}
-                />
-                {" "}{loc.name}
+                />{" "}
+                {loc.name}
               </label>
             ))}
           </div>
@@ -149,14 +144,20 @@ export default function OwnerAnnouncements() {
       {/* ANNOUNCEMENTS LIST */}
       {announcements.map((a) => (
         <div key={a._id} className="owner-card">
-          <h3>📢 {a.title}</h3>
+          <h3>
+            <FaBullhorn style={{ marginRight: "6px" }} /> {a.title}
+          </h3>
           <p>{a.message}</p>
-
           <div className="owner-meta">
-            <span>👤 {a.createdByRole}</span>
-            <span>🕒 {new Date(a.createdAt).toLocaleString()}</span>
             <span>
-              📍 {a.locationScope === "ALL" ? "All Locations" : "Specific Locations"}
+              <FaUser /> {a.createdByRole}
+            </span>
+            <span>
+              <FaClock /> {new Date(a.createdAt).toLocaleString()}
+            </span>
+            <span>
+              <FaMapMarkerAlt />{" "}
+              {a.locationScope === "ALL" ? "All Locations" : "Specific Locations"}
             </span>
           </div>
         </div>

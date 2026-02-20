@@ -10,58 +10,31 @@ const {
   updateUser,
   deleteUser,
   createSupervisor,
-   createGuard   // ✅ ADD THIS
+  createGuard,
+  assignSupervisor  // ✅ add assign route
 } = require("../controllers/userController");
 
-
-// OWNER ONLY — USERS MANAGEMENT
+// ================= USERS MANAGEMENT (OWNER ONLY) =================
 
 // List supervisors
-router.get(
-  "/supervisors",
-  protect,
-  allowRoles("OWNER"),
-  getSupervisors
-);
+router.get("/supervisors", protect, allowRoles("OWNER"), getSupervisors);
 
 // List guards
-router.get(
-  "/guards",
-  protect,
-  allowRoles("OWNER"),
-  getGuards
-);
+router.get("/guards", protect, allowRoles("OWNER"), getGuards);
 
 // Update user (guard or supervisor)
-router.put(
-  "/:id",
-  protect,
-  allowRoles("OWNER"),
-  updateUser
-);
+router.put("/:id", protect, allowRoles("OWNER"), updateUser);
 
 // Delete user (guard or supervisor)
-router.delete(
-  "/:id",
-  protect,
-  allowRoles("OWNER"),
-  deleteUser
-);
+router.delete("/:id", protect, allowRoles("OWNER"), deleteUser);
 
-router.post(
-  "/supervisors",
-  protect,
-  allowRoles("OWNER"),
-  createSupervisor
-);
+// Create supervisor
+router.post("/supervisors", protect, allowRoles("OWNER"), createSupervisor);
 
-router.post(
-  "/guards",
-  protect,
-  allowRoles("OWNER"),
-  createGuard
-);
+// Create guard
+router.post("/guards", protect, allowRoles("OWNER"), createGuard);
 
-
+// Assign supervisor to location
+router.post("/assign-supervisor", protect, allowRoles("OWNER"), assignSupervisor);
 
 module.exports = router;

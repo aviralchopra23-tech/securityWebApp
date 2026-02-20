@@ -1,0 +1,15 @@
+/* PAY PERIOD LIST */
+.shift-main { display: flex; flex-direction: column; gap: 4px; }
+.shift-actions { display: flex; gap: 8px; }
+.shift-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+.mobile-only { display: none; }
+
+@media (max-width: 768px) {
+  .shift-actions { margin-top: 10px; }
+  .mobile-only { display: block; }
+}

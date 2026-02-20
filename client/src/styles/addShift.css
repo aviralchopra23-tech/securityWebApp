@@ -1,183 +1,108 @@
-/* ======================================================
-   ADD SHIFT — FORM & INPUT STYLES ONLY
-   (Schedule UI has been isolated to schedule.css)
-====================================================== */
-
-/* ======================================================
-   PAGE WRAPPER (FORM CONTEXT ONLY)
-====================================================== */
-
-.schedule-wrapper {
+.addshift-.schedule-wrapper {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0;
 }
 
-/* ======================================================
-   INFO NOTICE (ADD SHIFT ONLY)
-====================================================== */
-
+/* INFO NOTICE */
 .info-text {
   display: flex;
   align-items: center;
   gap: 10px;
-
   background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  color: #065f46;
-
+  border: 1px solid #000c07;
+  color: #000302;
   padding: 12px 16px;
   border-radius: 12px;
   font-size: 14px;
   margin-bottom: 24px;
 }
 
-/* ======================================================
-   FORM CARD
-====================================================== */
-
+/* FORM CARD */
 .schedule-wrapper form {
   background: #ffffff;
   border: 1px solid #dde3ea;
   border-radius: 14px;
   padding: 24px;
-
-  box-shadow:
-    0 12px 30px rgba(15, 23, 42, 0.08),
-    0 2px 6px rgba(15, 23, 42, 0.04);
-
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08),
+              0 2px 6px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-/* ======================================================
-   LABELS
-====================================================== */
-
+/* LABELS */
 .schedule-wrapper label {
   display: flex;
   flex-direction: column;
   gap: 6px;
-
   font-size: 13px;
   font-weight: 600;
   color: #475569;
 }
 
-/* ======================================================
-   INPUTS & SELECTS
-====================================================== */
-
+/* INPUTS & SELECTS */
 .schedule-wrapper input,
 .schedule-wrapper select {
   padding: 12px 14px;
   border-radius: 10px;
-
   background: #ffffff;
   border: 1px solid #cbd5e1;
-
   font-size: 14px;
   color: #0f172a;
-
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-
 .schedule-wrapper input:focus,
 .schedule-wrapper select:focus {
   outline: none;
-  border-color: #22c55e;
-  box-shadow:
-    0 0 0 3px rgba(34, 197, 94, 0.25),
-    0 0 12px rgba(34, 197, 94, 0.15);
+  border-color: #0a0909;
+  box-shadow: 0 0 0 1px rgba(90, 3, 3, 0.562),
+              0 0 1px rgba(240, 3, 3, 0.15);
 }
 
-/* Fix calendar / time icon visibility */
+/* Calendar icon fix */
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   filter: invert(35%) sepia(60%) saturate(400%) hue-rotate(90deg);
   cursor: pointer;
 }
 
-/* ======================================================
-   PRIMARY ACTION (ADD SHIFT ONLY)
-====================================================== */
-
+/* PRIMARY BUTTON */
 .schedule-wrapper .btn-primary {
   margin-top: 10px;
   padding: 14px;
-
   font-size: 15px;
   font-weight: 600;
-
   border-radius: 14px;
-
+  width: 10%;
   background: #f0f7ef;
-  color: #166534;
-
-  border: 2px solid #22c55e;
-
-  box-shadow:
-    0 10px 22px rgba(15, 23, 42, 0.08);
-
-  transition:
-    box-shadow 0.25s ease,
-    transform 0.15s ease,
-    background 0.2s ease;
+  color: #651616;
+  border: 2px solid #f8faf8;
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.08);
+  transition: box-shadow 0.25s ease, transform 0.15s ease, background 0.2s ease;
 }
-
 .schedule-wrapper .btn-primary:hover {
   transform: translateY(-1px);
-
-  background: #f0fdf4;
-
-  box-shadow:
-    0 0 0 4px rgba(34, 197, 94, 0.18),
-    0 14px 28px rgba(34, 197, 94, 0.25);
+  background: #fdf0f0;
+  box-shadow: 0 0 0 2px rgba(197, 34, 34, 0.18),
+              0 2px 2px rgba(197, 34, 34, 0.25);
 }
 
-/* ======================================================
-   SELECT DROPDOWN — ADD SHIFT ONLY
-====================================================== */
-
+/* SELECT DROPDOWN */
 .schedule-wrapper select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-
-  background-color: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-
-  padding: 12px 42px 12px 14px;
-  font-size: 14px;
+  padding-right: 42px;
   font-weight: 500;
-  color: #0f172a;
-
   cursor: pointer;
-
-  background-image:
-    linear-gradient(45deg, transparent 50%, #22c55e 50%),
-    linear-gradient(135deg, #22c55e 50%, transparent 50%),
-    linear-gradient(to right, transparent, transparent);
-  background-position:
-    calc(100% - 20px) calc(50% - 3px),
-    calc(100% - 14px) calc(50% - 3px),
-    100% 0;
-  background-size:
-    6px 6px,
-    6px 6px,
-    2.5em 2.5em;
+  background-image: linear-gradient(45deg, transparent 50%, #22c55e 50%),
+                    linear-gradient(135deg, #02180a 50%, transparent 50%),
+                    linear-gradient(to right, transparent, transparent);
+  background-position: calc(100% - 20px) calc(50% - 3px),
+                       calc(100% - 14px) calc(50% - 3px),
+                       100% 0;
+  background-size: 6px 6px, 6px 6px, 2.5em 2.5em;
   background-repeat: no-repeat;
 }
-
-.schedule-wrapper select:hover {
-  border-color: #22c55e;
-}
-
-.schedule-wrapper select:focus {
-  outline: none;
-  border-color: #22c55e;
-  box-shadow:
-    0 0 0 3px rgba(34, 197, 94, 0.25),
-    0 0 12px rgba(34, 197, 94, 0.15);
-}
+.schedule-wrapper select:hover { border-color: #140202; }
+.schedule-wrapper select:focus { outline: none; }

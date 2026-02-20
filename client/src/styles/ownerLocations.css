@@ -1,35 +1,30 @@
-/* ======================================================
-   OWNER – LOCATIONS (Enterprise Light Theme)
-====================================================== */
+/* ==============================
+   OWNER – LOCATIONS PAGE
+============================== */
 
 .locations-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  padding: 20px;
 }
-
-/* Page title */
 
 .locations-title {
   font-size: 18px;
   font-weight: 600;
   color: #111827;
-  margin-bottom: 6px;
 }
 
-/* ===============================
+/* ==============================
    CREATE LOCATION FORM
-=============================== */
-
+============================== */
 .location-form {
   display: grid;
   grid-template-columns: 1fr 2fr auto;
   gap: 14px;
-
-  background: #ffffff;
+  background: #fff;
   padding: 18px;
   border-radius: 10px;
-
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
@@ -37,57 +32,49 @@
 .location-form input {
   padding: 10px 12px;
   font-size: 14px;
-  color: #111827;
-
-  background: #ffffff;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.location-form input::placeholder {
-  color: #9ca3af;
+  outline: none;
+  width: 100%;
 }
 
 .location-form input:focus {
-  outline: none;
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 .location-form button {
   padding: 10px 18px;
-  font-size: 14px;
   font-weight: 600;
-
   border-radius: 8px;
   border: none;
-
-  background: #6366f1;
-  color: #ffffff;
-
+   background-color: #fff;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow for depth */
 }
 
 .location-form button:hover {
-  background: #4f46e5;
+  background: linear-gradient(135deg, #e02424da, #2c2c2cd8); /* slightly brighter on hover */
+  transform: translateY(-2px);
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-.location-form button:active {
-  transform: translateY(1px);
-}
 
-/* ===============================
+
+
+
+
+/* ==============================
    LOCATION LIST
-=============================== */
-
+============================== */
 .location-list {
   list-style: none;
   padding: 0;
   margin: 0;
-
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -97,13 +84,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 16px 18px;
-
-  background: #ffffff;
+  padding: 16px;
+  background: #fff;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
-
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
@@ -112,29 +96,20 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Info section */
-
 .location-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
-
-  font-size: 14px;
   font-weight: 600;
-  color: #111827;
-
+  font-size: 14px;
   cursor: pointer;
 }
 
 .location-sub {
-  font-size: 13px;
   font-weight: 400;
+  font-size: 13px;
   color: #6b7280;
 }
-
-/* ===============================
-   ACTION BUTTONS
-=============================== */
 
 .location-actions {
   display: flex;
@@ -146,13 +121,10 @@
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
-
   border-radius: 8px;
   border: 1px solid #d1d5db;
-  background: #ffffff;
-
+  background: #fff;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-edit {
@@ -161,7 +133,7 @@
 
 .btn-edit:hover {
   background: #eef2ff;
-  border-color: #6366f1;
+  border-color: #000005;
 }
 
 .btn-delete {
@@ -173,63 +145,121 @@
   border-color: #ef4444;
 }
 
-/* ===============================
-   EDIT MODE
-=============================== */
-
 .edit-form {
-  display: grid;
-  grid-template-columns: 1fr 2fr auto auto;
-  gap: 10px;
+  display: flex;
+  gap: 8px; /* space between inputs and buttons */
+  align-items: center; /* keep items vertically centered */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .edit-form input {
-  padding: 8px 10px;
+  flex: 1; /* inputs take equal space */
+  padding: 6px 10px; /* original padding */
   font-size: 14px;
-
-  background: #ffffff;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
-  color: #111827;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
-/* ======================================================
-   SHORT HEIGHT SCREENS
-====================================================== */
-
-@media (max-height: 700px) {
-  .location-form {
-    padding: 14px;
-  }
-
-  .location-item {
-    padding: 12px 14px;
-  }
+.edit-form .btn-save,
+.edit-form .btn-cancel {
+  width: 80px; /* smaller buttons */
+  padding: 4px 0 6px 0; /* reduce top padding slightly */
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  flex-shrink: 0; /* prevent shrinking */
+  border: none;
 }
 
-/* ======================================================
-   NARROW SCREENS (FIX CREATE BUTTON OVERFLOW)
-   Desktop remains unchanged
-====================================================== */
+.edit-form .btn-save {
+  background-color: #200000;
+  color: white;
+  margin-right: 6px; /* space between Save and Cancel */
+}
 
-@media (max-width: 640px) {
-  .location-form {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "name address"
-      "button button";
+.edit-form .btn-save:hover {
+  background-color: #790101;
+}
+
+.edit-form .btn-cancel {
+  background-color: #fff;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+.edit-form .btn-cancel:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* Responsive for small screens */
+@media (max-width: 480px) {
+  .edit-form {
+    flex-direction: column;
+    gap: 6px;
   }
 
-  .location-form input:nth-child(1) {
-    grid-area: name;
-  }
-
-  .location-form input:nth-child(2) {
-    grid-area: address;
-  }
-
-  .location-form button {
-    grid-area: button;
+  .edit-form input,
+  .edit-form .btn-save,
+  .edit-form .btn-cancel {
     width: 100%;
   }
+
+  .edit-form .btn-save {
+    margin-right: 0;
+  }
+
 }
+
+.edit-form .btn-save {
+  background-color: #200000; /* dark red/black */
+  color: white; /* text */
+  margin-top: 0; /* remove any top margin */
+  margin-right: 6px; /* keep spacing from Cancel button */
+  border: none; /* ensure no border appears */
+  padding: 4px 0 6px 0;
+  width: 80px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.edit-form .btn-save:hover {
+  background-color: #790101; /* keep your red hover */
+  border: none !important;    /* force no border */
+  color: white;
+}
+
+.edit-form .btn-save {
+  background-color: #200000; /* dark red */
+  color: white;
+  margin-top: 0; /* no top margin */
+  margin-right: 6px;
+  border: none; /* remove border */
+  outline: none; /* remove focus outline */
+  box-shadow: none; /* remove any shadow/hover ring */
+  padding: 4px 0 6px 0;
+  width: 80px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.edit-form .btn-save:hover,
+.edit-form .btn-save:focus {
+  background-color: #790101; /* hover color */
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: white;
+}
+
+

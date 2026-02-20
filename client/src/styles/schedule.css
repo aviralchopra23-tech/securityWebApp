@@ -1,232 +1,198 @@
-/* ======================================================
-   SCHEDULE UI — INPUT STYLE (PROFESSIONAL)
-====================================================== */
-
+/* ======================= SCHEDULE WRAPPER ======================= */
 .schedule-wrapper {
   max-width: 1000px;
   margin: 0 auto;
+  padding: 0 16px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  font-family: "Inter", sans-serif;
 }
 
-/* ================= DAY CARD ================= */
+/* ======================= TITLES & SUBTITLES ======================= */
+.schedule-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #510f53;
+  position: relative;
+}
 
+.schedule-subtitle {
+  font-size: 14px;
+  color: #111111;
+  margin-bottom: 24px;
+}
+
+/* ======================= NO SCHEDULE MESSAGE ======================= */
+.no-schedule-message {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #6b7280; /* medium gray */
+  text-align: left;
+}
+
+/* ======================= NO SHIFTS / ERROR TEXT ======================= */
+.no-shifts,
+.error-text,
+.success-text,
+.info-text {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.no-shifts {
+  color: #1f2937;
+}
+
+/* ======================= DAY CARDS ======================= */
 .day-card {
   background: #ffffff;
   border: 1px solid #dde3ea;
   border-radius: 14px;
-  padding: 14px 16px;
-  margin-bottom: 14px;
-  box-shadow:
-    0 6px 16px rgba(15, 23, 42, 0.06),
-    0 2px 4px rgba(15, 23, 42, 0.04);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08),
+              0 2px 6px rgba(15, 23, 42, 0.04);
 }
 
 .day-card.compact {
-  padding: 12px 14px;
+  padding: 12px 16px;
 }
 
 .day-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #0f172a;
 }
 
-/* ================= SHIFT ROW ================= */
-
-/* DEFAULT (DESKTOP / LARGE SCREENS) — UNCHANGED */
-.shift-row.compact-row {
-  display: grid;
-  grid-template-columns: 160px 1fr;
+.shift-row {
+  display: flex;
   gap: 12px;
-  margin-bottom: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
 }
 
-.shift-row.compact-row:last-child {
-  margin-bottom: 0;
+.shift-row:last-child {
+  border-bottom: none;
 }
-
-/* ================= INPUT STYLE ================= */
 
 .shift-input {
-  padding: 10px 12px;
+  flex: 1;
   font-size: 14px;
-  border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  background: #f8fafc;
-  color: #0f172a;
+  color: #1f2937;
+}
+
+.guard-input {
+  text-align: right;
   font-weight: 500;
 }
 
-/* Guard name aligns right */
-.guard-input {
-  text-align: right;
+/* ======================= COMPACT ROWS ======================= */
+.compact-row {
+  font-size: 13px;
+  padding: 6px 0;
 }
 
-/* ================= GUARD COLOR CODING ================= */
-
-.guard-0 .shift-input {
-  background: #eff6ff;
-  border-color: #bfdbfe;
-}
-
-.guard-1 .shift-input {
-  background: #ecfeff;
-  border-color: #67e8f9;
-}
-
-.guard-2 .shift-input {
-  background: #f0fdf4;
-  border-color: #86efac;
-}
-
-.guard-3 .shift-input {
-  background: #fff7ed;
-  border-color: #fdba74;
-}
-
-.guard-4 .shift-input {
-  background: #fdf2f8;
-  border-color: #f9a8d4;
-}
-
-.guard-5 .shift-input {
-  background: #f5f3ff;
-  border-color: #c4b5fd;
-}
-
-.guard-x .shift-input {
-  background: #f8fafc;
-}
-
-/* ================= EMPTY ================= */
-
-.no-shifts {
-  font-size: 14px;
-  color: #94a3b8;
-  padding: 4px 0;
-}
-
-/* ======================================================
-   PAY PERIOD LIST — MOBILE SAFE ENHANCEMENTS
-   (NO DESKTOP CHANGES)
-====================================================== */
-
-/* Shared structure */
-.shift-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 14px;
+/* ======================= FEEDBACK MESSAGES ======================= */
+.error-text {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.success-text {
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.info-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* ======================= CREATE BUTTON ======================= */
+.btn-create-schedule {
+  display: block;
+  margin: 12px auto 16px 0;
+  padding: 10px 16px;
+  background-color: #531f0f;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-create-schedule:hover {
+  background-color: #3e0a3d;
+}
+
+/* ======================= MODALS ======================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 400px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #dde3ea;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+  text-align: center;
+}
+
+.modal h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
   margin-bottom: 10px;
 }
 
-/* Main content group */
-.shift-main {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-/* Time badge already exists — refine spacing */
-.time-badge {
-  font-size: 13px;
-  font-weight: 500;
-  color: #e5e7eb;
-}
-
-/* Location text */
-.guard-name {
+.modal p {
   font-size: 14px;
-  font-weight: 600;
-  color: #f1f5f9;
+  color: #475569;
+  margin-bottom: 22px;
 }
 
-/* Actions */
-.shift-actions {
+.modal-actions {
   display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
-/* ================= MOBILE LABELS ================= */
-
-.shift-label {
-  font-size: 11px;
+.modal-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #94a3b8;
 }
 
-/* Hidden by default (desktop) */
-.mobile-only {
-  display: none;
-}
-
-/* ======================================================
-   MOBILE BREAKPOINT ONLY
-   Desktop remains untouched
-====================================================== */
-
-@media (max-width: 768px) {
-  .shift-row {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-  }
-
-  .shift-main {
-    gap: 6px;
-  }
-
-  .shift-actions {
-    margin-top: 10px;
-    justify-content: flex-start;
-  }
-
-  .shift-actions button {
-    flex: 1;
-  }
-
-  .mobile-only {
-    display: block;
-  }
-}
-
-/* ======================================================
-   PAY PERIOD TIME DISPLAY — REMOVE PILL STYLE
-   Enterprise / Report-style rows
-====================================================== */
-
-.time-badge {
-  background: none;
-  padding: 0;
-  border-radius: 0;
-  box-shadow: none;
-
-  font-size: 14px;
-  font-weight: 500;
-  color: #e5e7eb;
-
-  display: block;
-  line-height: 1.4;
-}
-
-/* Add subtle separation instead of pill */
-.shift-row {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Improve hierarchy */
-.shift-main {
-  gap: 2px;
-}
-
-/* Location looks like metadata, not badge */
-.guard-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: #cbd5f5;
+/* ======================= OTHER ELEMENTS ======================= */
+.shift-row.guard-x {
+  background: #f9fafb;
 }

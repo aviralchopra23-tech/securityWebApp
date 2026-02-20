@@ -1,0 +1,155 @@
+/* ======================================================
+   SUPERVISOR ANNOUNCEMENTS — OWNER STYLE MATCH
+====================================================== */
+
+.supervisor-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+
+.supervisor-content h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.supervisor-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+}
+
+.supervisor-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.supervisor-input {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 13px;
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+.supervisor-input::placeholder {
+  color: #9ca3af;
+}
+
+.supervisor-input:focus {
+  outline: none;
+  border-color: #eb1a1a;
+  box-shadow: 0 0 0 1px rgba(99,102,241,0.25);
+}
+
+.supervisor-scope {
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+  color: #374151;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.supervisor-scope input[type="radio"] {
+  accent-color: #eb1a1a;
+  cursor: pointer;
+}
+
+.supervisor-locations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.supervisor-btn {
+  align-self: flex-start;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #640101;
+  background: #130000;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.supervisor-btn:hover {
+  background: #6b2b2b;
+}
+
+.supervisor-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.supervisor-card p {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.supervisor-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: #6b7280;
+  align-items: center;
+}
+
+.supervisor-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .supervisor-content {
+    gap: 16px;
+  }
+  .supervisor-card {
+    padding: 12px;
+  }
+  .supervisor-card h3 {
+    font-size: 14px;
+  }
+  .supervisor-input {
+    font-size: 12px;
+  }
+  .supervisor-btn {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+  .supervisor-meta {
+    font-size: 11px;
+    gap: 10px;
+  }
+  .supervisor-scope {
+    font-size: 12px;
+    gap: 12px;
+  }
+}

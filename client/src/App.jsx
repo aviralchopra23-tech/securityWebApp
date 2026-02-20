@@ -19,6 +19,7 @@ import SupervisorLayout from "./pages/supervisor/SupervisorLayout";
 import SupervisorHome from "./pages/supervisor/SupervisorHome";
 import SupervisorSchedule from "./pages/supervisor/SupervisorSchedule";
 import EditSupervisorSchedule from "./pages/supervisor/EditSupervisorSchedule";
+import SupervisorAnnouncements from "./pages/supervisor/SupervisorAnnouncements";
 
 /* ================= GUARD ================= */
 import GuardLayout from "./pages/guard/GuardLayout";
@@ -90,7 +91,7 @@ export default function App() {
           {/* 📢 Supervisor Announcements */}
           <Route
             path="announcements"
-            element={<Announcements canCreate />}
+            element={<SupervisorAnnouncements canCreate />}
           />
           <Route path="pay-periods" element={<SupervisorPayPeriods />} />
 

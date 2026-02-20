@@ -1,67 +1,81 @@
-import { useEffect, useState } from "react";
-import {
-  getShiftsForPayPeriod,
-  submitPayPeriod,
-  updateShiftEntry,
-  deleteShiftEntry
-} from "../../api/payPeriodApi";
+import { useEffect, useState, useMemo } from "react";
+import { getShiftsForPayPeriod, submitPayPeriod, updateShiftEntry, deleteShiftEntry } from "../../api/payPeriodApi";
 import api from "../../api/axios";
+import usePayPeriodStatus, { advancePayPeriod } from "../../hooks/usePayPeriodStatus";
+import { getUserRoleFromToken } from "../../utils/auth";
 import "../../styles/schedule.css";
 import "../../styles/ui-buttons.css";
-
-
-
+import "../../styles/ui-feedback.css";
 
 export default function SupervisorPayPeriods() {
-  const [payPeriod, setPayPeriod] = useState(null);
   const [shifts, setShifts] = useState([]);
   const [locations, setLocations] = useState([]);
   const [collectionLocation, setCollectionLocation] = useState("");
-
-  const [submitted, setSubmitted] = useState(false);
   const [editingShift, setEditingShift] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  /* ================================
-     LOAD PAY PERIOD DATA
-  ================================ */
+  const { prevUnsubmitted, prevPayPeriod, currentPayPeriod, activePayPeriod, currentSubmitted, loading, refreshStatus } = usePayPeriodStatus();
 
+  // button should be enabled when there are unsubmitted shifts in the
+  // *previous* pay period.  The hook sets prevUnsubmitted only when the
+  // date rolls into a new period (1st or 16th) and stays true until the
+  // supervisor submits it.  There is no need to look at hasStarted.
+  const displayedSubmitted = useMemo(() => {
+    if (!activePayPeriod || !currentPayPeriod) return false;
+    const sameStart =
+      new Date(activePayPeriod.payPeriodStart).getTime() ===
+      new Date(currentPayPeriod.payPeriodStart).getTime();
+    const sameEnd =
+      new Date(activePayPeriod.payPeriodEnd).getTime() ===
+      new Date(currentPayPeriod.payPeriodEnd).getTime();
+    return sameStart && sameEnd && Boolean(currentSubmitted);
+  }, [activePayPeriod, currentPayPeriod, currentSubmitted]);
+
+  const canSubmit = prevUnsubmitted && shifts.length > 0;
+  const isSubmitDisabled = !canSubmit;
+  const isEditDisabled = displayedSubmitted;
+  const userRole = getUserRoleFromToken();
+
+  const totalHours = shifts.reduce((sum, s) => {
+    const start = new Date(s.startDateTime);
+    const end = new Date(s.endDateTime);
+    const hrs = end > start ? (end - start) / (1000 * 60 * 60) : 0;
+    return sum + hrs;
+  }, 0);
+
+  const toDateTimeLocal = dateStr => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16);
+  };
+
+  // Load shifts & locations
   useEffect(() => {
+    if (!activePayPeriod) return;
+
     const loadData = async () => {
       try {
-        const today = new Date().toISOString();
-        const data = await getShiftsForPayPeriod(today);
-
-        setPayPeriod({
-          start: data.payPeriodStart,
-          end: data.payPeriodEnd
+        const data = await getShiftsForPayPeriod({
+          start: activePayPeriod.payPeriodStart,
+          end: activePayPeriod.payPeriodEnd
         });
-
         setShifts(data.shifts || []);
-
-        // derive submission state from backend
-        const anyLocked = data.shifts?.some(s => s.isLocked);
-        setSubmitted(anyLocked);
-
         const locRes = await api.get("/locations");
         setLocations(locRes.data || []);
-      } catch {
-        setError("Failed to load pay period data");
+      } catch (err) {
+        console.error("Error loading pay period data:", err);
+        setError(err.response?.data?.message || err.message || "Failed to load pay period data");
+        setShifts([]);
       }
     };
-
     loadData();
-  }, []);
+  }, [activePayPeriod]);
 
-  /* ================================
-     SUBMIT PAY PERIOD
-  ================================ */
-
-  const handleFinalSubmit = async () => {
+  const handleSubmit = async () => {
     setError("");
     setSuccess("");
 
@@ -72,24 +86,28 @@ export default function SupervisorPayPeriods() {
 
     try {
       await submitPayPeriod({
-        payPeriodStart: payPeriod.start,
-        payPeriodEnd: payPeriod.end,
+        date: new Date(),
         paycheckCollectionLocationId: collectionLocation
       });
-
       setSuccess("Pay period submitted successfully.");
-      setSubmitted(true);
+      refreshStatus();
       setShowSubmitConfirm(false);
+      setCollectionLocation("");
     } catch (err) {
-      setError(err.response?.data?.message || "Submission failed");
+      console.error("submit error", err);
+      const msg = err.response?.data?.message || err.message || "Submission failed";
+      setError(msg);
+      // leave modal open so user sees error
     }
   };
 
-  /* ================================
-     UPDATE SHIFT
-  ================================ */
-
   const handleUpdateShift = async () => {
+    if (!editingShift) return;
+    if (new Date(editingShift.startDateTime) >= new Date(editingShift.endDateTime)) {
+      setError("Start time must be before end time");
+      return;
+    }
+
     try {
       await updateShiftEntry(editingShift._id, {
         locationId: editingShift.locationId._id,
@@ -97,60 +115,69 @@ export default function SupervisorPayPeriods() {
         endDateTime: editingShift.endDateTime
       });
 
+      setShifts(prev => prev.map(s => (s._id === editingShift._id ? editingShift : s)));
       setEditingShift(null);
-      window.location.reload();
+      setSuccess("Shift updated successfully");
     } catch (err) {
-      setError(err.response?.data?.message || "Update failed");
+      console.error(err);
+      setError(err.response?.data?.message || err.message || "Update failed");
     }
   };
-
-  /* ================================
-     DELETE SHIFT
-  ================================ */
 
   const confirmDelete = async () => {
+    if (!deleteTarget) return;
     try {
       await deleteShiftEntry(deleteTarget._id);
+      setShifts(prev => prev.filter(s => s._id !== deleteTarget._id));
       setDeleteTarget(null);
-      window.location.reload();
+      setSuccess("Shift deleted successfully");
     } catch (err) {
-      setError(err.response?.data?.message || "Delete failed");
+      console.error("delete error", err);
+      const msg = err.response?.data?.message || err.message || "Delete failed";
+      setError(msg);
+      // if backend says not found, remove stale shift from list
+      if (err.response?.status === 404) {
+        setShifts(prev => prev.filter(s => s._id !== deleteTarget._id));
+        setDeleteTarget(null);
+      }
     }
   };
 
-  /* ================================
-     UI HELPERS (DISPLAY ONLY)
-  ================================ */
-
   const formatShiftLine = shift => {
+    if (!shift.startDateTime || !shift.endDateTime) return "";
     const date = new Date(shift.startDateTime).toLocaleDateString();
-    const start = new Date(shift.startDateTime).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-    const end = new Date(shift.endDateTime).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-    return `${date} ${start}–${end} — ${shift.locationId?.name}`;
+    const start = new Date(shift.startDateTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const end = new Date(shift.endDateTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return `${date} ${start}–${end} — ${shift.locationId?.name || ""}`;
   };
 
-  if (!payPeriod) return null;
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="schedule-wrapper">
       <h2 className="schedule-title">
-        My Pay Period{" "}
-        {submitted && (
-          <span className="status-badge submitted">Submitted</span>
-        )}
+        My Pay Period {currentSubmitted && <span className="status-badge submitted">Submitted</span>}
       </h2>
+
+
+      {prevUnsubmitted && prevPayPeriod && (
+        <p className="error-text">
+          ⚠ You have unsubmitted shifts for the previous pay period (
+          <strong>
+            {prevPayPeriod.payPeriodStart.toLocaleDateString()} –{' '}
+            {prevPayPeriod.payPeriodEnd.toLocaleDateString()}
+          </strong>
+          ). Adding or editing shifts in the current period will be blocked until the prior period is submitted.
+        </p>
+      )}
 
       <p className="schedule-subtitle">
         <strong>Period:</strong>{" "}
-        {new Date(payPeriod.start).toLocaleDateString()} →{" "}
-        {new Date(payPeriod.end).toLocaleDateString()}
+        {activePayPeriod?.payPeriodStart ? new Date(activePayPeriod.payPeriodStart).toLocaleDateString() : "N/A"} →{" "}
+        {activePayPeriod?.payPeriodEnd ? new Date(activePayPeriod.payPeriodEnd).toLocaleDateString() : "N/A"}
+      </p>
+      <p className="schedule-subtitle">
+        <strong>Total hours:</strong> {totalHours.toFixed(2)}
       </p>
 
       {shifts.length === 0 ? (
@@ -158,32 +185,22 @@ export default function SupervisorPayPeriods() {
       ) : (
         shifts.map(s => (
           <div key={s._id} className="shift-row">
-            <span className="time-badge">
-              {new Date(s.startDateTime).toLocaleString()} →{" "}
-              {new Date(s.endDateTime).toLocaleString()}
-            </span>
-
-            <span className="guard-name">{s.locationId?.name}</span>
-
-            {!submitted && (
+            <span className="time-badge">{formatShiftLine(s)}</span>
+            {!isEditDisabled && (
               <div className="shift-actions">
                 <button
                   className="btn-secondary"
                   onClick={() =>
                     setEditingShift({
                       ...s,
-                      startDateTime: s.startDateTime.slice(0, 16),
-                      endDateTime: s.endDateTime.slice(0, 16)
+                      startDateTime: toDateTimeLocal(s.startDateTime),
+                      endDateTime: toDateTimeLocal(s.endDateTime)
                     })
                   }
                 >
                   Edit
                 </button>
-
-                <button
-                  className="btn-danger"
-                  onClick={() => setDeleteTarget(s)}
-                >
+                <button className="btn-danger" onClick={() => setDeleteTarget(s)}>
                   Delete
                 </button>
               </div>
@@ -198,73 +215,50 @@ export default function SupervisorPayPeriods() {
           <select
             value={collectionLocation}
             onChange={e => setCollectionLocation(e.target.value)}
-            disabled={submitted}
+            disabled={isSubmitDisabled}
           >
             <option value="">Select location</option>
             {locations.map(l => (
-              <option key={l._id} value={l._id}>
-                {l.name}
-              </option>
+              <option key={l._id} value={l._id}>{l.name}</option>
             ))}
           </select>
         </label>
       </div>
 
       <button
-        className="btn-primary" id="supsubbtn"
+        className="btn-primary"
         onClick={() => setShowSubmitConfirm(true)}
-        disabled={submitted || shifts.length === 0}
+        disabled={isSubmitDisabled || shifts.length === 0}
       >
         Submit Pay Period
       </button>
 
-      {submitted && (
-        <p className="info-text">
-          🔒 This pay period has been submitted and is locked.
-        </p>
-      )}
-
+      {displayedSubmitted && <p className="info-text">🔒 This pay period has been submitted and is locked.</p>}
       {error && <p className="error-text">{error}</p>}
       {success && <p className="success-text">{success}</p>}
 
-      {/* ================= SUBMIT CONFIRM ================= */}
-
+      {/* ================= SUBMIT CONFIRM MODAL ================= */}
       {showSubmitConfirm && (
         <div className="modal-backdrop">
           <div className="modal">
             <h3>Confirm Pay Period Submission</h3>
-
+            {error && <p className="error-text">{error}</p>}
             <p>
-              <strong>Pay Period:</strong>{" "}
-              {new Date(payPeriod.start).toLocaleDateString()} →{" "}
-              {new Date(payPeriod.end).toLocaleDateString()}
+              <strong>Pay Period:</strong> {new Date(currentPayPeriod.payPeriodStart).toLocaleDateString()} → {new Date(currentPayPeriod.payPeriodEnd).toLocaleDateString()}
             </p>
-
             <hr />
-
             <strong>Shifts:</strong>
             <ul className="confirm-shift-list">
-              {shifts.map(s => (
+              {shifts.map((s) => (
                 <li key={s._id}>{formatShiftLine(s)}</li>
               ))}
             </ul>
-
-            <p className="warning-text">
-              ⚠ Submitting will lock all shifts for this pay period.
-            </p>
-
+            <p className="warning-text">⚠ Submitting will lock all shifts for this pay period.</p>
             <div className="modal-actions">
-              <button
-                className="btn-secondary"
-                onClick={() => setShowSubmitConfirm(false)}
-              >
+              <button className="btn-secondary" onClick={() => setShowSubmitConfirm(false)}>
                 Cancel
               </button>
-
-              <button
-                className="btn-primary"
-                onClick={handleFinalSubmit}
-              >
+              <button className="btn-primary" onClick={handleSubmit}>
                 Confirm & Submit
               </button>
             </div>
@@ -272,8 +266,7 @@ export default function SupervisorPayPeriods() {
         </div>
       )}
 
-      {/* ================= EDIT MODAL ================= */}
-
+      {/* ================= EDIT SHIFT MODAL ================= */}
       {editingShift && (
         <div className="modal-backdrop">
           <div className="modal">
@@ -282,18 +275,15 @@ export default function SupervisorPayPeriods() {
             <label>
               Location
               <select
-                value={editingShift.locationId._id}
-                onChange={e =>
+                value={editingShift.locationId?._id || editingShift.locationId}
+                onChange={(e) =>
                   setEditingShift({
                     ...editingShift,
-                    locationId: {
-                      ...editingShift.locationId,
-                      _id: e.target.value
-                    }
+                    locationId: { ...(editingShift.locationId || {}), _id: e.target.value }
                   })
                 }
               >
-                {locations.map(l => (
+                {locations.map((l) => (
                   <option key={l._id} value={l._id}>
                     {l.name}
                   </option>
@@ -306,12 +296,7 @@ export default function SupervisorPayPeriods() {
               <input
                 type="datetime-local"
                 value={editingShift.startDateTime}
-                onChange={e =>
-                  setEditingShift({
-                    ...editingShift,
-                    startDateTime: e.target.value
-                  })
-                }
+                onChange={(e) => setEditingShift({ ...editingShift, startDateTime: e.target.value })}
               />
             </label>
 
@@ -320,20 +305,12 @@ export default function SupervisorPayPeriods() {
               <input
                 type="datetime-local"
                 value={editingShift.endDateTime}
-                onChange={e =>
-                  setEditingShift({
-                    ...editingShift,
-                    endDateTime: e.target.value
-                  })
-                }
+                onChange={(e) => setEditingShift({ ...editingShift, endDateTime: e.target.value })}
               />
             </label>
 
             <div className="modal-actions">
-              <button
-                className="btn-secondary"
-                onClick={() => setEditingShift(null)}
-              >
+              <button className="btn-secondary" onClick={() => setEditingShift(null)}>
                 Cancel
               </button>
               <button className="btn-primary" onClick={handleUpdateShift}>
@@ -344,19 +321,14 @@ export default function SupervisorPayPeriods() {
         </div>
       )}
 
-      {/* ================= DELETE CONFIRM ================= */}
-
+      {/* ================= DELETE CONFIRM MODAL ================= */}
       {deleteTarget && (
         <div className="modal-backdrop">
           <div className="modal">
             <h3>Delete Shift</h3>
             <p>Are you sure you want to delete this shift?</p>
-
             <div className="modal-actions">
-              <button
-                className="btn-secondary"
-                onClick={() => setDeleteTarget(null)}
-              >
+              <button className="btn-secondary" onClick={() => setDeleteTarget(null)}>
                 Cancel
               </button>
               <button className="btn-danger" onClick={confirmDelete}>

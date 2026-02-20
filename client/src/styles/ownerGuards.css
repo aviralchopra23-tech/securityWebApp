@@ -112,17 +112,19 @@
   font-weight: 600;
 
   border-radius: 8px;
-  border: 1px solid #6366f1;
+  border: 1px solid #00010a;
 
-  background: #6366f1;
+  background: #010113;
   color: #ffffff;
 
   cursor: pointer;
   transition: background 0.15s ease;
+  margin-left: 10px;
 }
 
 .primary-btn:hover {
-  background: #4f46e5;
+  background: #6d0202;
+  border: #6d0202;
 }
 
 /* ================= GUARD LIST ================= */

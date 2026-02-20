@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { logout } from "../../utils/logout";
+import king from "../../assets/king.png";
 import "../../styles/ownerLayout.css";
 
 export default function OwnerLayout() {
@@ -14,21 +15,28 @@ export default function OwnerLayout() {
 
   return (
     <div
-  className={`owner-container ${
-    location.pathname === "/owner/pay-period-reports"
-      ? "no-gradient"
-      : ""
-  }`}
->
-
+      className={`owner-container ${
+        location.pathname === "/owner/pay-period-reports"
+          ? "no-gradient"
+          : ""
+      }`}
+    >
       <header className="owner-header">
         <div className="owner-header-top">
-          <h2 className="owner-title owner-title-gradient">
-            Operations Console
-          </h2>
+          {/* Logo + Title */}
+          <div className="owner-title-flex">
+            <img
+              src={king}
+              alt="SecureStaff Logo"
+              className="owner-title-logo"
+            />
+            <h2 className="owner-title owner-title-gradient">
+              Operations Console
+            </h2>
+          </div>
 
           <div className="owner-header-actions">
-            {/* Mobile toggle button */}
+            {/* Mobile toggle */}
             <button
               type="button"
               className="owner-menu-btn"
@@ -39,7 +47,7 @@ export default function OwnerLayout() {
               ☰
             </button>
 
-            {/* Desktop logout (CSS-controlled) */}
+            {/* Desktop Logout */}
             <button
               type="button"
               onClick={logout}
@@ -55,9 +63,14 @@ export default function OwnerLayout() {
           className={`owner-nav ${menuOpen ? "open" : ""}`}
           aria-label="Owner navigation"
         >
-          <Link to="/owner" className={getLinkClass("/owner")} onClick={() => setMenuOpen(false)}>
+          <Link
+            to="/owner"
+            className={getLinkClass("/owner")}
+            onClick={() => setMenuOpen(false)}
+          >
             Home
           </Link>
+
           <Link
             to="/owner/locations"
             className={getLinkClass("/owner/locations")}
@@ -65,6 +78,7 @@ export default function OwnerLayout() {
           >
             Locations
           </Link>
+
           <Link
             to="/owner/users"
             className={getLinkClass("/owner/users")}
@@ -72,6 +86,7 @@ export default function OwnerLayout() {
           >
             Users
           </Link>
+
           <Link
             to="/owner/pay-period-reports"
             className={getLinkClass("/owner/pay-period-reports")}
@@ -79,6 +94,7 @@ export default function OwnerLayout() {
           >
             Pay Period Reports
           </Link>
+
           <Link
             to="/owner/announcements"
             className={getLinkClass("/owner/announcements")}
@@ -87,17 +103,7 @@ export default function OwnerLayout() {
             Announcements
           </Link>
 
-          {/* Mobile-only logout */}
-          <button
-            type="button"
-            className="owner-logout mobile-only"
-            onClick={() => {
-              setMenuOpen(false);
-              logout();
-            }}
-          >
-            Logout
-          </button>
+          
         </nav>
       </header>
 

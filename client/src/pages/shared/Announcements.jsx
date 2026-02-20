@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAnnouncements, createAnnouncement } from "../../api/announcementApi";
-import "../../styles/scheduleAnnouncements.css";
+import "../../styles/supervisorAnnouncements.css";
 
 
 export default function Announcements({ canCreate }) {

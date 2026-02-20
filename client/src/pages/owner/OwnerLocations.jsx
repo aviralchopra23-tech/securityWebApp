@@ -4,7 +4,7 @@ import {
   getLocations,
   createLocation,
   updateLocation,
-  deleteLocation
+  deleteLocation,
 } from "../../api/ownerApi";
 import "../../styles/ownerLocations.css";
 
@@ -17,8 +17,12 @@ export default function OwnerLocations() {
   const navigate = useNavigate();
 
   const loadLocations = async () => {
-    const data = await getLocations();
-    setLocations(data);
+    try {
+      const data = await getLocations();
+      setLocations(data);
+    } catch (err) {
+      console.error("Failed to load locations:", err);
+    }
   };
 
   useEffect(() => {
@@ -27,9 +31,13 @@ export default function OwnerLocations() {
 
   const handleCreateLocation = async (e) => {
     e.preventDefault();
-    await createLocation(locForm);
-    setLocForm({ name: "", address: "" });
-    loadLocations();
+    try {
+      await createLocation(locForm);
+      setLocForm({ name: "", address: "" });
+      loadLocations();
+    } catch (err) {
+      console.error("Failed to create location:", err);
+    }
   };
 
   const startEdit = (location) => {
@@ -43,9 +51,13 @@ export default function OwnerLocations() {
   };
 
   const saveEdit = async (id) => {
-    await updateLocation(id, editForm);
-    setEditingId(null);
-    loadLocations();
+    try {
+      await updateLocation(id, editForm);
+      setEditingId(null);
+      loadLocations();
+    } catch (err) {
+      console.error("Failed to update location:", err);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -53,7 +65,6 @@ export default function OwnerLocations() {
     if (!ok) return;
 
     setLocations((prev) => prev.filter((l) => l._id !== id));
-
     try {
       await deleteLocation(id);
     } catch {
@@ -66,7 +77,7 @@ export default function OwnerLocations() {
     <div className="locations-page">
       <h3 className="locations-title">Locations</h3>
 
-      {/* CREATE */}
+      {/* CREATE FORM */}
       <form className="location-form" onSubmit={handleCreateLocation}>
         <input
           placeholder="Location name"
@@ -77,13 +88,15 @@ export default function OwnerLocations() {
         <input
           placeholder="Address"
           value={locForm.address}
-          onChange={(e) => setLocForm({ ...locForm, address: e.target.value })}
+          onChange={(e) =>
+            setLocForm({ ...locForm, address: e.target.value })
+          }
           required
         />
-        <button>Create</button>
+        <button type="submit">Create</button>
       </form>
 
-      {/* LIST */}
+      {/* LOCATION LIST */}
       <ul className="location-list">
         {locations.map((l) => (
           <li key={l._id} className="location-item">
@@ -94,19 +107,33 @@ export default function OwnerLocations() {
                   onChange={(e) =>
                     setEditForm({ ...editForm, name: e.target.value })
                   }
+                  placeholder="Location name"
+                  required
                 />
                 <input
                   value={editForm.address}
                   onChange={(e) =>
                     setEditForm({ ...editForm, address: e.target.value })
                   }
+                  placeholder="Address"
+                  required
                 />
-                <button className="btn-save" onClick={() => saveEdit(l._id)}>
-                  Save
-                </button>
-                <button className="btn-cancel" onClick={cancelEdit}>
-                  Cancel
-                </button>
+                <div className="edit-buttons">
+                  <button
+                    type="button"
+                    className="btn-save"
+                    onClick={() => saveEdit(l._id)}
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={cancelEdit}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             ) : (
               <>
@@ -122,7 +149,6 @@ export default function OwnerLocations() {
                       : "Not assigned"}
                   </span>
                 </div>
-
                 <div className="location-actions">
                   <button className="btn-edit" onClick={() => startEdit(l)}>
                     Edit

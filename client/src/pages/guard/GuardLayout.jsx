@@ -2,7 +2,7 @@ import { Outlet, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logout } from "../../utils/logout";
 import api from "../../api/axios";
-import "../../styles/supervisor.css";
+
 
 export default function GuardLayout() {
   const [payPeriodLocked, setPayPeriodLocked] = useState(false);
