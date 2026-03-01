@@ -21,6 +21,9 @@ const GuardShiftEntry = require("../models/GuardShiftEntry");
 const PayPeriodSubmission = require("../models/PayPeriodSubmission");
 const PayPeriod = require("../models/PayPeriod");
 const User = require("../models/User");
+const { DateTime } = require("luxon");
+
+const TZ = process.env.BUSINESS_TZ || "America/Toronto";
 
 // helper to safely send an error response when `next` may not be available
 const sendError = (res, err) => {
@@ -34,30 +37,45 @@ const sendError = (res, err) => {
    Helper Functions
 ================================ */
 
-const startOfDay = d => {
-  const x = new Date(d);
-  x.setHours(0, 0, 0, 0);
-  return x;
-};
+const asTZ = (dateLike) =>
+  DateTime.fromJSDate(new Date(dateLike), { zone: "utc" }).setZone(TZ);
 
-const endOfDay = d => {
-  const x = new Date(d);
-  x.setHours(23, 59, 59, 999);
-  return x;
-};
+const startOfDay = (dateLike) => asTZ(dateLike).startOf("day").toUTC().toJSDate();
+
+const endOfDay = (dateLike) => asTZ(dateLike).endOf("day").toUTC().toJSDate();
 
 // Returns { start, end } for 1–15 or 16–end-of-month
-const resolvePayPeriod = date => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = d.getMonth();
-  const day = d.getDate();
+const resolvePayPeriod = (dateLike) => {
+  const d = asTZ(dateLike);
+  const year = d.year;
+  const month = d.month;
 
-  if (day <= 15) {
-    return { start: startOfDay(new Date(year, month, 1)), end: endOfDay(new Date(year, month, 15)) };
-  } else {
-    return { start: startOfDay(new Date(year, month, 16)), end: endOfDay(new Date(year, month + 1, 0)) };
+  if (d.day <= 15) {
+    const start = DateTime.fromObject({ year, month, day: 1 }, { zone: TZ })
+      .startOf("day")
+      .toUTC()
+      .toJSDate();
+
+    const end = DateTime.fromObject({ year, month, day: 15 }, { zone: TZ })
+      .endOf("day")
+      .toUTC()
+      .toJSDate();
+
+    return { start, end };
   }
+
+  const start = DateTime.fromObject({ year, month, day: 16 }, { zone: TZ })
+    .startOf("day")
+    .toUTC()
+    .toJSDate();
+
+  const end = DateTime.fromObject({ year, month }, { zone: TZ })
+    .endOf("month")
+    .endOf("day")
+    .toUTC()
+    .toJSDate();
+
+  return { start, end };
 };
 
 const diffHours = (start, end) => (end.getTime() - start.getTime()) / (1000 * 60 * 60);
