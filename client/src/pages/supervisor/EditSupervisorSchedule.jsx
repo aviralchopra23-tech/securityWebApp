@@ -3,7 +3,7 @@ import { getGuardsForSupervisorLocation } from "../../api/supervisorApi";
 import { createWeeklySchedule, getActiveSchedule } from "../../api/weeklyScheduleApi";
 import { useNavigate } from "react-router-dom";
 
-import "../../styles/editschedule.css";
+import "../../styles/editSchedule.css";
 
 const DAYS = [
   { key: "MON", label: "MONDAY" },
