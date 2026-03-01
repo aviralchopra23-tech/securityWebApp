@@ -1,5 +1,5 @@
 import SharedScheduleView from "../../components/SharedScheduleView";
 
 export default function GuardSchedule() {
-  return <SharedScheduleView />;
+  return <SharedScheduleView variant="supervisor" />;
 }

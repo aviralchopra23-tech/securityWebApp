@@ -48,7 +48,7 @@ export default function GuardAnnouncements({ canCreate }) {
   return (
     <div className="guard-content">
       <h2>
-        <FaBullhorn style={{ marginRight: "6px" }} /> Announcements
+        Announcements
       </h2>
 
       {canCreate && (
