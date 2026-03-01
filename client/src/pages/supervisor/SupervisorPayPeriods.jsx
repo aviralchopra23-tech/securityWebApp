@@ -3,7 +3,7 @@ import { getShiftsForPayPeriod, submitPayPeriod, updateShiftEntry, deleteShiftEn
 import api from "../../api/axios";
 import usePayPeriodStatus from "../../hooks/usePayPeriodStatus";
 import { getUserRoleFromToken } from "../../utils/auth";
-import "../../styles/Schedule.css";
+import "../../styles/schedule.css";
 
 export default function SupervisorPayPeriods() {
   const [shifts, setShifts] = useState([]);
