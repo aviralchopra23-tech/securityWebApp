@@ -1,14 +1,29 @@
 // src/api/axios.js
 import axios from "axios";
 
+const envBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").trim();
+const hostname = typeof window !== "undefined" ? window.location.hostname : "";
+const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1";
+
+const resolvedBaseURL = envBaseUrl || (isLocalHost ? "http://localhost:5000/api" : "");
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api",
+  baseURL: resolvedBaseURL,
   headers: { "Content-Type": "application/json" },
 });
+
+const API_CONFIG_ERROR =
+  "API base URL is not configured. Set VITE_API_BASE_URL in your deployed frontend environment.";
 
 // Attach token
 API.interceptors.request.use(
   (config) => {
+    if (!resolvedBaseURL) {
+      const error = new Error(API_CONFIG_ERROR);
+      error.code = "ERR_API_BASE_URL";
+      return Promise.reject(error);
+    }
+
     const token = localStorage.getItem("token");
     if (token) config.headers.Authorization = `Bearer ${token}`;
     else delete config.headers.Authorization;

@@ -46,7 +46,13 @@ export default function Login() {
       else if (role === "SUPERVISOR") navigate("/supervisor");
       else navigate("/guard");
     } catch (err) {
-      setError(err?.response?.data?.message || "Authentication failed. Please verify your credentials.");
+      if (err?.code === "ERR_API_BASE_URL") {
+        setError("Server is not configured. Please contact admin to set VITE_API_BASE_URL on frontend deployment.");
+      } else if (!err?.response) {
+        setError("Cannot reach server. Check internet and deployed API URL.");
+      } else {
+        setError(err?.response?.data?.message || "Authentication failed. Please verify your credentials.");
+      }
     } finally {
       setLoading(false);
     }
