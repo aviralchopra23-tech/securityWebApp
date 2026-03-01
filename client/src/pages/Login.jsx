@@ -2,6 +2,7 @@ import { useState } from "react";
 import API from "../api/axios";
 import king from "../assets/king.png";
 import { useNavigate } from "react-router-dom";
+import { getRoleFromTokenString } from "../utils/auth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,16 +27,26 @@ export default function Login() {
         password,
       });
 
-      localStorage.setItem("token", res.data.token);
+      const token = res?.data?.token;
+      if (!token) {
+        setError("Login failed. Please try again.");
+        return;
+      }
 
-      // Decode JWT payload (existing logic kept)
-      const payload = JSON.parse(atob(res.data.token.split(".")[1]));
+      localStorage.setItem("token", token);
 
-      if (payload.role === "OWNER") navigate("/owner");
-      else if (payload.role === "SUPERVISOR") navigate("/supervisor");
+      const role = getRoleFromTokenString(token);
+      if (!role) {
+        localStorage.removeItem("token");
+        setError("Login failed. Please try again.");
+        return;
+      }
+
+      if (role === "OWNER") navigate("/owner");
+      else if (role === "SUPERVISOR") navigate("/supervisor");
       else navigate("/guard");
-    } catch {
-      setError("Authentication failed. Please verify your credentials.");
+    } catch (err) {
+      setError(err?.response?.data?.message || "Authentication failed. Please verify your credentials.");
     } finally {
       setLoading(false);
     }
