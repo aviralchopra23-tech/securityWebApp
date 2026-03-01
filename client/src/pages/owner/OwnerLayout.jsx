@@ -13,17 +13,12 @@ export default function OwnerLayout() {
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <div
-      className={`owner-container ${
-        location.pathname === "/owner/pay-period-reports"
-          ? "no-gradient"
-          : ""
-      }`}
-    >
+    <div className="owner-container">
       <header className="owner-header">
         <div className="owner-header-top">
-          {/* Logo + Title */}
           <div className="owner-title-flex">
             <img
               src={king}
@@ -36,7 +31,6 @@ export default function OwnerLayout() {
           </div>
 
           <div className="owner-header-actions">
-            {/* Mobile toggle */}
             <button
               type="button"
               className="owner-menu-btn"
@@ -47,34 +41,28 @@ export default function OwnerLayout() {
               ☰
             </button>
 
-            {/* Desktop Logout */}
             <button
               type="button"
               onClick={logout}
-              className="owner-logout"
+              className="owner-logout desktop-only"
             >
               Logout
             </button>
           </div>
         </div>
 
-        {/* Navigation */}
         <nav
           className={`owner-nav ${menuOpen ? "open" : ""}`}
           aria-label="Owner navigation"
         >
-          <Link
-            to="/owner"
-            className={getLinkClass("/owner")}
-            onClick={() => setMenuOpen(false)}
-          >
+          <Link to="/owner" className={getLinkClass("/owner")} onClick={closeMenu}>
             Home
           </Link>
 
           <Link
             to="/owner/locations"
             className={getLinkClass("/owner/locations")}
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             Locations
           </Link>
@@ -82,7 +70,7 @@ export default function OwnerLayout() {
           <Link
             to="/owner/users"
             className={getLinkClass("/owner/users")}
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             Users
           </Link>
@@ -90,7 +78,7 @@ export default function OwnerLayout() {
           <Link
             to="/owner/pay-period-reports"
             className={getLinkClass("/owner/pay-period-reports")}
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             Pay Period Reports
           </Link>
@@ -98,12 +86,18 @@ export default function OwnerLayout() {
           <Link
             to="/owner/announcements"
             className={getLinkClass("/owner/announcements")}
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             Announcements
           </Link>
 
-          
+          <button
+            type="button"
+            onClick={logout}
+            className="owner-logout mobile-only"
+          >
+            Logout
+          </button>
         </nav>
       </header>
 

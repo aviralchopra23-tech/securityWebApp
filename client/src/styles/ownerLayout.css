@@ -1,5 +1,5 @@
 /* ======================================================
-   OWNER LAYOUT — CLEAN, SPACED, BALANCED
+   OWNER LAYOUT — BALANCED SPACING (NOT TOO FAR IN)
 ====================================================== */
 
 .owner-container {
@@ -15,25 +15,27 @@
 .owner-header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 50;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* Proper edge spacing */
+/* 🔹 Slightly more padding up + left (not extreme) */
 .owner-header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 56px; /* increased side padding */
-  padding-top: 55px;
+
+  padding: 36px 56px;  /* was 24/48 — now slightly more */
+  padding-top: 48px;   /* extra breathing room from top */
 }
 
+/* Logo + Title */
 .owner-title-flex {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px; /* small improvement from 14px */
 }
 
 .owner-title-logo {
@@ -70,7 +72,6 @@
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   background: #ffffff;
-  color: #334155;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -83,12 +84,16 @@
   display: none;
 }
 
+.mobile-only {
+  display: none;
+}
+
 /* ================= NAV ================= */
 
 .owner-nav {
   display: flex;
   gap: 8px;
-  padding: 12px 36px 16px;
+  padding: 12px 56px 18px; /* match header left spacing */
 }
 
 .owner-link {
@@ -98,6 +103,7 @@
   font-size: 0.95rem;
   font-weight: 500;
   color: #475569;
+  transition: all 0.2s ease;
 }
 
 .owner-link:hover {
@@ -114,7 +120,7 @@
 .owner-content {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 52px 36px 48px;
+  padding: 52px 36px 64px;
   width: 100%;
   flex: 1;
 }
@@ -127,34 +133,59 @@
 }
 
 .owner-footer-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 18px 36px;
+  padding: 18px 56px;
   font-size: 0.85rem;
   color: #64748b;
   display: flex;
   justify-content: space-between;
 }
 
+/* ================= TABLET ================= */
+
+@media (max-width: 1024px) {
+  .owner-header-top {
+    padding: 28px 36px;
+    padding-top: 40px;
+  }
+
+  .owner-nav {
+    padding: 10px 36px 16px;
+    flex-wrap: wrap;
+  }
+
+  .owner-content {
+    padding: 40px 28px 56px;
+  }
+
+  .owner-footer-inner {
+    padding: 18px 36px;
+  }
+}
+
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
+  .owner-header-top {
+    padding: 22px 20px;
+    padding-top: 30px;
+  }
+
   .owner-menu-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
 
-  .owner-header-actions .owner-logout {
+  .desktop-only {
     display: none;
   }
 
   .owner-nav {
     display: none;
     flex-direction: column;
-    gap: 10px;
-    padding: 16px;
+    gap: 12px;
     margin: 0 20px 16px;
+    padding: 16px;
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
@@ -166,26 +197,26 @@
     animation: ownerMenuFade 0.25s ease-out;
   }
 
-  .owner-nav .owner-link {
+  .owner-link {
     width: 100%;
-    padding: 12px 14px;
+    padding: 12px;
     border-radius: 10px;
   }
 
-  .owner-nav .owner-logout.mobile-only {
+  .mobile-only {
     display: block;
-    width: 100%;
     margin-top: 6px;
   }
 
   .owner-content {
-    padding: 44px 20px;
+    padding: 32px 20px 48px;
   }
 
   .owner-footer-inner {
     flex-direction: column;
     text-align: center;
     gap: 6px;
+    padding: 18px 20px;
   }
 }
 

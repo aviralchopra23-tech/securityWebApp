@@ -1,29 +1,18 @@
 /* ==========================================
-   OWNER HOME — FORCE LIGHT SURFACE CONTEXT
-   (Overrides global dark root safely)
+   OWNER HOME — RESPONSIVE
 ========================================== */
-
-.owner-home {
-  color-scheme: light;
-  color: #0f172a;
-}
-
-
-
 
 .owner-home {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 40px;
   animation: fadeUp 0.6s ease-out;
 }
 
-/* ===============================
-   HERO
-================================ */
+/* HERO */
 
 .owner-hero {
-  padding: 34px;
+  padding: 32px;
   border-radius: 18px;
   background: linear-gradient(135deg, #eef2ff, #f8fafc);
   border: 1px solid #e2e8f0;
@@ -31,14 +20,10 @@
 }
 
 .owner-hero-title {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   font-weight: 800;
   background: linear-gradient(90deg, #8a1e1e, #f17f63);
-
-  /* Standard */
   background-clip: text;
-
-  /* WebKit */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -50,9 +35,7 @@
   color: #475569;
 }
 
-/* ===============================
-   GRID
-================================ */
+/* GRID */
 
 .owner-sections {
   display: grid;
@@ -60,97 +43,50 @@
   gap: 28px;
 }
 
-/* ===============================
-   CARDS — CONNECTED TO PAGE
-================================ */
+/* CARDS */
 
-.owner-home .owner-card {
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f8fafc 100%
-  );
-
-  color: #0f172a;
-
+.owner-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   border-radius: 16px;
   padding: 26px;
-
   border: 1px solid #e2e8f0;
-
-  box-shadow:
-    0 6px 18px rgba(15, 23, 42, 0.08),
-    0 1px 2px rgba(15, 23, 42, 0.04);
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .owner-card:hover {
   transform: translateY(-6px);
-  box-shadow:
-    0 16px 32px rgba(15, 23, 42, 0.12),
-    0 4px 8px rgba(15, 23, 42, 0.06);
-  border-color: #c7d2fe;
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
 }
-
-/* ===============================
-   ACCENT TOP BORDERS
-================================ */
-
-.accent-blue {
-  border-top: 4px solid #3b82f6;
-}
-
-.accent-indigo {
-  border-top: 4px solid #6366f1;
-}
-
-.accent-purple {
-  border-top: 4px solid #8b5cf6;
-}
-
-.accent-emerald {
-  border-top: 4px solid #10b981;
-}
-
-/* ===============================
-   CARD TEXT
-================================ */
 
 .owner-card h4 {
   font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #0f172a;
 }
 
 .owner-card p {
   font-size: 0.92rem;
-  color: #004bad;
+  color: #475569;
   line-height: 1.55;
 }
 
-/* ===============================
-   ANIMATION
-================================ */
+/* ACCENTS */
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+.accent-blue { border-top: 4px solid #3b82f6; }
+.accent-indigo { border-top: 4px solid #6366f1; }
+.accent-purple { border-top: 4px solid #8b5cf6; }
+.accent-emerald { border-top: 4px solid #10b981; }
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+  .owner-hero-title {
+    font-size: 1.6rem;
   }
 }
 
-/* ===============================
-   MOBILE
-================================ */
+/* MOBILE */
 
 @media (max-width: 768px) {
   .owner-home {
@@ -158,20 +94,21 @@
   }
 
   .owner-hero {
-    padding: 26px;
+    padding: 24px;
   }
 
   .owner-hero-title {
-    font-size: 1.55rem;
+    font-size: 1.45rem;
   }
 
   .owner-card {
-    padding: 24px;
+    padding: 22px;
   }
 }
 
-.owner-home .owner-card p {
-  color: #475569;     /* readable slate */
-  opacity: 1;         /* 🔑 critical fix */
-}
+/* ANIMATION */
 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

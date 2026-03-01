@@ -1,61 +1,53 @@
-/* ======================================================
-   OWNER – GUARDS
-   ENTERPRISE LIGHT THEME (CLEAN FIXED)
-====================================================== */
-
 .guards-page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 14px;
   color: #111827;
+  width: 100%;
 }
-
-/* ================= TITLES ================= */
 
 .guards-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #0f172a;
+  margin: 0;
 }
 
-.section-title {
+.guards-page .section-title {
   font-size: 14px;
   font-weight: 600;
   color: #374151;
-  margin-top: 6px;
+  margin: 2px 0 0;
 }
 
-/* ================= FORM CARD ================= */
+.guards-page .validation-warning {
+  margin: -2px 2px 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b91c1c;
+}
 
-.form-row {
+.guards-page .form-row {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 20px;
-
+  border-radius: 12px;
+  padding: 12px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
-
+  gap: 10px;
   align-items: center;
-
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
 }
 
-/* ================= INPUTS ================= */
-
 .guards-page input {
-  background-color: #ffffff !important;
-  color: #111827 !important;
-
-  border: 1px solid #d1d5db !important;
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #d1d5db;
   border-radius: 10px;
-
-  height: 38px;
-  padding: 0 14px;
-  font-size: 14px;
-
-  box-shadow: none;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 13px;
+  box-sizing: border-box;
 }
 
 .guards-page input::placeholder {
@@ -64,205 +56,265 @@
 
 .guards-page input:focus {
   outline: none;
-  border-color: #14b8a6;
-  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.18);
 }
 
-/* ================= CHECKBOX GROUP ================= */
-
-.checkbox-group,
-.edit-locations {
+.guards-page .checkbox-group,
+.guards-page .edit-locations {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 16px;
-
+  border-radius: 12px;
+  padding: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  gap: 10px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
 }
 
-.checkbox-group strong,
-.edit-locations strong {
+.guards-page .checkbox-group strong,
+.guards-page .edit-locations strong {
   width: 100%;
   font-size: 13px;
   font-weight: 600;
   color: #374151;
 }
 
-.checkbox-item {
-  font-size: 13px;
-  color: #111827;
-
-  display: flex;
+.guards-page .checkbox-item {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-/* ================= PRIMARY CREATE BUTTON ================= */
-
-.primary-btn {
-  align-self: flex-start;
-
-  height: 36px;
-  padding: 0 18px;
   font-size: 13px;
-  font-weight: 600;
-
-  border-radius: 8px;
-  border: 1px solid #000000;
-
-  background: #000000;
-  color: #ffffff;
-
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: #111827;
 }
 
-.primary-btn:hover {
-  background: #6d0202;
-  border-color: #6d0202;
-}
-
-/* ================= GUARD LIST ================= */
-
-.guard-list {
+.guards-page .guard-list {
   list-style: none;
   padding: 0;
   margin: 0;
-
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
-.guard-item {
+.guards-page .guard-item {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 16px 18px;
-
-  display: flex;
-  justify-content: space-between;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
   align-items: center;
-  gap: 16px;
-
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
 }
 
-/* ================= INFO ================= */
+/* When editing, make the guard-item a column */
+.guards-page .guard-item.guard-item-editing {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-.guard-info {
+.guards-page .guard-info {
   font-size: 14px;
   font-weight: 500;
   color: #111827;
 }
 
-/* ================= ACTION GROUP ================= */
-
-.action-group {
-  display: flex;
-  justify-content: flex-start;   /* 🔥 move to left */
-  align-items: center;
-  gap: 12px;
-  margin-top: 10px;
-}
-/* ================= EDIT MODE BUTTONS ================= */
-
-.btn-save,
-.btn-cancel {
-  height: 36px;
-  min-width: 95px;
-  padding: 0 18px;
-
-  font-size: 13px;
-  font-weight: 600;
-
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #111827;
-
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* SAVE → BLACK HOVER */
-.btn-save:hover {
-  background: #000000;
-  border-color: #000000;
-  color: #ffffff;
-}
-
-/* CANCEL → RED HOVER */
-.btn-cancel:hover {
-  background: #b91c1c;
-  border-color: #b91c1c;
-  color: #0f0000;
-}
-
-/* NORMAL EDIT / DELETE */
-
-.btn-edit,
-.btn-delete {
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #374151;
-
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.btn-edit:hover {
-  background: #e0f2fe;
-}
-
-.btn-delete:hover {
-  background: #fee2e2;
-}
-
-/* ================= EDIT BLOCK ================= */
-
-.edit-block {
+.guards-page .edit-block-single {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   width: 100%;
 }
 
-/* ================= MOBILE ================= */
-
-@media (max-width: 768px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .guard-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .action-group {
-    margin-top: 10px;
-  }
+.guards-page .edit-block-single .action-group.edit-actions {
+  flex-wrap: nowrap;
+  width: auto;
 }
 
-/* ================= CHECKBOX FIX ================= */
+/* Action buttons */
+.guards-page .action-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+}
+
+.guards-page .action-group.edit-actions {
+  justify-content: flex-start;
+  align-self: flex-start;
+}
 
 .guards-page input[type="checkbox"] {
   width: 16px;
   height: 16px;
   padding: 0;
   margin: 0;
+  accent-color: #7a0606;
+}
 
-  appearance: auto;
-  -webkit-appearance: auto;
-  accent-color: #6366f1;
+/* Buttons */
+.guards-page .btn-edit,
+.guards-page .btn-save,
+.guards-page .btn-cancel,
+.guards-page .btn-delete,
+.guards-page .btn-create {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-sizing: border-box;
+  white-space: nowrap;
+  margin: 0;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.guards-page .edit-actions .btn-save,
+.guards-page .edit-actions .btn-cancel {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 88px;
+}
+
+.guards-page .btn-edit,
+.guards-page .btn-save,
+.guards-page .btn-cancel {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+}
+
+.guards-page .btn-edit:hover,
+.guards-page .btn-save:hover,
+.guards-page .btn-cancel:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #111827;
+}
+
+.guards-page .btn-delete {
+  border: 1px solid #fca5a5;
+  background: #ffffff;
+  color: #b91c1c;
+}
+
+.guards-page .btn-delete:hover {
+  background: #fff1f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+.guards-page .btn-create {
+  border: 1px solid #7a0606;
+  background: #7a0606;
+  color: #ffffff;
+  min-width: 112px;
+  padding: 0 16px;
+}
+
+.guards-page .btn-create:hover {
+  background: #600505;
+  border-color: #600505;
+  color: #ffffff;
+}
+
+.guards-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(2px);
+}
+
+.guards-modal {
+  width: min(460px, 100%);
+  box-sizing: border-box;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  padding: 18px;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.2);
+}
+
+.guards-modal h4 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.guards-modal p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.guards-modal-subtext {
+  margin-top: 6px;
+  color: #b91c1c;
+}
+
+.guards-modal-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.guards-modal-actions .btn-cancel,
+.guards-modal-actions .btn-delete {
+  min-width: 96px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .guards-page .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .guards-page .guard-item {
+    grid-template-columns: 1fr;
+  }
+
+  .guards-page .action-group {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .guards-page .btn-edit,
+  .guards-page .btn-save,
+  .guards-page .btn-cancel,
+  .guards-page .btn-delete,
+  .guards-page .btn-create {
+    width: 100%;
+  }
+
+  .guards-modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .guards-modal-actions .btn-cancel,
+  .guards-modal-actions .btn-delete {
+    width: 100%;
+    min-width: 0;
+  }
 }

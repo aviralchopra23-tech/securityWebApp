@@ -4,7 +4,7 @@ import API from "../../api/axios";
 import "../../styles/ownerAnnouncements.css";
 
 // React Icons
-import { FaUser, FaClock, FaMapMarkerAlt, FaBullhorn } from "react-icons/fa";
+import { FaUser, FaClock, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function OwnerAnnouncements() {
   const [announcements, setAnnouncements] = useState([]);
@@ -106,7 +106,7 @@ export default function OwnerAnnouncements() {
             />{" "}
             All Locations
           </label>
-          <label style={{ marginLeft: "20px" }}>
+          <label>
             <input
               type="radio"
               checked={scope === "SPECIFIC"}
@@ -120,7 +120,7 @@ export default function OwnerAnnouncements() {
         {scope === "SPECIFIC" && (
           <div className="owner-locations">
             {locations.map((loc) => (
-              <label key={loc._id} style={{ display: "block" }}>
+              <label key={loc._id}>
                 <input
                   type="checkbox"
                   checked={selectedLocations.includes(loc._id)}
@@ -144,9 +144,7 @@ export default function OwnerAnnouncements() {
       {/* ANNOUNCEMENTS LIST */}
       {announcements.map((a) => (
         <div key={a._id} className="owner-card">
-          <h3>
-            <FaBullhorn style={{ marginRight: "6px" }} /> {a.title}
-          </h3>
+          <h3>{a.title}</h3> {/* Removed bullhorn icon */}
           <p>{a.message}</p>
           <div className="owner-meta">
             <span>

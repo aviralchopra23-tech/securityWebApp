@@ -6,16 +6,17 @@
 .users-page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
+  width: 100%;
 }
 
 /* ================= PAGE TITLE ================= */
 
 .users-title {
-  font-size: 28px;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 4px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
 }
 
 /* ================= ROLE SWITCH ================= */
@@ -26,14 +27,15 @@
 
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
 
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .role-btn {
-  padding: 10px 18px;
+  min-height: 38px;
+  padding: 0 16px;
   font-size: 14px;
   font-weight: 500;
 
@@ -49,8 +51,14 @@
   background: #f3f4f6;
 }
 
+.role-btn:focus,
+.role-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(122, 6, 6, 0.18);
+}
+
 .role-btn.active {
-  background: #eef2ff;
+  background: #fef2f2;
   color: #7a0505;
   font-weight: 600;
 }
@@ -58,7 +66,8 @@
 /* ================= CONTENT WRAPPER ================= */
 
 .users-content {
-  margin-top: 18px;
+  margin-top: 4px;
+  width: 100%;
 }
 
 /* Reset when nested pages render */
@@ -78,9 +87,9 @@
   border: 1px solid #d1d5db;
   border-radius: 10px;
 
-  padding: 10px 14px;
-  font-size: 14px;
-  height: 38px;
+  padding: 8px 12px;
+  font-size: 13px;
+  height: 34px;
 
   box-shadow: none;
   appearance: none;
@@ -101,10 +110,10 @@
 /* ================= BUTTON SYSTEM ================= */
 
 .users-content .users-page button {
-  height: 38px;
-  padding: 0 18px;
+  height: 34px;
+  padding: 0 14px;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 
   border-radius: 10px;
@@ -158,7 +167,7 @@
 
 @media (max-height: 700px) {
   .users-page {
-    gap: 18px;
+    gap: 14px;
   }
 
   .role-btn {
@@ -167,12 +176,27 @@
   }
 
   .users-content {
-    margin-top: 14px;
+    margin-top: 2px;
   }
 }
 
 @media (max-height: 600px) {
   .users-page {
-    gap: 14px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .users-title {
+    font-size: 21px;
+  }
+
+  .user-role-switch {
+    width: 100%;
+  }
+
+  .role-btn {
+    flex: 1;
+    justify-content: center;
   }
 }

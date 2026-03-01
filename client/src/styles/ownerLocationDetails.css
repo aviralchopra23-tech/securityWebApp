@@ -88,30 +88,30 @@
   text-align: center;
 }
 
-.btn-save {
+.owner-location-wrapper .btn-save {
   background-color: #2563eb;
   color: white;
 }
 
-.btn-save:hover {
+.owner-location-wrapper .btn-save:hover {
   background-color: #1e40af;
 }
 
-.btn-cancel {
+.owner-location-wrapper .btn-cancel {
   background-color: #e5e7eb;
   color: #1e293b;
 }
 
-.btn-cancel:hover {
+.owner-location-wrapper .btn-cancel:hover {
   background-color: #cbd5e1;
 }
 
-.btn-edit {
+.owner-location-wrapper .btn-edit {
   background-color: #10b981;
   color: white;
 }
 
-.btn-edit:hover {
+.owner-location-wrapper .btn-edit:hover {
   background-color: #047857;
 }
 

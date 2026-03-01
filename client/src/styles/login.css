@@ -3,22 +3,28 @@
 ================================ */
 
 .loginPage {
-  min-height: 100vh;
+  min-height: 100svh; /* Better mobile height handling */
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f4f6f8;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 20px;
 }
 
 .loginCard {
   width: 420px;
+  max-width: 100%;
   padding: 40px;
   border-radius: 16px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
 }
+
+/* ================================
+   HEADER
+================================ */
 
 .securityHeader {
   text-align: center;
@@ -35,6 +41,12 @@
   background: #eef2ff;
   color: #1e40af;
   border-radius: 14px;
+}
+
+.logoImage {
+  width: 64px;
+  max-width: 100%;
+  height: auto;
 }
 
 .loginTitle {
@@ -70,12 +82,14 @@
 
 .formGroup input {
   width: 100%;
+  box-sizing: border-box;
   padding: 12px 14px;
   border-radius: 10px;
   background: #ffffff;
   border: 1px solid #f5cbcb;
   font-size: 14px;
   color: #0f172a;
+  transition: all 0.2s ease;
 }
 
 .formGroup input:focus {
@@ -110,15 +124,18 @@
 
 .loginBtn {
   width: 100%;
+  box-sizing: border-box;
   margin-top: 16px;
-  padding: 14px;
-  border-radius: 12px;
+  padding: 11px 16px;
+  border-radius: 10px;
   border: none;
   background: #7a0606;
-  color: #ffffff;
+  color: #fff;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
+  letter-spacing: 0.3px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .loginBtn:hover {
@@ -149,4 +166,105 @@
   font-size: 12px;
   text-align: center;
   color: #64748b;
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+================================ */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .loginCard {
+    width: 90%;
+    max-width: 480px;
+    padding: 36px;
+  }
+
+  .loginTitle {
+    font-size: 26px;
+  }
+}
+
+/* Large Phones */
+@media (max-width: 768px) {
+  .loginPage {
+    align-items: flex-start;
+    padding-top: 60px;
+  }
+
+  .loginCard {
+    width: 100%;
+    padding: 28px;
+    border-radius: 14px;
+  }
+
+  .loginTitle {
+    font-size: 24px;
+  }
+
+  .loginSubtitle {
+    font-size: 13px;
+  }
+
+  .formGroup input {
+    padding: 11px 12px;
+    font-size: 14px;
+  }
+
+  .loginBtn {
+    padding: 11px;
+    font-size: 14px;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+  .loginPage {
+    padding-top: 40px;
+  }
+
+  .loginCard {
+    padding: 22px;
+    border-radius: 12px;
+  }
+
+  .securityBadge {
+    width: 46px;
+    height: 46px;
+  }
+
+  .logoImage {
+    width: 56px;
+  }
+
+  .loginTitle {
+    font-size: 22px;
+  }
+
+  .loginSubtitle {
+    font-size: 12px;
+  }
+
+  .formGroup label {
+    font-size: 12px;
+  }
+
+  .formGroup input {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .toggleBtn {
+    font-size: 12px;
+    right: 8px;
+  }
+
+  .loginBtn {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .loginFooter {
+    font-size: 11px;
+  }
 }

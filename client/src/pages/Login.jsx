@@ -45,7 +45,7 @@ export default function Login() {
         {/* Security Header */}
         <div className="securityHeader">
           <div className="securityBadge">
-            <img src={king} alt="GuardLink Logo" width={80} />
+            <img src={king} alt="GuardLink Logo" className="logoImage" />
 
           </div>
           <h2 id="login-title" className="loginTitle">

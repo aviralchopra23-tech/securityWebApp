@@ -13,6 +13,8 @@ export default function OwnerLocations() {
   const [locForm, setLocForm] = useState({ name: "", address: "" });
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", address: "" });
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -60,16 +62,21 @@ export default function OwnerLocations() {
     }
   };
 
-  const handleDelete = async (id) => {
-    const ok = window.confirm("Are you sure you want to delete this location?");
-    if (!ok) return;
+  const handleDelete = async () => {
+    if (!deleteTarget?._id || isDeleting) return;
+
+    setIsDeleting(true);
+    const id = deleteTarget._id;
 
     setLocations((prev) => prev.filter((l) => l._id !== id));
     try {
       await deleteLocation(id);
+      setDeleteTarget(null);
     } catch {
       alert("Delete failed. Reloading locations.");
       loadLocations();
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -121,14 +128,14 @@ export default function OwnerLocations() {
                 <div className="edit-buttons">
                   <button
                     type="button"
-                    className="btn-save"
+                    className="location-btn-save"
                     onClick={() => saveEdit(l._id)}
                   >
                     Save
                   </button>
                   <button
                     type="button"
-                    className="btn-cancel"
+                    className="location-btn-cancel"
                     onClick={cancelEdit}
                   >
                     Cancel
@@ -150,12 +157,13 @@ export default function OwnerLocations() {
                   </span>
                 </div>
                 <div className="location-actions">
-                  <button className="btn-edit" onClick={() => startEdit(l)}>
+                  <button type="button" className="btn-edit" onClick={() => startEdit(l)}>
                     Edit
                   </button>
                   <button
+                    type="button"
                     className="btn-delete"
-                    onClick={() => handleDelete(l._id)}
+                    onClick={() => setDeleteTarget(l)}
                   >
                     Delete
                   </button>
@@ -165,6 +173,26 @@ export default function OwnerLocations() {
           </li>
         ))}
       </ul>
+
+      {deleteTarget && (
+        <div className="location-modal-backdrop" role="dialog" aria-modal="true" aria-label="Delete location confirmation">
+          <div className="location-modal">
+            <h4>Delete Location</h4>
+            <p>
+              Are you sure you want to delete <strong>{deleteTarget.name}</strong>?
+            </p>
+            <p className="location-modal-subtext">This action cannot be undone.</p>
+            <div className="location-modal-actions">
+              <button type="button" className="btn-cancel" onClick={() => setDeleteTarget(null)} disabled={isDeleting}>
+                Cancel
+              </button>
+              <button type="button" className="btn-delete" onClick={handleDelete} disabled={isDeleting}>
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

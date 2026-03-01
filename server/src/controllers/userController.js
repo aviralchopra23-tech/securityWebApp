@@ -30,7 +30,7 @@ exports.getGuards = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, assignedLocationIds } = req.body;
+    const { firstName, lastName, email, assignedLocationIds, password } = req.body;
 
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -38,6 +38,11 @@ exports.updateUser = async (req, res) => {
     user.firstName = firstName ?? user.firstName;
     user.lastName = lastName ?? user.lastName;
     user.email = email ?? user.email;
+
+    const trimmedPassword = typeof password === "string" ? password.trim() : "";
+    if (trimmedPassword) {
+      user.password = await bcrypt.hash(trimmedPassword, 10);
+    }
 
     if (user.role === "GUARD" && Array.isArray(assignedLocationIds)) {
       user.assignedLocationIds = assignedLocationIds;

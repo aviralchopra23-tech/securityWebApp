@@ -1,60 +1,71 @@
 .supervisors-page {
-  max-width: 1200px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 14px;
   color: #111827;
 }
 
 .supervisors-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #0f172a;
+  margin: 0;
 }
 
-.section-title {
+.supervisors-page .section-title {
   font-size: 14px;
   font-weight: 600;
   color: #374151;
-  margin-bottom: 8px;
+  margin: 2px 0 0;
 }
 
-.form-row {
+.supervisors-page .validation-warning {
+  margin: -2px 2px 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.supervisors-page .edit-row .validation-warning.edit-warning {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.supervisors-page .form-row {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 20px 22px;
+  border-radius: 12px;
+  padding: 12px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
   align-items: center;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
 }
 
-/* STACKED BUTTONS */
-.stacked-buttons {
-  grid-template-columns: 1fr; /* stack inputs/selects vertically */
+.supervisors-page .stacked-buttons {
+  grid-template-columns: 1fr;
 }
 
-/* WRAPPER FOR BUTTONS TO ALIGN FULL WIDTH */
-.button-wrapper {
+.supervisors-page .button-wrapper {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* button aligns left */
+  justify-content: flex-start;
 }
 
-/* FORM ELEMENTS */
 .supervisors-page input,
 .supervisors-page select,
 .supervisors-page textarea {
-  background-color: #ffffff !important;
-  color: #111827 !important;
-  border: 1px solid #d1d5db !important;
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #d1d5db;
   border-radius: 10px;
-  height: 38px;
-  padding: 0 14px;
-  font-size: 14px;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 13px;
   box-shadow: none;
+  box-sizing: border-box;
 }
 
 .supervisors-page input::placeholder {
@@ -65,80 +76,64 @@
 .supervisors-page select:focus,
 .supervisors-page textarea:focus {
   outline: none;
-  border-color: #b81414;
-  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.18);
 }
 
-/* CREATE BUTTON — BLACK */
-.btn-create {
-  background-color: #000000;
+.supervisors-page .btn-create,
+.supervisors-page .btn-assign {
+  height: 36px;
+  min-width: 96px;
+  padding: 0 16px;
+  border-radius: 9px;
+  border: 1px solid #7a0606;
+  background: #7a0606;
   color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 16px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  min-width: 90px;
-  text-align: center;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.btn-create:hover {
-  background-color: #333333;
+.supervisors-page .btn-create:hover,
+.supervisors-page .btn-assign:hover {
+  background: #9b0a0a;
+  border-color: #9b0a0a;
 }
 
-/* ASSIGN BUTTON — RED */
-.btn-assign {
-  background-color: #070101;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  min-width: 90px;
-  text-align: center;
-}
-
-.btn-assign:hover {
-  background-color: #b91c1c;
-}
-
-/* SUPERVISOR LIST */
-.supervisor-list {
+.supervisors-page .supervisor-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
-.supervisor-item {
+.supervisors-page .supervisor-item {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 16px 18px;
-  display: flex;
-  justify-content: space-between;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
 }
 
-.supervisor-info {
+.supervisors-page .supervisor-info {
   font-size: 14px;
   font-weight: 500;
   color: #111827;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
-.assigned-badge {
-  padding: 4px 12px;
+.supervisors-page .assigned-badge {
+  padding: 4px 10px;
   font-size: 11px;
   font-weight: 600;
   border-radius: 999px;
@@ -146,55 +141,239 @@
   color: #166534;
 }
 
-.action-group {
+.supervisors-page .action-group {
   display: flex;
   gap: 8px;
 }
 
-.action-group button {
+.supervisors-page .action-group .btn-edit,
+.supervisors-page .action-group .btn-delete,
+.supervisors-page .btn-save,
+.supervisors-page .btn-cancel {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 34px;
+  min-width: 88px;
+  padding: 0 12px;
   background: #ffffff;
   color: #374151;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.action-group .btn-edit:hover {
-  background: #e0f2fe;
+.supervisors-page .action-group .btn-edit:hover,
+.supervisors-page .btn-save:hover,
+.supervisors-page .btn-cancel:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #111827;
 }
 
-.action-group .btn-delete:hover {
-  background: #fee2e2;
+.supervisors-page .action-group .btn-delete:hover {
+  background: #fff1f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
 }
 
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .supervisor-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .action-group {
-    margin-top: 10px;
-  }
+.supervisors-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(2px);
 }
 
-/* Force all inputs/selects in assign form to match widths of create form */
-.assign-form {
+.supervisors-modal {
+  width: min(460px, 100%);
+  box-sizing: border-box;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  padding: 18px;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.2);
+}
+
+.supervisors-modal h4 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.supervisors-modal p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.supervisors-modal-subtext {
+  margin-top: 6px;
+  color: #b91c1c;
+}
+
+.supervisors-modal-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.supervisors-modal-actions .btn-cancel,
+.supervisors-modal-actions .btn-delete {
+  min-width: 96px;
+  box-sizing: border-box;
+}
+
+.supervisors-page .assign-form {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* same as create form */
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
   align-items: center;
 }
 
-/* Make assign button span the last 2 columns */
-.assign-form .btn-assign {
-  grid-column: 1 / -1; /* spans all columns to align with create button */
-  justify-self: start; /* optional, aligns left inside grid */
+.supervisors-page .assign-form .btn-assign {
+  justify-self: start;
 }
+
+.supervisors-page .edit-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+@media (max-width: 980px) {
+  .supervisors-page .form-row,
+  .supervisors-page .assign-form,
+  .supervisors-page .edit-row {
+    grid-template-columns: 1fr;
+  }
+
+  .supervisors-page .supervisor-item {
+    grid-template-columns: 1fr;
+  }
+
+  .supervisors-page .action-group {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .supervisors-page .btn-create,
+  .supervisors-page .btn-assign,
+  .supervisors-page .action-group .btn-edit,
+  .supervisors-page .action-group .btn-delete,
+  .supervisors-page .btn-save,
+  .supervisors-page .btn-cancel {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .supervisors-modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .supervisors-modal-actions .btn-cancel,
+  .supervisors-modal-actions .btn-delete {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* CREATE SUPERVISOR - smaller, responsive inputs */
+.supervisors-page .form-row.stacked-buttons {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+/* ASSIGN SUPERVISOR - balanced columns */
+.supervisors-page .form-row.assign-form {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+/* Optional: button alignment */
+.supervisors-page .form-row.stacked-buttons .button-wrapper,
+.supervisors-page .form-row.assign-form button {
+  justify-self: start;
+}
+
+.supervisors-page .form-row.assign-form {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* smaller inputs */
+  gap: 10px;
+  align-items: center;
+}
+
+.supervisors-page .form-row.assign-form button {
+  justify-self: start; /* keep the assign button aligned left */
+}
+
+.supervisors-page .form-row.assign-form select {
+  max-width: 180px;  /* limit the length */
+}
+
+.supervisors-page .form-row.assign-form button {
+  max-width: 120px;  /* keep button smaller too */
+}
+
+/* FORCE compact assign layout */
+.supervisors-page .form-row.assign-form {
+  display: flex;              /* switch from grid to flex */
+  gap: 6px;                   /* small spacing between items */
+  align-items: center;
+  flex-wrap: wrap;            /* keeps responsiveness */
+}
+
+.supervisors-page .form-row.assign-form select {
+  width: 170px;               /* fixed width so they don’t stretch */
+}
+
+.supervisors-page .form-row.assign-form .btn-assign {
+  width: 100px;
+}
+
+/* Red-themed buttons for Create and Assign, similar to Delete/Edit style */
+.supervisors-page .btn-create,
+.supervisors-page .btn-assign {
+  background: #ffffff;        /* white background */
+  color: #b91c1c;            /* red text */
+  border: 1px solid #fca5a5; /* light red border */
+  border-radius: 8px;
+  height: 34px;
+  min-width: 96px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.supervisors-page .btn-create:hover,
+.supervisors-page .btn-assign:hover {
+  background: #fff1f2;        /* light red hover background */
+  border-color: #f87171;      /* stronger red border on hover */
+  color: #b91c1c;             /* red text stays */
+}
+
+

@@ -178,3 +178,8 @@
   font-size: 12px;
   color: #6b7280;
 }
+
+.owner-locations input[type="checkbox"] {
+  accent-color: #eb1a1a; /* same red as radio buttons */
+  cursor: pointer;
+}
