@@ -1,15 +1,11 @@
-/* ======================================================
-   SUPERVISOR ANNOUNCEMENTS — CLEAN MODERN VERSION
-   (No Color Changes)
-====================================================== */
-
+/* src/styles/supervisorAnnouncements.css */
 .supervisor-content {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  padding: 32px 0;
-  max-width: 900px;              /* Prevent full screen stretch */
-  margin: 0 auto;                /* Center content */
+  padding: 32px 16px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* Page Title */
@@ -17,10 +13,7 @@
   font-size: 22px;
   font-weight: 600;
   color: #111827;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 /* CARD */
@@ -29,9 +22,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 24px;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 16px;           /* Softer corners */
+  border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.04);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -41,26 +34,20 @@
   box-shadow: 0 14px 30px rgba(0,0,0,0.06);
 }
 
-/* Card Heading */
 .supervisor-card h3 {
   font-size: 16px;
   font-weight: 600;
   color: #111827;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
-/* INPUTS */
+/* Inputs */
 .supervisor-input {
   width: 100%;
   padding: 12px 14px;
   font-size: 14px;
-  color: #111827;
-  background: #ffffff;
   border: 1px solid #d1d5db;
   border-radius: 10px;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
 .supervisor-input::placeholder {
@@ -73,7 +60,6 @@
   box-shadow: 0 0 0 3px rgba(235, 26, 26, 0.15);
 }
 
-/* TEXTAREA */
 textarea.supervisor-input {
   resize: vertical;
   min-height: 100px;
@@ -92,16 +78,16 @@ textarea.supervisor-input {
 
 /* Button */
 .supervisor-btn {
-  align-self: flex-start;
+  width: auto;
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
   border-radius: 10px;
   border: 1px solid #640101;
   background: #130000;
-  color: #ffffff;
+  color: #fff;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
 }
 
 .supervisor-btn:hover {
@@ -141,20 +127,47 @@ textarea.supervisor-input {
   gap: 6px;
 }
 
-/* MOBILE */
+/* MOBILE & IPAD RESPONSIVE */
+@media (max-width: 1024px) {
+  .supervisor-content {
+    padding: 20px 12px;
+    gap: 24px;
+  }
+
+  .supervisor-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .supervisor-card h3 {
+    font-size: 15px;
+  }
+
+  .supervisor-input {
+    font-size: 13px;
+  }
+
+  .supervisor-btn {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .supervisor-meta {
+    font-size: 11px;
+    gap: 14px;
+  }
+}
+
 @media (max-width: 768px) {
   .supervisor-content {
-    padding: 20px 16px;
+    padding: 16px 12px;
     gap: 20px;
   }
 
   .supervisor-card {
-    padding: 18px;
-    border-radius: 14px;
-  }
-
-  .supervisor-content h2 {
-    font-size: 18px;
+    padding: 16px;
+    border-radius: 12px;
   }
 
   .supervisor-card h3 {
@@ -167,11 +180,11 @@ textarea.supervisor-input {
 
   .supervisor-btn {
     font-size: 13px;
-    padding: 9px 16px;
+    padding: 8px;
   }
 
   .supervisor-meta {
-    font-size: 11px;
-    gap: 12px;
+    font-size: 10px;
+    gap: 10px;
   }
 }

@@ -16,6 +16,7 @@ const DAYS = [
 ];
 
 export default function SharedScheduleView({
+  variant = "",
   canCreate = false,
   canEdit = false,
   editPath = "",
@@ -26,9 +27,6 @@ export default function SharedScheduleView({
   const location = useLocation();
   const [schedule, setSchedule] = useState(null);
   const [error, setError] = useState("");
-
-  // Highlight today's day
-  const todayKey = DAYS[new Date().getDay() - 1]?.key || "MON";
 
   // load function extracted so we can refresh manually
   const loadSchedule = async (savedSchedule) => {
@@ -66,7 +64,7 @@ export default function SharedScheduleView({
 
   if (!schedule) {
     return (
-      <div className="schedule-container">
+      <div className={`schedule-container ${variant ? `schedule-${variant}` : ""}`.trim()}>
         <div className="schedule-card">
           <h2 className="scheduleTitle">Schedule</h2>
           <p className="no-schedule-message">{emptyMessage}</p>
@@ -91,7 +89,7 @@ export default function SharedScheduleView({
   );
 
   return (
-    <div className="schedule-container">
+    <div className={`schedule-container ${variant ? `schedule-${variant}` : ""}`.trim()}>
       <div className="schedule-card">
         <h2 className="scheduleTitle">Current Schedule</h2>
         <p className="schedule-subtitle">
@@ -102,10 +100,7 @@ export default function SharedScheduleView({
 
         <div className="days-container">
           {DAYS.map((d) => (
-            <div
-              key={d.key}
-              className={`day-card ${d.key === todayKey ? "today" : ""}`}
-            >
+            <div key={d.key} className="day-card">
               <h3 className="day-title">{d.label}</h3>
               {shiftsByDay[d.key].length === 0 ? (
                 <p className="no-shifts">No shifts assigned.</p>

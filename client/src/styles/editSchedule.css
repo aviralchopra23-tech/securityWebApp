@@ -1,137 +1,410 @@
-/* CENTERED WRAPPER */
 .edit-schedule-container {
   display: flex;
   justify-content: center;
-  padding: 40px 20px;
-  background: #f5f5f5;
-  min-height: 100vh;
+  padding: 22px;
+  color: #0f172a;
 }
 
-/* MAIN CARD */
 .edit-schedule-card {
-  background: #fff;
-  border-radius: 16px;
-  max-width: 900px;
   width: 100%;
-  padding: 30px;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-}
-
-/* TITLE */
-.edit-title {
-  font-size: 2rem;
-  font-weight: 700;
-  font-family: 'Playfair Display', serif;
-  text-align: center;
-  color: #111;
-  margin-bottom: 28px;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-/* DATE RANGE */
-.date-row {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 28px;
-}
-.date-field label {
-  font-weight: 600;
-  font-size: 13px;
-  color: #475569;
-}
-.date-field input {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  font-size: 14px;
-  width: 150px;
-}
-
-/* DAY CARDS */
-.day-card {
-  margin-bottom: 20px;
-  background: #fafafa;
+  max-width: 980px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 18px 20px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
+
+.edit-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #7a0606;
+  padding-bottom: 4px;
+}
+
+.date-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px;
+  background: #ffffff;
+}
+
+.date-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.date-field small {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.date-field input {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #111827;
+  padding: 0 11px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.date-field input:focus,
+.shift-input input:focus,
+.shift-input select:focus {
+  outline: none;
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.18);
+}
+
+.info-text {
+  margin: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 10px 12px;
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.day-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .day-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-}
-.day-header h3 { font-weight: 700; color: #111; }
-
-/* SHIFT ROW */
-.shift-list { display: flex; flex-direction: column; gap: 10px; }
-.shift-row {
-  display: flex;
-  gap: 12px;
-  padding: 10px;
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  align-items: center;
+  gap: 10px;
   flex-wrap: wrap;
-  transition: all 0.15s ease;
 }
-.shift-row:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 
-.shift-input { display: flex; flex-direction: column; flex: 1; min-width: 120px; }
-.shift-input label { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
-.shift-input input, .shift-input select {
-  padding: 8px; border-radius: 8px; border: 1px solid #cbd5e1;
+.day-header h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.03em;
+}
+
+.shift-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.no-shifts {
+  margin: 0;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #f8fafc;
   font-size: 13px;
 }
 
-/* BUTTONS */
-.btn-add {
-  padding: 6px 16px;
-  font-weight: 600;
-  border-radius: 8px;
-  border: 1px solid #111;
+.shift-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 10px;
+  align-items: end;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
   background: #fff;
-  color: #111;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
-.btn-add:hover { background: #111; color: #fff; }
 
-.btn-remove {
-  padding: 6px 12px;
+.shift-input {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.shift-input label {
   font-size: 12px;
-  border-radius: 8px;
-  border: 1px solid #f87171;
-  background: #fee2e2;
-  color: #991b1b;
-  cursor: pointer;
-}
-.btn-remove:hover { background: #fecaca; }
-
-.btn-save {
-  margin: 20px auto 0;
-  display: block;
-  padding: 12px 28px;
   font-weight: 600;
-  font-size: 16px;
-  border-radius: 14px;
-  background: #fff;
-  color: #b91c1c;
-  border: 2px solid #b91c1c;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: #334155;
 }
-.btn-save:hover { background: #b91c1c; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
 
-/* ERROR */
-.error-text { color: #991b1b; font-weight: 600; margin-top: 12px; text-align: center; }
+.shift-input input,
+.shift-input select {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #111827;
+  padding: 0 10px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
 
-/* MOBILE */
-@media(max-width:640px) {
-  .shift-row { flex-direction: column; }
-  .date-row { flex-direction: column; }
-  .shift-input { min-width: 100%; }
+.edit-schedule-card .btn-add,
+.edit-schedule-card .btn-remove,
+.edit-schedule-card .btn-save {
+  height: 34px;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.edit-schedule-card .btn-add {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.edit-schedule-card .btn-add:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #111827;
+}
+
+.edit-schedule-card .btn-remove {
+  background: transparent;
+  border: 0;
+  color: #dc2626;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  border-radius: 0;
+  padding: 0 2px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  justify-self: end;
+}
+
+.edit-schedule-card .btn-remove:hover {
+  background: transparent;
+  border-color: transparent;
+  color: #991b1b;
+}
+
+.edit-schedule-card .btn-save {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: block;
+  box-sizing: border-box;
+  background: #7a0606;
+  border: 1px solid #7a0606;
+  color: #fff;
+  margin: 6px 0 0;
+}
+
+.edit-schedule-card .btn-save:hover {
+  background: #600505;
+  border-color: #600505;
+}
+
+.error-text {
+  margin: 2px 0 0;
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .edit-schedule-card {
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  .day-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .edit-schedule-card .btn-add {
+    width: auto;
+    min-width: 96px;
+    max-width: fit-content;
+    height: 34px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  .date-row {
+    grid-template-columns: 1fr;
+  }
+
+  .shift-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .edit-schedule-card .btn-remove {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    justify-self: end;
+    order: -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .edit-schedule-container {
+    padding: 8px;
+  }
+
+  .edit-schedule-card {
+    border-radius: 12px;
+    padding: 12px;
+    gap: 9px;
+  }
+
+  .edit-title {
+    font-size: 19px;
+    padding-bottom: 4px;
+  }
+
+  .date-field {
+    padding: 9px;
+  }
+
+  .date-field input,
+  .shift-input input,
+  .shift-input select {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .day-card {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .day-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .day-header h3 {
+    font-size: 12px;
+  }
+
+  .shift-row {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .shift-input label {
+    font-size: 11px;
+  }
+
+  .info-text,
+  .no-shifts,
+  .error-text {
+    font-size: 12px;
+  }
+
+  .edit-schedule-card .btn-add {
+    width: auto;
+    min-width: 92px;
+    max-width: fit-content;
+    height: 34px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  .edit-schedule-card .btn-remove {
+    order: -1;
+    justify-self: end;
+    align-self: start;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    padding: 0 2px;
+    font-size: 20px;
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .edit-schedule-card .btn-save {
+    height: 40px;
+    font-size: 13px;
+  }
+
+}
+
+@media (max-width: 400px) {
+  .edit-title {
+    font-size: 18px;
+  }
+
+  .edit-schedule-card .btn-add,
+  .edit-schedule-card .btn-remove {
+    height: 34px;
+    font-size: 11px;
+  }
+
+  .edit-schedule-card .btn-add {
+    min-width: 84px;
+    padding: 0 9px;
+    font-size: 10px;
+  }
+
+  .edit-schedule-card .btn-remove {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    font-size: 18px;
+  }
+
+  .edit-schedule-card .btn-save {
+    height: 38px;
+    font-size: 12px;
+  }
 }

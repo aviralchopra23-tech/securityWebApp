@@ -12,30 +12,31 @@ body {
 .layout {
   display: flex;
   min-height: 100vh;
-  gap: 20px;              /* space between sidebar and content */
-  padding: 16px;          /* space from screen edges */
+  gap: 20px;
+  padding: 16px;
 }
 
 .main-content {
   flex: 1;
   padding: 32px;
   background: linear-gradient(180deg, #f9f2f1, #f1e6e6);
-  border-radius: 20px;    /* softer corners */
+  border-radius: 20px;
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
 }
 
 /* SIDEBAR */
 .sidebar {
-  width: 280px;           /* slightly wider */
+  width: 280px;
   padding: 28px 20px;
   display: flex;
   flex-direction: column;
   background: #fbf4f4;
-  border-radius: 18px;    /* floating panel look */
+  border-radius: 18px;
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
   position: sticky;
   top: 16px;
   height: calc(100vh - 32px);
+  transition: width 0.3s ease, padding 0.3s ease;
 }
 
 /* SIDEBAR HEADER */
@@ -78,7 +79,7 @@ body {
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;      /* more breathing room */
+  gap: 10px;
 }
 
 .nav-link {
@@ -102,11 +103,6 @@ body {
   box-shadow: inset 0 0 0 1px #fec7c7;
 }
 
-.nav-link.disabled {
-  color: #b89494;
-  cursor: not-allowed;
-}
-
 /* SIDEBAR LOGOUT BUTTON */
 .sidebar button {
   margin-top: auto;
@@ -128,8 +124,305 @@ body {
   transform: translateY(-2px);
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
+.layout.supervisor .mobile-nav-toggle {
+  display: none;
+}
+
+.layout.guard .mobile-nav-toggle {
+  display: none;
+}
+
+.layout.supervisor .supervisor-topbar {
+  display: none;
+}
+
+.layout.guard .guard-topbar {
+  display: none;
+}
+
+.layout.supervisor .nav-label-full {
+  display: inline;
+}
+
+.layout.supervisor .nav-label-short {
+  display: none;
+}
+
+/* MOBILE & TABLET SHRINKING SIDEBAR */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 80px; /* shrinked sidebar */
+    padding: 20px 10px;
+  }
+
+  .brand-text {
+    display: none; /* hide text, show only logo */
+  }
+
+  .nav-link {
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .nav-link::before {
+    content: attr(data-short); /* optional icon or short text */
+  }
+
+  .sidebar button {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .layout.supervisor {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    position: relative;
+  }
+
+  .layout.supervisor .supervisor-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fbf4f4;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    padding: 8px 10px;
+  }
+
+  .layout.supervisor .supervisor-topbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .layout.supervisor .supervisor-topbar-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .layout.supervisor .supervisor-topbar-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.1;
+  }
+
+  .layout.supervisor .supervisor-topbar-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .layout.supervisor .supervisor-topbar-role {
+    font-size: 11px;
+    color: #8b6464;
+    letter-spacing: 0.2px;
+  }
+
+  .layout.supervisor .mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #fecaca;
+    background: #fff1f2;
+    color: #991b1b;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 1300;
+  }
+
+  .layout.supervisor .mobile-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    z-index: 1190;
+  }
+
+  .layout.supervisor .sidebar {
+    position: fixed;
+    top: 64px;
+    left: 12px;
+    bottom: 12px;
+    width: min(280px, calc(100vw - 24px));
+    height: auto;
+    z-index: 1200;
+    transform: translateX(-120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.22s ease, opacity 0.2s ease;
+    padding: 18px 14px;
+  }
+
+  .layout.supervisor .sidebar.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .layout.supervisor .sidebar .brand-text {
+    display: flex;
+  }
+
+  .layout.supervisor .sidebar .nav-link {
+    padding: 12px 14px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .layout.supervisor .nav-label-full {
+    display: inline;
+  }
+
+  .layout.supervisor .nav-label-short {
+    display: none;
+  }
+
+  .layout.supervisor .sidebar button {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .layout.supervisor .main-content {
+    width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .layout.guard {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    position: relative;
+  }
+
+  .layout.guard .guard-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fbf4f4;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    padding: 8px 10px;
+  }
+
+  .layout.guard .guard-topbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .layout.guard .guard-topbar-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .layout.guard .guard-topbar-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.1;
+  }
+
+  .layout.guard .guard-topbar-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .layout.guard .guard-topbar-role {
+    font-size: 11px;
+    color: #8b6464;
+    letter-spacing: 0.2px;
+  }
+
+  .layout.guard .mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #fecaca;
+    background: #fff1f2;
+    color: #991b1b;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 1300;
+  }
+
+  .layout.guard .mobile-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    z-index: 1190;
+  }
+
+  .layout.guard .sidebar {
+    position: fixed;
+    top: 64px;
+    left: 12px;
+    bottom: 12px;
+    width: min(280px, calc(100vw - 24px));
+    height: auto;
+    z-index: 1200;
+    transform: translateX(-120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.22s ease, opacity 0.2s ease;
+    padding: 18px 14px;
+  }
+
+  .layout.guard .sidebar.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .layout.guard .sidebar .brand-text {
+    display: flex;
+  }
+
+  .layout.guard .sidebar .nav-link {
+    padding: 12px 14px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .layout.guard .sidebar button {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .layout.guard .main-content {
+    width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+  }
+}
+
+/* MOBILE STACKED */
+@media (max-width: 640px) {
   .layout {
     flex-direction: column;
     padding: 12px;
@@ -139,9 +432,66 @@ body {
     width: 100%;
     height: auto;
     position: relative;
+    margin-bottom: 16px;
   }
 
-  .main-content {
-    padding: 20px;
+  .nav-link {
+    text-align: left;
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+
+  .sidebar button {
+    width: 100%;
+  }
+
+  .layout.supervisor {
+    padding: 12px;
+  }
+
+  .layout.supervisor .supervisor-topbar {
+    padding: 8px 10px;
+  }
+
+  .layout.supervisor .supervisor-topbar-name {
+    max-width: 140px;
+    font-size: 12px;
+  }
+
+  .layout.supervisor .sidebar {
+    top: 60px;
+    left: 10px;
+    bottom: 10px;
+    width: min(280px, calc(100vw - 20px));
+  }
+
+  .layout.supervisor .main-content {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .layout.guard {
+    padding: 12px;
+  }
+
+  .layout.guard .guard-topbar {
+    padding: 8px 10px;
+  }
+
+  .layout.guard .guard-topbar-name {
+    max-width: 140px;
+    font-size: 12px;
+  }
+
+  .layout.guard .sidebar {
+    top: 60px;
+    left: 10px;
+    bottom: 10px;
+    width: min(280px, calc(100vw - 20px));
+  }
+
+  .layout.guard .main-content {
+    padding: 16px;
+    border-radius: 14px;
   }
 }

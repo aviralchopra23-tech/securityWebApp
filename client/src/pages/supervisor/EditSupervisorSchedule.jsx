@@ -127,7 +127,7 @@ export default function EditSupervisorSchedule() {
     // optionally ensure validFrom is Monday
     const dow = new Date(validFrom).getDay();
     if (dow !== 1) {
-      setMessage("Valid From must be a Monday (it will be adjusted automatically)");
+      setMessage("Valid From was adjusted to the week start date automatically.");
       // we will still proceed because server will normalize
     }
 
@@ -164,7 +164,7 @@ export default function EditSupervisorSchedule() {
 
         <div className="date-row">
           <div className="date-field">
-            <label>Valid From <small>(must be a Monday)</small></label>
+            <label>Valid From</label>
             <input
               type="date"
               value={validFrom}
@@ -193,13 +193,6 @@ export default function EditSupervisorSchedule() {
             />
           </div>
         </div>
-        {canonicalRange && (
-          <p className="info-text">
-            Actual week: {canonicalRange.start.toLocaleDateString()} → {canonicalRange.end.toLocaleDateString()}
-            {editingExisting && " (editing existing schedule)"}
-          </p>
-        )}
-
         {DAYS.map((d) => (
           <div key={d.key} className="day-card">
             <div className="day-header">
@@ -230,7 +223,14 @@ export default function EditSupervisorSchedule() {
                       ))}
                     </select>
                   </div>
-                  <button className="btn-remove" onClick={() => removeShift(d.key, idx)}>Remove</button>
+                  <button
+                    className="btn-remove"
+                    onClick={() => removeShift(d.key, idx)}
+                    aria-label="Remove shift"
+                    title="Remove shift"
+                  >
+                    ×
+                  </button>
                 </div>
               ))}
             </div>

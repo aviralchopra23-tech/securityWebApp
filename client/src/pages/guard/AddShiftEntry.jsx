@@ -41,6 +41,8 @@ export default function AddShiftEntry({ onShiftAdded }) {
   }, []);
 
   const selectedLocationName = locations.find((l) => String(l._id) === String(locationId))?.name || "";
+  const formattedStart = startDateTime ? new Date(startDateTime).toLocaleString() : "Not selected";
+  const formattedEnd = endDateTime ? new Date(endDateTime).toLocaleString() : "Not selected";
 
   const showPrevWarning = useMemo(() => {
     if (!canAddShift || !prevUnsubmitted || !prevPayPeriod || !startDateTime) return false;
@@ -102,52 +104,88 @@ export default function AddShiftEntry({ onShiftAdded }) {
   return (
     <div className={styles.schedulePage}>
       <div className={styles.scheduleWrapper}>
-        <h2 className={styles.scheduleTitle}>Shift Entry</h2>
+        <div className={styles.headerBlock}>
+          <h2 className={styles.scheduleTitle}>Add Shift Entry</h2>
+          <p className={styles.headerSubtitle}>Log worked hours with accurate location and time details.</p>
+        </div>
 
-        {showPrevWarning && <p className={styles.scheduleInfo}>You have unsubmitted shifts for the previous pay period. Ensure submissions are complete before adding new shifts.</p>}
-        {currentSubmitted && <p className={styles.scheduleInfo}>Current pay period submitted. You may add missing shifts for older periods if needed.</p>}
+        {showPrevWarning && (
+          <p className={`${styles.scheduleInfo} ${styles.warningInfo}`}>
+            You have unsubmitted shifts for the previous pay period. Ensure submissions are complete before adding new shifts.
+          </p>
+        )}
+        {currentSubmitted && (
+          <p className={`${styles.scheduleInfo} ${styles.neutralInfo}`}>
+            Current pay period submitted. You may add missing shifts for older periods if needed.
+          </p>
+        )}
 
-        <form onSubmit={handleSubmit}>
+        <div className={styles.contentGrid}>
+          <form onSubmit={handleSubmit} className={styles.shiftForm}>
 
-          <div className={styles.inputGroupConnected}>
-            <label htmlFor="location">Location</label>
-            <select 
-              id="location"
-              value={locationId} 
-              onChange={(e) => setLocationId(e.target.value)} 
-              disabled={isDisabled}
-            >
-              <option value="" disabled>Select a location</option>
-              {locations.map((l) => (
-                <option key={l._id} value={l._id}>{l.name}</option>
-              ))}
-            </select>
-          </div>
+            <div className={styles.inputGroupConnected}>
+              <label htmlFor="location">Location</label>
+              <select 
+                id="location"
+                value={locationId} 
+                onChange={(e) => setLocationId(e.target.value)} 
+                disabled={isDisabled}
+              >
+                <option value="" disabled>Select a location</option>
+                {locations.map((l) => (
+                  <option key={l._id} value={l._id}>{l.name}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className={styles.inputGroupConnected}>
-            <label htmlFor="start">Start Date & Time</label>
-            <input 
-              id="start"
-              type="datetime-local" 
-              value={startDateTime} 
-              onChange={(e) => { setStartDateTime(e.target.value); setError(""); }} 
-              disabled={isDisabled} 
-            />
-          </div>
+            <div className={styles.dateTimeGrid}>
+              <div className={styles.inputGroupConnected}>
+                <label htmlFor="start">Start Date & Time</label>
+                <input 
+                  id="start"
+                  type="datetime-local" 
+                  value={startDateTime} 
+                  onChange={(e) => { setStartDateTime(e.target.value); setError(""); }} 
+                  disabled={isDisabled} 
+                />
+              </div>
 
-          <div className={styles.inputGroupConnected}>
-            <label htmlFor="end">End Date & Time</label>
-            <input 
-              id="end"
-              type="datetime-local" 
-              value={endDateTime} 
-              onChange={(e) => { setEndDateTime(e.target.value); setError(""); }} 
-              disabled={isDisabled} 
-            />
-          </div>
+              <div className={styles.inputGroupConnected}>
+                <label htmlFor="end">End Date & Time</label>
+                <input 
+                  id="end"
+                  type="datetime-local" 
+                  value={endDateTime} 
+                  onChange={(e) => { setEndDateTime(e.target.value); setError(""); }} 
+                  disabled={isDisabled} 
+                />
+              </div>
+            </div>
 
-          <button className={styles.btnPrimary} type="submit" disabled={isDisabled}>Add Shift</button>
-        </form>
+            <div className={styles.formActions}>
+              <button className={styles.btnPrimary} type="submit" disabled={isDisabled}>Add Shift</button>
+            </div>
+          </form>
+
+          <aside className={styles.summaryCard}>
+            <h3 className={styles.summaryTitle}>Shift Summary</h3>
+            <div className={styles.summaryItem}>
+              <span className={styles.summaryLabel}>Location</span>
+              <span className={styles.summaryValue}>{selectedLocationName || "Not selected"}</span>
+            </div>
+            <div className={styles.summaryItem}>
+              <span className={styles.summaryLabel}>Start</span>
+              <span className={styles.summaryValue}>{formattedStart}</span>
+            </div>
+            <div className={styles.summaryItem}>
+              <span className={styles.summaryLabel}>End</span>
+              <span className={styles.summaryValue}>{formattedEnd}</span>
+            </div>
+            <p className={styles.summaryTip}>
+              Tip: Keep entries in sequence and submit the previous pay period before adding shifts to a new one.
+            </p>
+          </aside>
+        </div>
 
         {error && <p className={styles.errorText}>{error}</p>}
         {success && <p className={styles.successText}>{success}</p>}

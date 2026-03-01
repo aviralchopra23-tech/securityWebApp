@@ -1,10 +1,9 @@
 // src/pages/supervisor/SupervisorAnnouncements.jsx
 import { useEffect, useState } from "react";
 import { getAnnouncements, createAnnouncement } from "../../api/announcementApi";
-import "../../styles/supervisorAnnouncements.css"; // ensure this file exists
+import "../../styles/supervisorAnnouncements.css";
 
-// React Icons
-import { FaUser, FaClock, FaMapMarkerAlt, FaBullhorn } from "react-icons/fa";
+import { FaUser, FaClock, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function SupervisorAnnouncements({ canCreate }) {
   const [announcements, setAnnouncements] = useState([]);
@@ -12,7 +11,6 @@ export default function SupervisorAnnouncements({ canCreate }) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Fetch all announcements
   const fetchAnnouncements = async () => {
     try {
       const res = await getAnnouncements();
@@ -26,7 +24,6 @@ export default function SupervisorAnnouncements({ canCreate }) {
     fetchAnnouncements();
   }, []);
 
-  // Create announcement
   const handleCreate = async () => {
     if (!title || !message) return;
 
@@ -49,15 +46,11 @@ export default function SupervisorAnnouncements({ canCreate }) {
 
   return (
     <div className="supervisor-content">
-      <h2>
-        <FaBullhorn style={{ marginRight: "6px" }} /> Announcements
-      </h2>
+      <h2>Announcements</h2>
 
-      {/* CREATE ANNOUNCEMENT */}
       {canCreate && (
-        <div className="supervisor-card">
+        <div className="supervisor-card create-card">
           <h3>Create Announcement</h3>
-
           <input
             className="supervisor-input"
             placeholder="Title"
@@ -71,13 +64,10 @@ export default function SupervisorAnnouncements({ canCreate }) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-
-          {/* Dummy Scope row for visual consistency */}
           <div className="supervisor-scope">
             <span>Scope:</span>
             <span>Specific Location</span>
           </div>
-
           <button
             className="supervisor-btn"
             onClick={handleCreate}
@@ -88,12 +78,9 @@ export default function SupervisorAnnouncements({ canCreate }) {
         </div>
       )}
 
-      {/* ANNOUNCEMENTS LIST */}
       {announcements.map((a) => (
         <div key={a._id} className="supervisor-card">
-          <h3>
-            <FaBullhorn style={{ marginRight: "6px" }} /> {a.title}
-          </h3>
+          <h3>{a.title}</h3>
           <p>{a.message}</p>
           <div className="supervisor-meta">
             <span>
