@@ -189,7 +189,6 @@ export default function EditSupervisorSchedule() {
               type="date"
               value={validTill}
               onChange={(e) => setValidTill(e.target.value)}
-              disabled
             />
           </div>
         </div>
