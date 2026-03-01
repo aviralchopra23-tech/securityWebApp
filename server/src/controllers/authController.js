@@ -2,12 +2,20 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const normalizeEmail = (value) =>
+  typeof value === "string" ? value.trim().toLowerCase() : "";
+
 // REGISTER (Owner creates users later — for now open)
 exports.register = async (req, res) => {
   try {
     const { firstName, lastName, email, password, role } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const normalizedEmail = normalizeEmail(email);
+    if (!normalizedEmail) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
@@ -16,7 +24,7 @@ exports.register = async (req, res) => {
     const user = await User.create({
       firstName,
       lastName,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       role
     });
@@ -33,7 +41,12 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const normalizedEmail = normalizeEmail(email);
+    if (!normalizedEmail || typeof password !== "string") {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }

@@ -16,11 +16,13 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
       setLoading(true);
 
       const res = await API.post("/auth/login", {
-        email,
+        email: normalizedEmail,
         password,
       });
 
@@ -75,6 +77,9 @@ export default function Login() {
               required
               disabled={loading}
               autoComplete="username"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
             />
           </div>
 

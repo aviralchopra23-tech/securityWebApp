@@ -2,6 +2,9 @@ const User = require("../models/User");
 const Location = require("../models/Location");
 const bcrypt = require("bcryptjs");
 
+const normalizeEmail = (value) =>
+  typeof value === "string" ? value.trim().toLowerCase() : "";
+
 // ================= GET SUPERVISORS =================
 exports.getSupervisors = async (req, res) => {
   try {
@@ -35,9 +38,14 @@ exports.updateUser = async (req, res) => {
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    const normalizedEmail = normalizeEmail(email);
+    if (email !== undefined && !normalizedEmail) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
     user.firstName = firstName ?? user.firstName;
     user.lastName = lastName ?? user.lastName;
-    user.email = email ?? user.email;
+    user.email = email !== undefined ? normalizedEmail : user.email;
 
     const trimmedPassword = typeof password === "string" ? password.trim() : "";
     if (trimmedPassword) {
@@ -80,10 +88,11 @@ exports.deleteUser = async (req, res) => {
 exports.createSupervisor = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
-    if (!firstName || !lastName || !email || !password)
+    const normalizedEmail = normalizeEmail(email);
+    if (!firstName || !lastName || !normalizedEmail || !password)
       return res.status(400).json({ message: "All fields are required" });
 
-    const exists = await User.findOne({ email });
+    const exists = await User.findOne({ email: normalizedEmail });
     if (exists) return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -91,7 +100,7 @@ exports.createSupervisor = async (req, res) => {
     const supervisor = await User.create({
       firstName,
       lastName,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       role: "SUPERVISOR",
       assignedLocationId: null
@@ -108,10 +117,11 @@ exports.createSupervisor = async (req, res) => {
 exports.createGuard = async (req, res) => {
   try {
     const { firstName, lastName, email, password, assignedLocationIds = [] } = req.body;
-    if (!firstName || !lastName || !email || !password)
+    const normalizedEmail = normalizeEmail(email);
+    if (!firstName || !lastName || !normalizedEmail || !password)
       return res.status(400).json({ message: "All fields are required" });
 
-    const exists = await User.findOne({ email });
+    const exists = await User.findOne({ email: normalizedEmail });
     if (exists) return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -119,7 +129,7 @@ exports.createGuard = async (req, res) => {
     const guard = await User.create({
       firstName,
       lastName,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       role: "GUARD",
       assignedLocationIds
