@@ -5,6 +5,11 @@ const jwt = require("jsonwebtoken");
 const normalizeEmail = (value) =>
   typeof value === "string" ? value.trim().toLowerCase() : "";
 
+const buildExactEmailRegex = (email) => {
+  const escaped = email.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^${escaped}$`, "i");
+};
+
 // REGISTER (Owner creates users later — for now open)
 exports.register = async (req, res) => {
   try {
@@ -15,7 +20,7 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    const existingUser = await User.findOne({ email: normalizedEmail });
+    const existingUser = await User.findOne({ email: buildExactEmailRegex(normalizedEmail) });
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
@@ -46,7 +51,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const user = await User.findOne({ email: normalizedEmail });
+    const user = await User.findOne({ email: buildExactEmailRegex(normalizedEmail) });
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
