@@ -1,0 +1,234 @@
+.schedulePage {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  background: #f4f4f5;
+}
+
+.scheduleWrapper {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+  max-width: 40rem;
+  width: 100%;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scheduleWrapper:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+}
+
+.scheduleTitle {
+  font-size: 2.5rem;          /* slightly bigger for impact */
+  font-weight: 700;           /* strong but elegant */
+  font-family: 'Playfair Display', serif; /* classic, stylish font */
+  color: #8b0505;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #f5c2c2;
+  padding-bottom: 0.5rem;
+
+  /* Subtle shadow for depth */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.scheduleInfo {
+  font-size: 0.95rem;
+  color: #555555;
+  line-height: 1.5;
+}
+
+.inputGroupConnected {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroupConnected label {
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+.inputGroupConnected input,
+.inputGroupConnected select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.inputGroupConnected input:focus,
+.inputGroupConnected select:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185,28,28,0.12);
+  outline: none;
+  background: #fff5f5;
+}
+
+.inputGroupConnected select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23b91c1c' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px 8px;
+  padding-right: 2rem;
+}
+
+.btnPrimary {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #b91c1c, #ef4444);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 18px rgba(185,28,28,0.25);
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(185,28,28,0.35);
+}
+
+.btnSecondary {
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  border: 1px solid #b91c1c;
+  background: #ffffff;
+  color: #b91c1c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnSecondary:hover {
+  background: #fee2e2;
+  box-shadow: 0 2px 6px rgba(185,28,28,0.15);
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 34rem;
+  padding: 2rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  animation: modalFade 0.25s ease;
+}
+
+.modal h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+.confirmDetails div {
+  padding: 0.5rem 0.75rem;
+  background: #f4f4f5;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.errorText {
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.successText {
+  color: #2f855a;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+@keyframes modalFade {
+  from { opacity: 0; transform: translateY(1rem) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 48rem) {
+  .scheduleWrapper {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* Primary Button - professional, smaller */
+.btnPrimary {
+  width: auto;
+  min-width: 120px;
+  padding: 0.6rem 1.2rem; /* smaller than before */
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 0.5rem; /* subtle rounding */
+  background: #8b1c1c; /* muted deep red */
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(139,28,28,0.2);
+}
+
+.btnPrimary:hover {
+  background: #a12222; /* slightly lighter on hover */
+  box-shadow: 0 5px 15px rgba(139,28,28,0.25);
+  transform: translateY(-1px);
+}
+
+.btnPrimary:active {
+  background: #7a1818;
+  box-shadow: 0 3px 10px rgba(139,28,28,0.15);
+  transform: translateY(0);
+}
+
+/* Secondary Button - professional muted */
+.btnSecondary {
+  padding: 0.55rem 1.1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid #8b1c1c; /* muted dark red */
+  background: #ffffff;
+  color: #8b1c1c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnSecondary:hover {
+  background: #f5f2f2; /* subtle hover */
+  box-shadow: 0 2px 6px rgba(139,28,28,0.1);
+}

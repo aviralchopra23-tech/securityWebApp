@@ -1,177 +1,137 @@
-/* ======================= WRAPPER & TITLE ======================= */
-.edit-schedule-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding-bottom: 40px;
+/* CENTERED WRAPPER */
+.edit-schedule-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #f5f5f5;
+  min-height: 100vh;
 }
 
+/* MAIN CARD */
+.edit-schedule-card {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 900px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+/* TITLE */
 .edit-title {
-  font-size: 26px;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 18px;
-  color: #0f172a;
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+  color: #111;
+  margin-bottom: 28px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-/* ======================= DATE RANGE ======================= */
+/* DATE RANGE */
 .date-row {
   display: flex;
   gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-bottom: 28px;
 }
-
-.date-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
 .date-field label {
-  font-size: 13px;
   font-weight: 600;
+  font-size: 13px;
   color: #475569;
 }
-
 .date-field input {
-  padding: 10px 12px;
+  padding: 10px;
   border-radius: 10px;
   border: 1px solid #cbd5e1;
   font-size: 14px;
+  width: 150px;
 }
 
-/* ======================= DAYS ======================= */
-.edit-day-card {
-  background: #ffffff;
-  border: 1px solid #dde3ea;
+/* DAY CARDS */
+.day-card {
+  margin-bottom: 20px;
+  background: #fafafa;
   border-radius: 14px;
   padding: 18px 20px;
-  margin-bottom: 18px;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08),
-              0 2px 6px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
 }
-
-.edit-day-header {
+.day-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
+.day-header h3 { font-weight: 700; color: #111; }
 
-.edit-day-header h3 {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  color: #0f172a;
-}
-
-/* ======================= ADD / REMOVE / SAVE BUTTONS ======================= */
-
-/* Add Shift Button - Black Themed */
-.btn-add {
-  padding: 8px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 8px;
-  border: 1px solid #000000;
-  background-color: #ffffff;
-  color: #000000;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  outline: none;
-}
-
-.btn-add:hover {
-  background-color: #000000;
-  color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  transform: translateY(-1px);
-}
-
-.btn-add:active {
-  background-color: #222222;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: translateY(0);
-}
-
-/* Remove Shift Button */
-.btn-remove {
-  align-self: flex-end;
-  padding: 8px 12px;
-  font-size: 12px;
-  border-radius: 8px;
-  border: 1px solid #fecaca;
-  background: #fef2f2;
-  color: #991b1b;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  outline: none;
-}
-
-.btn-remove:hover { 
-  background: #fee2e2; 
-}
-
-/* Save Schedule Button */
-.btn-save {
-  display: block;
-  margin: 26px;
-  margin-left: 2px;
-  padding: 10px 20px;
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 14px;
-  background-color: #ffffff;
-  color: #580303;
-  border: 2px solid #ffffff;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  outline: none;
-}
-
-.btn-save:hover {
-  background-color: #fcfcfc;
-  border: 2px solid #fcf8f8;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  transform: translateY(-1px);
-}
-
-.btn-save:active {
-  background-color: #fdfbfb;
-  border: 2px solid #111111;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transform: translateY(0);
-}
-
-/* ======================= SHIFT ROW ======================= */
-.shift-edit-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr auto;
-  gap: 14px;
-  padding: 12px;
+/* SHIFT ROW */
+.shift-list { display: flex; flex-direction: column; gap: 10px; }
+.shift-row {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  background: #fff;
   border-radius: 12px;
-  background: #f8fafc;
   border: 1px solid #e2e8f0;
-  margin-top: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: all 0.15s ease;
 }
+.shift-row:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 
-.shift-edit-row label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #475569;
-  margin-bottom: 4px;
-  display: block;
-}
-
-.shift-edit-row input,
-.shift-edit-row select {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
+.shift-input { display: flex; flex-direction: column; flex: 1; min-width: 120px; }
+.shift-input label { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+.shift-input input, .shift-input select {
+  padding: 8px; border-radius: 8px; border: 1px solid #cbd5e1;
   font-size: 13px;
 }
 
-/* ======================= MOBILE ======================= */
-@media (max-width: 640px) {
-  .edit-day-card { padding: 14px 16px; }
+/* BUTTONS */
+.btn-add {
+  padding: 6px 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #111;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-add:hover { background: #111; color: #fff; }
+
+.btn-remove {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+  border: 1px solid #f87171;
+  background: #fee2e2;
+  color: #991b1b;
+  cursor: pointer;
+}
+.btn-remove:hover { background: #fecaca; }
+
+.btn-save {
+  margin: 20px auto 0;
+  display: block;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 14px;
+  background: #fff;
+  color: #b91c1c;
+  border: 2px solid #b91c1c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-save:hover { background: #b91c1c; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+
+/* ERROR */
+.error-text { color: #991b1b; font-weight: 600; margin-top: 12px; text-align: center; }
+
+/* MOBILE */
+@media(max-width:640px) {
+  .shift-row { flex-direction: column; }
+  .date-row { flex-direction: column; }
+  .shift-input { min-width: 100%; }
 }

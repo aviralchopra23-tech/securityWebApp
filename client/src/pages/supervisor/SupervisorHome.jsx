@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { getShiftsForPayPeriod } from "../../api/payPeriodApi";
 import api from "../../api/axios";
 
-// Page-specific styles
-import "../../styles/dashboard.css"; // .home-dashboard, metrics cards, progress bars, daily-bar-chart
+// Styles
+import "../../styles/dashboard.css";
 
 // Helper functions
 const calculateShiftHours = (start, end) => {
@@ -72,10 +72,9 @@ export default function SupervisorHome() {
     <div className="home-dashboard">
       {/* HEADER */}
       <div className="home-header">
-        <h2>Dashboard</h2>
         {userName && (
           <p className="home-subtitle welcome-text">
-            Welcome, <strong>{userName}</strong>
+            Welcome, <strong className="user-red">{userName}</strong>
           </p>
         )}
         <p className="home-subtitle">

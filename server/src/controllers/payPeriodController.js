@@ -1,5 +1,25 @@
+// models used throughout this controller
+//
+// design notes:
+// * pay periods are implicitly defined as first‑half (1–15) or second‑half
+//   (16–end) of each month.  rather than storing a separate "active" flag, we
+//   resolve the appropriate interval on every request using `resolvePayPeriod()`
+//   which simply branches on the day-of-month.  this keeps the system
+//   stateless: on the 1st/16th the current window automatically rolls forward.
+// * submissions are stored in `PayPeriodSubmission` with a compound unique
+//   index (userId, payPeriodStart, payPeriodEnd) so there is exactly one record
+//   per user/period.  the owner dashboard reconstructs status by querying this
+//   collection.
+// * a lightweight `PayPeriod` model exists for cases where metadata is needed
+//   or when you want to pre‑seed upcoming periods; it is **not required** for
+//   the core open/close logic.
+// * scheduled jobs (cron) are only necessary for ancillary tasks such as
+//   reminders, archiving, or seeding the PayPeriod collection; they are NOT
+//   needed to move a pay period from upcoming→open→closed.
+
 const GuardShiftEntry = require("../models/GuardShiftEntry");
 const PayPeriodSubmission = require("../models/PayPeriodSubmission");
+const PayPeriod = require("../models/PayPeriod");
 const User = require("../models/User");
 
 // helper to safely send an error response when `next` may not be available
@@ -259,19 +279,86 @@ exports.getCurrentPayPeriodStatus = async (req, res, next) => {
 ================================ */
 exports.getOwnerPayPeriodReport = async (req, res, next) => {
   try {
-    const submissions = await PayPeriodSubmission.find()
-      .populate("userId", "firstName lastName role")
-      .populate("paycheckCollectionLocationId", "name");
+    // compute live + latest-closed period boundaries dynamically
+    const today = new Date();
+    const { start: liveStart, end: liveEnd } = resolvePayPeriod(today);
+
+    // latest closed period is always the one immediately before the live period
+    const prevDate = new Date(liveStart);
+    prevDate.setDate(prevDate.getDate() - 1);
+    const { start: reviewStart, end: reviewEnd } = resolvePayPeriod(prevDate);
+
+    const nextDate = new Date(liveEnd);
+    nextDate.setDate(nextDate.getDate() + 1);
+    const { start: nextStart, end: nextEnd } = resolvePayPeriod(nextDate);
 
     const users = await User.find({ role: { $in: ["GUARD", "SUPERVISOR"] } });
 
+    // fetch submissions for latest closed period (owner review period)
+    const reviewSubs = await PayPeriodSubmission.find({
+      payPeriodStart: reviewStart,
+      payPeriodEnd: reviewEnd,
+    })
+        .populate("userId", "firstName lastName role")
+        .populate("shifts.locationId", "name")
+        .populate("paycheckCollectionLocationId", "name");
+
+    // build map of latest-closed submissions for quick lookup (skip deleted users)
+    const submittedReviewIds = new Set(
+      reviewSubs
+        .map((s) => (s.userId ? s.userId._id.toString() : null))
+        .filter(Boolean)
+    );
+
+    const pendingReview = users.filter((u) => !submittedReviewIds.has(u._id.toString()));
+
+    // assemble older closed-period history (exclude latest closed review period)
+    const previous = [];
+
+    // Prefer explicit PayPeriod collection only when it actually has rows.
+    const closedPeriods = await PayPeriod.find({ start: { $lt: reviewStart } }).sort({ start: -1 });
+
+    if (closedPeriods.length > 0) {
+      for (const p of closedPeriods) {
+        const subs = await PayPeriodSubmission.find({
+          payPeriodStart: p.start,
+          payPeriodEnd: p.end,
+        })
+          .populate("userId", "firstName lastName role")
+          .populate("shifts.locationId", "name")
+          .populate("paycheckCollectionLocationId", "name");
+        previous.push({ start: p.start, end: p.end, submissions: subs });
+      }
+    } else {
+      // fallback: derive from submission history when PayPeriod collection is empty
+      const olderSubs = await PayPeriodSubmission.find({ payPeriodEnd: { $lt: reviewStart } })
+        .populate("userId", "firstName lastName role")
+        .populate("shifts.locationId", "name")
+        .populate("paycheckCollectionLocationId", "name")
+        .sort({ payPeriodStart: -1 });
+
+      const periodMap = new Map();
+      olderSubs.forEach((s) => {
+        const key = s.payPeriodStart.toISOString() + "_" + s.payPeriodEnd.toISOString();
+        if (!periodMap.has(key)) {
+          periodMap.set(key, { start: s.payPeriodStart, end: s.payPeriodEnd, submissions: [] });
+        }
+        periodMap.get(key).submissions.push(s);
+      });
+      periodMap.forEach((v) => previous.push(v));
+    }
+
     res.json({
-      submitted: submissions,
-      pendingUsers: users.filter(u =>
-  !submissions.some(s =>
-    s.userId?._id?.toString() === u._id.toString()
-  )
-)
+      previous,
+      current: {
+        start: reviewStart,
+        end: reviewEnd,
+        submissions: reviewSubs,
+        pending: pendingReview,
+      },
+      // next section in UI continues to show the following period for planning
+      next: { start: nextStart, end: nextEnd },
+      live: { start: liveStart, end: liveEnd },
     });
   } catch (err) {
     return sendError(res, err);

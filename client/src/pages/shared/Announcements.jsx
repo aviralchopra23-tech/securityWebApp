@@ -1,9 +1,12 @@
+// src/pages/guard/GuardAnnouncements.jsx
 import { useEffect, useState } from "react";
 import { getAnnouncements, createAnnouncement } from "../../api/announcementApi";
-import "../../styles/supervisorAnnouncements.css";
+import "../../styles/guardAnnouncements.css"; // reuse your CSS
 
+// React Icons
+import { FaUser, FaClock, FaMapMarkerAlt, FaBullhorn } from "react-icons/fa";
 
-export default function Announcements({ canCreate }) {
+export default function GuardAnnouncements({ canCreate }) {
   const [announcements, setAnnouncements] = useState([]);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -32,7 +35,6 @@ export default function Announcements({ canCreate }) {
         message,
         locationScope: "SPECIFIC",
       });
-
       setTitle("");
       setMessage("");
       fetchAnnouncements();
@@ -44,30 +46,37 @@ export default function Announcements({ canCreate }) {
   };
 
   return (
-    <div className="schedule-container">
-      <h2>Announcements</h2>
+    <div className="guard-content">
+      <h2>
+        <FaBullhorn style={{ marginRight: "6px" }} /> Announcements
+      </h2>
 
       {canCreate && (
-        <div className="schedule-card">
+        <div className="guard-card">
           <h3>Create Announcement</h3>
 
           <input
-            className="schedule-input"
+            className="guard-input"
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-
           <textarea
-            className="schedule-input"
+            className="guard-input"
             placeholder="Message"
             rows="4"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
 
+          {/* Dummy Scope row */}
+          <div className="guard-scope">
+            <span>Scope:</span>
+            <span>Specific Location</span>
+          </div>
+
           <button
-            className="primary-btn"
+            className="guard-btn"
             onClick={handleCreate}
             disabled={loading}
           >
@@ -81,15 +90,22 @@ export default function Announcements({ canCreate }) {
       )}
 
       {announcements.map((a) => (
-        <div key={a._id} className="schedule-card">
-          <h3>📢 {a.title}</h3>
+        <div key={a._id} className="guard-card">
+          <h3>
+            <FaBullhorn style={{ marginRight: "6px" }} /> {a.title}
+          </h3>
           <p>{a.message}</p>
 
-          <div className="schedule-meta">
-            <span>👤 {a.createdByRole}</span>
-            <span>🕒 {new Date(a.createdAt).toLocaleString()}</span>
+          <div className="guard-meta">
             <span>
-              📍 {a.locationScope === "ALL" ? "All Locations" : "Specific Location"}
+              <FaUser /> {a.createdByRole}
+            </span>
+            <span>
+              <FaClock /> {new Date(a.createdAt).toLocaleString()}
+            </span>
+            <span>
+              <FaMapMarkerAlt />{" "}
+              {a.locationScope === "ALL" ? "All Locations" : "Specific Location"}
             </span>
           </div>
         </div>

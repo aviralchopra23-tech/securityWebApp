@@ -88,13 +88,11 @@ export default function GuardHome() {
   const maxDailyHours =
     dailyBars && Math.max(...dailyBars.map((d) => d.hours), 8);
 
-
   return (
     <div className="home-dashboard">
       {/* HEADER */}
       <div className="home-header">
-        <h2>Dashboard</h2>
-
+        {/* Dashboard heading removed */}
         {userName && (
           <p className="home-subtitle welcome-text">
             Welcome, <strong>{userName}</strong>
@@ -170,7 +168,6 @@ export default function GuardHome() {
 
               })}
             </div>
-
 
             <div className="section-footer">
               {totalHours.toFixed(2)} hrs logged •{" "}

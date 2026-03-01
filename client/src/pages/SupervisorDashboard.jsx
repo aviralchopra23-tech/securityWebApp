@@ -19,7 +19,10 @@ const SHIFT_ROWS = [
   { startTime: "16:00", endTime: "00:00" }
 ];
 
+import { useLocation } from "react-router-dom";
+
 export default function SupervisorDashboard() {
+  const location = useLocation();
   const [people, setPeople] = useState([]);
   const [validFrom, setValidFrom] = useState("");
   const [validTill, setValidTill] = useState("");
@@ -43,9 +46,40 @@ export default function SupervisorDashboard() {
         console.error("LOAD GUARDS ERROR:", err.response?.data || err.message);
         setMessage(err.response?.data?.message || "Failed to load guards");
       }
-
     };
+
+    // also load the active schedule so the form reflects whatever is current
+    const loadSchedule = async () => {
+      try {
+        const sched = await getActiveSchedule();
+        if (sched) {
+          const from = sched.validFrom?.slice(0, 10);
+          if (from) setValidFrom(from);
+          const till = sched.validTill?.slice(0, 10);
+          if (till) setValidTill(till);
+
+          // map shifts into the grid structure
+          const gridObj = {};
+          DAYS.forEach(d => {
+            gridObj[d.key] = Array(SHIFT_ROWS.length).fill("");
+          });
+          (sched.shifts || []).forEach((s) => {
+            const dayKey = s.day;
+            // find index by matching startTime/endTime pattern
+            const idx = SHIFT_ROWS.findIndex(r => r.startTime === s.startTime && r.endTime === s.endTime);
+            if (idx !== -1 && dayKey && gridObj[dayKey]) {
+              gridObj[dayKey][idx] = s.userId?._id || "";
+            }
+          });
+          setGrid(gridObj);
+        }
+      } catch (e) {
+        // ignore failures; user can still create
+      }
+    };
+
     loadPeople();
+    loadSchedule();
   }, []);
 
   const personOptions = useMemo(() => people, [people]);
@@ -59,11 +93,23 @@ export default function SupervisorDashboard() {
     }));
   };
 
+  const canonicalRange = useMemo(() => {
+    if (!validFrom) return null;
+    const d = new Date(validFrom);
+    const dow = d.getDay();
+    const offset = (dow + 6) % 7;
+    const start = new Date(d);
+    start.setDate(d.getDate() - offset);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    return { start, end };
+  }, [validFrom]);
+
   const handleSubmit = async () => {
     setMessage("");
 
-    if (!validFrom || !validTill) {
-      setMessage("Please select Valid From and Valid Till");
+    if (!validFrom) {
+      setMessage("Please select a Valid From date");
       return;
     }
 
@@ -92,22 +138,32 @@ export default function SupervisorDashboard() {
       await createWeeklySchedule({ validFrom, validTill, shifts });
       setMessage("Schedule saved successfully");
     } catch (e) {
-      setMessage("Failed to save schedule");
+      console.error("Schedule save error:", e.response?.data || e.message || e);
+      setMessage(e.response?.data?.message || "Failed to save schedule");
     }
   };
 
   return (
     <div style={{ padding: 20 }}>
+      {/* if we navigated here after saving, location.state.savedSchedule may exist */}
       <h2>Supervisor Weekly Shift Schedule</h2>
       <button onClick={logout}>Logout</button>
 
       <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
         <div>
-          <label>Valid From: </label>
+          <label>Valid From (Monday): </label>
           <input
             type="date"
             value={validFrom}
-            onChange={e => setValidFrom(e.target.value)}
+            onChange={e => {
+              const d = e.target.value;
+              setValidFrom(d);
+              if (d) {
+                const dObj = new Date(d);
+                dObj.setDate(dObj.getDate() + 6);
+                setValidTill(dObj.toISOString().slice(0, 10));
+              }
+            }}
           />
         </div>
         <div>
@@ -115,10 +171,15 @@ export default function SupervisorDashboard() {
           <input
             type="date"
             value={validTill}
-            onChange={e => setValidTill(e.target.value)}
+            readOnly
           />
         </div>
       </div>
+      {canonicalRange && (
+        <p style={{ marginTop: 8, fontStyle: "italic" }}>
+          Actual week: {canonicalRange.start.toLocaleDateString()} → {canonicalRange.end.toLocaleDateString()}
+        </p>
+      )}
 
       <table
         border="1"

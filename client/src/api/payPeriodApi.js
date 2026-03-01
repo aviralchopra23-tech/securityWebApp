@@ -135,7 +135,41 @@ export const getCurrentPayPeriodStatus = async () => {
 export const getOwnerPayPeriodReport = async () => {
   try {
     const res = await api.get("/payperiod/report");
-    return res.data;
+    const data = res.data || {};
+
+    const normalizePeriod = (p) =>
+      p
+        ? {
+            ...p,
+            start: p.start ? new Date(p.start) : null,
+            end: p.end ? new Date(p.end) : null,
+          }
+        : null;
+
+    const normalizeSubmission = (s) => {
+      return {
+        ...s,
+        payPeriodStart: s.payPeriodStart ? new Date(s.payPeriodStart) : null,
+        payPeriodEnd: s.payPeriodEnd ? new Date(s.payPeriodEnd) : null,
+      };
+    };
+
+    const previous = (data.previous || []).map((period) => ({
+      ...normalizePeriod(period),
+      submissions: (period.submissions || []).map(normalizeSubmission),
+    }));
+
+    const current = data.current
+      ? {
+          ...normalizePeriod(data.current),
+          submissions: (data.current.submissions || []).map(normalizeSubmission),
+          pending: data.current.pending || [],
+        }
+      : null;
+
+    const next = normalizePeriod(data.next);
+
+    return { previous, current, next };
   } catch (err) {
     console.error("Error fetching owner pay period report:", err);
     throw err.response?.data || err;

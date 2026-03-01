@@ -1,19 +1,19 @@
 /* ======================================================
-   SUPERVISOR ANNOUNCEMENTS — CLEAN MODERN VERSION
+   GUARD ANNOUNCEMENTS — CLEAN MODERN VERSION
    (No Color Changes)
 ====================================================== */
 
-.supervisor-content {
+.guard-content {
   display: flex;
   flex-direction: column;
   gap: 28px;
   padding: 32px 0;
-  max-width: 900px;              /* Prevent full screen stretch */
-  margin: 0 auto;                /* Center content */
+  max-width: 900px;              
+  margin: 0 auto;                
 }
 
 /* Page Title */
-.supervisor-content h2 {
+.guard-content h2 {
   font-size: 22px;
   font-weight: 600;
   color: #111827;
@@ -24,25 +24,25 @@
 }
 
 /* CARD */
-.supervisor-card {
+.guard-card {
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 24px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 16px;           /* Softer corners */
+  border-radius: 16px;           
   box-shadow: 0 10px 25px rgba(0,0,0,0.04);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.supervisor-card:hover {
+.guard-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(0,0,0,0.06);
 }
 
 /* Card Heading */
-.supervisor-card h3 {
+.guard-card h3 {
   font-size: 16px;
   font-weight: 600;
   color: #111827;
@@ -52,7 +52,7 @@
 }
 
 /* INPUTS */
-.supervisor-input {
+.guard-input {
   width: 100%;
   padding: 12px 14px;
   font-size: 14px;
@@ -63,24 +63,24 @@
   transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
-.supervisor-input::placeholder {
+.guard-input::placeholder {
   color: #9ca3af;
 }
 
-.supervisor-input:focus {
+.guard-input:focus {
   outline: none;
   border-color: #eb1a1a;
   box-shadow: 0 0 0 3px rgba(235, 26, 26, 0.15);
 }
 
 /* TEXTAREA */
-textarea.supervisor-input {
+textarea.guard-input {
   resize: vertical;
   min-height: 100px;
 }
 
 /* Scope Row */
-.supervisor-scope {
+.guard-scope {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
@@ -91,7 +91,7 @@ textarea.supervisor-input {
 }
 
 /* Button */
-.supervisor-btn {
+.guard-btn {
   align-self: flex-start;
   padding: 10px 20px;
   font-size: 14px;
@@ -104,19 +104,19 @@ textarea.supervisor-input {
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-.supervisor-btn:hover {
+.guard-btn:hover {
   background: #6b2b2b;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-.supervisor-btn:disabled {
+.guard-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 /* Announcement Text */
-.supervisor-card p {
+.guard-card p {
   font-size: 14px;
   color: #374151;
   line-height: 1.7;
@@ -124,7 +124,7 @@ textarea.supervisor-input {
 }
 
 /* Meta Row */
-.supervisor-meta {
+.guard-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -135,7 +135,7 @@ textarea.supervisor-input {
   border-top: 1px solid #f3f4f6;
 }
 
-.supervisor-meta span {
+.guard-meta span {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -143,34 +143,34 @@ textarea.supervisor-input {
 
 /* MOBILE */
 @media (max-width: 768px) {
-  .supervisor-content {
+  .guard-content {
     padding: 20px 16px;
     gap: 20px;
   }
 
-  .supervisor-card {
+  .guard-card {
     padding: 18px;
     border-radius: 14px;
   }
 
-  .supervisor-content h2 {
+  .guard-content h2 {
     font-size: 18px;
   }
 
-  .supervisor-card h3 {
+  .guard-card h3 {
     font-size: 14px;
   }
 
-  .supervisor-input {
+  .guard-input {
     font-size: 13px;
   }
 
-  .supervisor-btn {
+  .guard-btn {
     font-size: 13px;
     padding: 9px 16px;
   }
 
-  .supervisor-meta {
+  .guard-meta {
     font-size: 11px;
     gap: 12px;
   }

@@ -62,7 +62,18 @@ router.get(
 
 /**
  * GET /api/payperiod/report
- * Owner-only dashboard data: submitted periods + pending users
+ * Owner-only dashboard data.  Response has the form:
+ * {
+ *   previous: [
+ *     { start, end, submissions: [ ... ] },   // closed periods, newest first
+ *     ...
+ *   ],
+ *   current: { start, end, submissions: [...], pending: [...] },
+ *   next: { start, end }                      // upcoming period
+ * }
+ * Dates are serialized as ISO strings; client typically converts them to Date
+ * objects.  The endpoint computes the appropriate intervals dynamically, so
+ * no cron job is required to flip a period from upcoming → open → closed.
  */
 router.get(
   "/report",

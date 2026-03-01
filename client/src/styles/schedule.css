@@ -1,198 +1,305 @@
-/* ======================= SCHEDULE WRAPPER ======================= */
-.schedule-wrapper {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 16px;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  font-family: "Inter", sans-serif;
+/* ==================== PAGE WRAPPER ==================== */
+.schedulePage {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  background: #f4f4f5;
 }
 
-/* ======================= TITLES & SUBTITLES ======================= */
-.schedule-title {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 4px;
-  color: #510f53;
-  position: relative;
-}
-
-.schedule-subtitle {
-  font-size: 14px;
-  color: #111111;
-  margin-bottom: 24px;
-}
-
-/* ======================= NO SCHEDULE MESSAGE ======================= */
-.no-schedule-message {
-  font-size: 14px;
-  margin-bottom: 16px;
-  color: #6b7280; /* medium gray */
-  text-align: left;
-}
-
-/* ======================= NO SHIFTS / ERROR TEXT ======================= */
-.no-shifts,
-.error-text,
-.success-text,
-.info-text {
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-
-.no-shifts {
-  color: #1f2937;
-}
-
-/* ======================= DAY CARDS ======================= */
-.day-card {
+.scheduleWrapper {
   background: #ffffff;
-  border: 1px solid #dde3ea;
-  border-radius: 14px;
-  padding: 18px 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08),
-              0 2px 6px rgba(15, 23, 42, 0.04);
+  border-radius: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+  max-width: 40rem;
+  width: 100%;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.day-card.compact {
-  padding: 12px 16px;
+.scheduleWrapper:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
 }
 
-.day-title {
-  font-size: 16px;
+/* ==================== HEADER ==================== */
+.scheduleTitle {
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 12px;
-  color: #0f172a;
+  font-family: 'Playfair Display', serif;
+  color: #8b0505;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #f5c2c2;
+  padding-bottom: 0.5rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.scheduleInfo {
+  font-size: 0.95rem;
+  color: #555555;
+  line-height: 1.5;
 }
 
-.shift-row {
+/* ==================== STATUS BADGES ==================== */
+.status-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.submitted {
+  background: #10b981;
+  color: #fff;
+}
+
+.status-badge.pending {
+  background: #fee2e2;
+  border: 1px solid #b91c1c;
+  color: #b91c1c;
+}
+
+/* ==================== SHIFT ROW ==================== */
+.shiftRow {
   display: flex;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid #e5e7eb;
+  justify-content: space-between;
   align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: #fefefe;
+  border: 1px solid #f3f3f3;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.shift-row:last-child {
-  border-bottom: none;
+.shiftRow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(185,28,28,0.12);
 }
 
-.shift-input {
-  flex: 1;
-  font-size: 14px;
-  color: #1f2937;
+.timeBadge {
+  font-size: 0.875rem;
+  color: #111827;
 }
 
-.guard-input {
-  text-align: right;
-  font-weight: 500;
+.shiftActions button {
+  margin-left: 0.5rem;
 }
 
-/* ======================= COMPACT ROWS ======================= */
-.compact-row {
-  font-size: 13px;
-  padding: 6px 0;
-}
-
-/* ======================= FEEDBACK MESSAGES ======================= */
-.error-text {
-  color: #991b1b;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 12px;
-  padding: 12px 14px;
-  text-align: center;
-}
-
-.success-text {
-  color: #065f46;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  border-radius: 12px;
-  padding: 12px 14px;
-  text-align: center;
-}
-
-.info-text {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  color: #065f46;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-
-/* ======================= CREATE BUTTON ======================= */
-.btn-create-schedule {
-  display: block;
-  margin: 12px auto 16px 0;
-  padding: 10px 16px;
-  background-color: #531f0f;
-  color: #ffffff;
+/* ==================== BUTTONS ==================== */
+.btnPrimary {
+  background: #8b1c1c;
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
   border: none;
-  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(139,28,28,0.2);
+  transition: all 0.2s ease;
+}
+
+.btnPrimary:hover {
+  background: #a12222;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(139,28,28,0.25);
+}
+
+.btnPrimary:active {
+  background: #7a1818;
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(139,28,28,0.15);
+}
+
+.btnPrimary.submit {
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+  width: auto;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.btnSecondary {
+  background: #fff;
+  border: 1px solid #8b1c1c;
+  color: #8b1c1c;
+  padding: 0.55rem 1.1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnSecondary:hover {
+  background: #fee2e2;
+}
+
+.btnDanger {
+  background: #fef2f2;
+  border: 1px solid #f87171;
+  color: #b91c1c;
+  padding: 0.55rem 1.1rem;
+  border-radius: 0.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.2s ease;
 }
 
-.btn-create-schedule:hover {
-  background-color: #3e0a3d;
+.btnDanger:hover {
+  background: #b91c1c;
+  color: #fff;
 }
 
-/* ======================= MODALS ======================= */
-.modal-backdrop {
+.modalActions .btnPrimary,
+.modalActions .btnSecondary,
+.modalActions .btnDanger {
+  margin-left: 0.5rem;
+}
+
+.modalActions .btnPrimary:first-child,
+.modalActions .btnSecondary:first-child,
+.modalActions .btnDanger:first-child {
+  margin-left: 0;
+}
+
+/* ==================== FORM ==================== */
+.inputGroupConnected {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroupConnected label {
+  font-weight: 600;
+  color: #333;
+}
+
+.inputGroupConnected select {
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.inputGroupConnected select:focus {
+  outline: none;
+  border-color: #b91c1c;
+  background: #fff5f5;
+  box-shadow: 0 0 0 2px rgba(185,28,28,0.12);
+}
+
+/* ==================== FEEDBACK ==================== */
+.errorText {
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.successText {
+  color: #2f855a;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.warning-text {
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+/* ==================== NO SHIFTS ==================== */
+.noShifts {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* ==================== MODALS ==================== */
+.modalBackdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.55);
+  background: rgba(0,0,0,0.35);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1000;
+  align-items: center;
+  z-index: 2000;
+  padding: 2rem 1rem;
+  overflow-y: auto;
 }
 
 .modal {
-  width: 400px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid #dde3ea;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
-  text-align: center;
+  background: #fff;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 34rem;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: modalFade 0.25s ease;
+  border: 1px solid #f3f3f3;
 }
 
 .modal h3 {
-  font-size: 18px;
+  margin: 0;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 10px;
+  color: #8b1c1c;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
-.modal p {
-  font-size: 14px;
-  color: #475569;
-  margin-bottom: 22px;
-}
-
-.modal-actions {
+.modal label {
   display: flex;
-  gap: 12px;
-}
-
-.modal-actions button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
+  flex-direction: column;
   font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  gap: 0.25rem;
 }
 
-/* ======================= OTHER ELEMENTS ======================= */
-.shift-row.guard-x {
-  background: #f9fafb;
+.modal input[type="datetime-local"],
+.modal select {
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.modal input[type="datetime-local"]:focus,
+.modal select:focus {
+  outline: none;
+  border-color: #b91c1c;
+  background: #fff5f5;
+  box-shadow: 0 0 0 2px rgba(185,28,28,0.12);
+}
+
+.confirmDetails li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+@keyframes modalFade {
+  from { opacity: 0; transform: translateY(1rem) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 48rem) {
+  .scheduleWrapper {
+    padding: 2rem 1.5rem;
+  }
 }

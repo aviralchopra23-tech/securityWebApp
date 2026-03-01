@@ -95,15 +95,23 @@
 
 /* ================= SHIFT DETAILS ================= */
 
-details {
+.details-toggle {
   margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
 }
 
-summary {
+.details-toggle {
   font-size: 13px;
   font-weight: 600;
   color: #4338ca;
   cursor: pointer;
+}
+
+.details-content {
+  margin-top: 6px;
 }
 
 .shift-row {
@@ -175,6 +183,34 @@ summary {
 
 /* ================= MOBILE RESPONSIVE (SAFE) ================= */
 /* Desktop layout untouched */
+
+.period-section {
+  margin-bottom: 24px;
+}
+
+.period-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.period-toggle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1f2937;
+  cursor: pointer;
+  text-align: left;
+}
+
+.period-group {
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
 
 @media (max-width: 768px) {
   .report-grid {

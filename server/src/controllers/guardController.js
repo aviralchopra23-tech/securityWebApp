@@ -161,25 +161,9 @@ const enforcePrevPeriodOnlyIfPending = async (res, userId, shiftStartDate, sessi
 
 /* ================= LOCATION SCOPE HELPERS ================= */
 
-const normalizeIdArray = (arr) => (Array.isArray(arr) ? arr.map(String) : []);
-
-const assertLocationAllowedForActor = (req, res, locationId) => {
-  const role = req.user?.role;
-  const loc = String(locationId);
-
-  const assignedMany = normalizeIdArray(req.user?.assignedLocationIds);
-  const assignedSingle = req.user?.assignedLocationId ? String(req.user.assignedLocationId) : null;
-
-  // GUARD: must be in assignedLocationIds
-  if (role === "GUARD") {
-    if (!assignedMany.includes(loc)) {
-      res.status(403).json({ message: "Not assigned to this location" });
-      return false;
-    }
-  }
-
-  // SUPERVISOR: no location restriction; managers may add shifts anywhere.
-  // (Guards remain limited to their assigned location(s).)
+const assertLocationAllowedForActor = () => {
+  // GUARD/SUPERVISOR: no location restriction for shift entry.
+  // Any authenticated actor in allowed roles may add/edit using any valid location.
 
   return true;
 };

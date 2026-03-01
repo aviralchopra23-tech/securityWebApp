@@ -1,6 +1,6 @@
 /* ======================================================
    OWNER – GUARDS
-   ENTERPRISE LIGHT THEME (FINAL)
+   ENTERPRISE LIGHT THEME (CLEAN FIXED)
 ====================================================== */
 
 .guards-page {
@@ -42,7 +42,7 @@
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
 }
 
-/* ================= INPUTS — FORCE LIGHT ================= */
+/* ================= INPUTS ================= */
 
 .guards-page input {
   background-color: #ffffff !important;
@@ -101,30 +101,29 @@
   gap: 8px;
 }
 
-/* ================= PRIMARY ACTION ================= */
+/* ================= PRIMARY CREATE BUTTON ================= */
 
 .primary-btn {
   align-self: flex-start;
 
-  height: 34px;
-  padding: 0 16px;
+  height: 36px;
+  padding: 0 18px;
   font-size: 13px;
   font-weight: 600;
 
   border-radius: 8px;
-  border: 1px solid #00010a;
+  border: 1px solid #000000;
 
-  background: #010113;
+  background: #000000;
   color: #ffffff;
 
   cursor: pointer;
-  transition: background 0.15s ease;
-  margin-left: 10px;
+  transition: all 0.2s ease;
 }
 
 .primary-btn:hover {
   background: #6d0202;
-  border: #6d0202;
+  border-color: #6d0202;
 }
 
 /* ================= GUARD LIST ================= */
@@ -165,13 +164,49 @@
 
 .action-group {
   display: flex;
-  gap: 8px;
+  justify-content: flex-start;   /* 🔥 move to left */
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
 }
+/* ================= EDIT MODE BUTTONS ================= */
 
-.btn-edit,
-.btn-delete,
 .btn-save,
 .btn-cancel {
+  height: 36px;
+  min-width: 95px;
+  padding: 0 18px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* SAVE → BLACK HOVER */
+.btn-save:hover {
+  background: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+/* CANCEL → RED HOVER */
+.btn-cancel:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: #0f0000;
+}
+
+/* NORMAL EDIT / DELETE */
+
+.btn-edit,
+.btn-delete {
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
@@ -182,7 +217,7 @@
   color: #374151;
 
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease;
 }
 
 .btn-edit:hover {
@@ -193,16 +228,7 @@
   background: #fee2e2;
 }
 
-.btn-save:hover {
-  background: #dcfce7;
-  border-color: #22c55e;
-}
-
-.btn-cancel:hover {
-  background: #f3f4f6;
-}
-
-/* ================= EDIT MODE ================= */
+/* ================= EDIT BLOCK ================= */
 
 .edit-block {
   display: flex;
@@ -228,29 +254,15 @@
   }
 }
 
-/* ======================================================
-   CHECKBOX FIX — RESTORE MULTI-SELECT BEHAVIOR
-   Prevent text-input styles from affecting checkboxes
-====================================================== */
+/* ================= CHECKBOX FIX ================= */
 
-/* Reset checkbox sizing & appearance */
 .guards-page input[type="checkbox"] {
   width: 16px;
   height: 16px;
   padding: 0;
   margin: 0;
 
-  background: #ffffff;
-  border: 1px solid #cbd5f5;
-  border-radius: 4px;
-
-  appearance: auto;          /* 🔑 restore native checkbox */
+  appearance: auto;
   -webkit-appearance: auto;
-  accent-color: #6366f1;     /* modern, accessible */
-}
-
-/* Ensure checkbox labels align nicely */
-.checkbox-item {
-  align-items: center;
-  gap: 8px;
+  accent-color: #6366f1;
 }
