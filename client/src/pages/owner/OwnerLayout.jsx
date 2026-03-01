@@ -7,6 +7,7 @@ import "../../styles/ownerLayout.css";
 export default function OwnerLayout() {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const isHomeRoute = location.pathname === "/owner";
 
   const getLinkClass = (path) =>
     location.pathname === path ? "owner-link active" : "owner-link";
@@ -101,7 +102,7 @@ export default function OwnerLayout() {
         </nav>
       </header>
 
-      <main className="owner-content">
+      <main className={`owner-content ${isHomeRoute ? "with-watermark" : ""}`}>
         <Outlet />
       </main>
 

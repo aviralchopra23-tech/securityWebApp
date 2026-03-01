@@ -18,10 +18,33 @@ body {
 
 .main-content {
   flex: 1;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 32px;
   background: linear-gradient(180deg, #f9f2f1, #f1e6e6);
   border-radius: 20px;
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+.main-content.with-watermark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.9)),
+    url("../assets/king.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(62vw, 760px);
+  opacity: 0.24;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main-content.with-watermark > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* SIDEBAR */
@@ -104,16 +127,19 @@ body {
 }
 
 .nav-link-with-badge {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  position: relative;
+  display: block;
+  padding-right: 46px;
 }
 
 .nav-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   min-width: 22px;
   height: 22px;
   padding: 0 6px;
@@ -168,6 +194,11 @@ body {
 
 .layout.supervisor .nav-label-short {
   display: none;
+}
+
+.layout.supervisor .brand-logo {
+  background: transparent;
+  box-shadow: none;
 }
 
 /* MOBILE & TABLET SHRINKING SIDEBAR */

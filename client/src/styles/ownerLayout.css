@@ -120,9 +120,32 @@
 .owner-content {
   max-width: 1280px;
   margin: 0 auto;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 52px 36px 64px;
   width: 100%;
   flex: 1;
+}
+
+.owner-content.with-watermark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.9)),
+    url("../assets/king.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(62vw, 760px);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.owner-content.with-watermark > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ================= FOOTER ================= */

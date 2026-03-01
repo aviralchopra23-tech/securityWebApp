@@ -18,6 +18,7 @@ export default function GuardLayout() {
   const [announcementScope, setAnnouncementScope] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const location = useLocation();
+  const isHomeRoute = location.pathname === "/guard";
 
   const isAnnouncementsPage = location.pathname.startsWith("/guard/announcements");
   const { hasNewAnnouncements, unreadAnnouncementsCount, markAnnouncementsSeen } =
@@ -150,7 +151,7 @@ export default function GuardLayout() {
         </nav>
       </aside>
 
-      <main className="main-content">
+      <main className={`main-content ${isHomeRoute ? "with-watermark" : ""}`}>
         <Outlet />
       </main>
     </div>

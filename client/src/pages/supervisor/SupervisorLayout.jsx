@@ -17,6 +17,7 @@ export default function SupervisorLayout() {
   const [announcementScope, setAnnouncementScope] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const location = useLocation();
+  const isHomeRoute = location.pathname === "/supervisor";
 
   const isAnnouncementsPage = location.pathname.startsWith("/supervisor/announcements");
   const { hasNewAnnouncements, unreadAnnouncementsCount, markAnnouncementsSeen } =
@@ -136,7 +137,7 @@ export default function SupervisorLayout() {
         </nav>
       </aside>
 
-      <main className="main-content">
+      <main className={`main-content ${isHomeRoute ? "with-watermark" : ""}`}>
         <Outlet />
       </main>
     </div>

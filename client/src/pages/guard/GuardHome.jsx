@@ -17,31 +17,24 @@ const getTotalHours = (shifts) =>
     0
   );
 
-// Build daily hours array for bar graph (UI only)
-const buildPayPeriodBars = (shifts, startDate) => {
-  const start = new Date(startDate);
-  const bars = Array.from({ length: 15 }, (_, i) => ({
-    dayIndex: i + 1,
-    hours: 0
-  }));
+const getDaysRemaining = (endDate) => {
+  const today = new Date();
+  const end = new Date(endDate);
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const startOfEnd = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+  const diff = Math.ceil((startOfEnd - startOfToday) / (1000 * 60 * 60 * 24));
+  return diff;
+};
 
-  shifts.forEach((shift) => {
-    if (!shift.startDateTime) return;
+const getLastShiftDate = (shifts) => {
+  if (!Array.isArray(shifts) || shifts.length === 0) return null;
 
-    const shiftDate = new Date(shift.startDateTime);
-    const diffDays = Math.floor(
-      (shiftDate - start) / (1000 * 60 * 60 * 24)
-    );
-
-    if (diffDays >= 0 && diffDays < 15) {
-      bars[diffDays].hours += calculateShiftHours(
-        shift.startDateTime,
-        shift.endDateTime
-      );
-    }
-  });
-
-  return bars;
+  return shifts.reduce((latest, shift) => {
+    const shiftDate = shift?.startDateTime ? new Date(shift.startDateTime) : null;
+    if (!shiftDate || Number.isNaN(shiftDate.getTime())) return latest;
+    if (!latest) return shiftDate;
+    return shiftDate > latest ? shiftDate : latest;
+  }, null);
 };
 
 export default function GuardHome() {
@@ -81,12 +74,21 @@ export default function GuardHome() {
 
   const totalHours = getTotalHours(shifts);
   const percent = Math.min((totalHours / 80) * 100, 100);
-
-  const dailyBars =
-    payPeriod && buildPayPeriodBars(shifts, payPeriod.start);
-
-  const maxDailyHours =
-    dailyBars && Math.max(...dailyBars.map((d) => d.hours), 8);
+  const daysRemaining = payPeriod ? getDaysRemaining(payPeriod.end) : 0;
+  const lastShiftDate = getLastShiftDate(shifts);
+  const isReadyToSubmit = shifts.length > 0 && daysRemaining <= 0;
+  const healthStatus =
+    shifts.length === 0
+      ? "Needs entries"
+      : isReadyToSubmit
+        ? "Ready to submit"
+        : "In progress";
+  const nextStepText =
+    shifts.length === 0
+      ? "Add your first shift entry for this pay period."
+      : isReadyToSubmit
+        ? "Review entries and submit your pay period."
+        : "Keep adding shifts before the pay period closes.";
 
   return (
     <div className="home-dashboard">
@@ -139,49 +141,47 @@ export default function GuardHome() {
             </div>
           </div>
 
-          {/* DAILY BAR GRAPH */}
+          {/* PAY PERIOD HEALTH */}
           <div className="dashboard-section">
             <h4 className="section-title">
-              Bi-Weekly Hours Breakdown
+              Pay Period Health
             </h4>
 
-            <div className="daily-bar-chart">
-              {dailyBars.map((day) => {
-                const height =
-                  (day.hours / maxDailyHours) * 100 || 0;
+            <div className="health-grid">
+              <div className="health-item">
+                <span className="health-label">Days Remaining</span>
+                <span className="health-value">{daysRemaining < 0 ? 0 : daysRemaining}</span>
+              </div>
 
-                return (
-                  <div
-                    key={day.dayIndex}
-                    className="daily-bar-wrapper"
-                    data-tooltip={`Day ${day.dayIndex}: ${day.hours.toFixed(2)} hrs`}
-                  >
-                    <div
-                      className="daily-bar"
-                      style={{ height: `${height}%` }}
-                    />
-                    <span className="daily-bar-label">
-                      D{day.dayIndex}
-                    </span>
-                  </div>
-                );
+              <div className="health-item">
+                <span className="health-label">Shifts Logged</span>
+                <span className="health-value">{shifts.length}</span>
+              </div>
 
-              })}
+              <div className="health-item">
+                <span className="health-label">Last Shift Entry</span>
+                <span className="health-value health-date">
+                  {lastShiftDate
+                    ? lastShiftDate.toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })
+                    : "No entries"}
+                </span>
+              </div>
+
+              <div className="health-item">
+                <span className="health-label">Submission Status</span>
+                <span className="health-value">{healthStatus}</span>
+              </div>
             </div>
 
             <div className="section-footer">
-              {totalHours.toFixed(2)} hrs logged •{" "}
-              {new Date(payPeriod.start).toLocaleDateString(undefined, {
-                month: "short",
-                day: "numeric"
-              })}{" "}
-              –{" "}
-              {new Date(payPeriod.end).toLocaleDateString(undefined, {
-                month: "short",
-                day: "numeric"
-              })}
+              {nextStepText}
             </div>
           </div>
+
         </>
       )}
     </div>
