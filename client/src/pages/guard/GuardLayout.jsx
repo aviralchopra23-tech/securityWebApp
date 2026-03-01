@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { logout } from "../../utils/logout";
 import api from "../../api/axios";
 import kingLogo from "../../assets/king.png";
+import useAnnouncementNotifications from "../../hooks/useAnnouncementNotifications";
+import { getUserIdFromToken } from "../../utils/auth";
 
 // Layout & shared buttons
 import "../../styles/layout.css"; // .layout, .sidebar, .main-content, nav styles, sidebar button
@@ -13,7 +15,18 @@ export default function GuardLayout() {
   const [guardName, setGuardName] = useState("Guard");
   const [role, setRole] = useState("GUARD");
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [announcementScope, setAnnouncementScope] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
   const location = useLocation();
+
+  const isAnnouncementsPage = location.pathname.startsWith("/guard/announcements");
+  const { hasNewAnnouncements, unreadAnnouncementsCount, markAnnouncementsSeen } =
+    useAnnouncementNotifications({
+      storageScope: announcementScope,
+      isAnnouncementPage: isAnnouncementsPage,
+      currentUserId,
+      enabled: Boolean(announcementScope),
+    });
 
   // Track pay period submission
   useEffect(() => {
@@ -29,9 +42,15 @@ export default function GuardLayout() {
         const res = await api.get("/auth/me");
         setGuardName(res.data.firstName);
         setRole(res.data.role);
+        const tokenUserId = getUserIdFromToken();
+        const identifier = tokenUserId || res.data?.email || res.data?.firstName || "default";
+        setCurrentUserId(tokenUserId || null);
+        setAnnouncementScope(`guard:${identifier}`);
       } catch {
         setGuardName("Guard");
         setRole("GUARD");
+        setCurrentUserId(null);
+        setAnnouncementScope("guard:default");
       }
     };
     loadUser();
@@ -102,8 +121,20 @@ export default function GuardLayout() {
             </NavLink>
           )}
 
-          <NavLink to="/guard/announcements" className="nav-link" onClick={() => setIsNavOpen(false)}>
-            Announcements
+          <NavLink
+            to="/guard/announcements"
+            className="nav-link nav-link-with-badge"
+            onClick={() => {
+              setIsNavOpen(false);
+              markAnnouncementsSeen();
+            }}
+          >
+            <span>Announcements</span>
+            {hasNewAnnouncements && (
+              <span className="nav-badge" aria-label={`${unreadAnnouncementsCount} new announcements`}>
+                {unreadAnnouncementsCount > 9 ? "9+" : unreadAnnouncementsCount}
+              </span>
+            )}
           </NavLink>
 
           {/* LOGOUT BUTTON */}

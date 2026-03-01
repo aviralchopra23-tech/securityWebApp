@@ -1,8 +1,10 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logout } from "../../utils/logout";
 import api from "../../api/axios";
 import kingLogo from "../../assets/king.png";
+import useAnnouncementNotifications from "../../hooks/useAnnouncementNotifications";
+import { getUserIdFromToken } from "../../utils/auth";
 
 // Layout & shared buttons
 import "../../styles/layout.css"; 
@@ -12,6 +14,18 @@ export default function SupervisorLayout() {
   const [userName, setUserName] = useState("Supervisor");
   const [role, setRole] = useState("SUPERVISOR");
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [announcementScope, setAnnouncementScope] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const location = useLocation();
+
+  const isAnnouncementsPage = location.pathname.startsWith("/supervisor/announcements");
+  const { hasNewAnnouncements, unreadAnnouncementsCount, markAnnouncementsSeen } =
+    useAnnouncementNotifications({
+      storageScope: announcementScope,
+      isAnnouncementPage: isAnnouncementsPage,
+      currentUserId,
+      enabled: Boolean(announcementScope),
+    });
 
   useEffect(() => {
     const loadUser = async () => {
@@ -19,9 +33,15 @@ export default function SupervisorLayout() {
         const res = await api.get("/auth/me");
         setUserName(res.data.firstName);
         setRole(res.data.role);
+        const tokenUserId = getUserIdFromToken();
+        const identifier = tokenUserId || res.data?.email || res.data?.firstName || "default";
+        setCurrentUserId(tokenUserId || null);
+        setAnnouncementScope(`supervisor:${identifier}`);
       } catch {
         setUserName("Supervisor");
         setRole("SUPERVISOR");
+        setCurrentUserId(null);
+        setAnnouncementScope("supervisor:default");
       }
     };
     loadUser();
@@ -88,9 +108,21 @@ export default function SupervisorLayout() {
             <span className="nav-label-full">Add Shift</span>
             <span className="nav-label-short">Add</span>
           </NavLink>
-          <NavLink to="/supervisor/announcements" className="nav-link" onClick={() => setIsNavOpen(false)}>
+          <NavLink
+            to="/supervisor/announcements"
+            className="nav-link nav-link-with-badge"
+            onClick={() => {
+              setIsNavOpen(false);
+              markAnnouncementsSeen();
+            }}
+          >
             <span className="nav-label-full">Announcements</span>
             <span className="nav-label-short">News</span>
+            {hasNewAnnouncements && (
+              <span className="nav-badge" aria-label={`${unreadAnnouncementsCount} new announcements`}>
+                {unreadAnnouncementsCount > 9 ? "9+" : unreadAnnouncementsCount}
+              </span>
+            )}
           </NavLink>
 
           <button

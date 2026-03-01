@@ -4,6 +4,8 @@ const router = express.Router();
 const {
   createAnnouncement,
   getAnnouncementsForUser,
+  getUnreadAnnouncementCount,
+  markAnnouncementsRead,
 } = require("../controllers/announcementController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -24,6 +26,20 @@ router.post(
  * GET ANNOUNCEMENTS
  * OWNER, SUPERVISOR, GUARD
  */
+router.get(
+  "/unread-count",
+  protect,
+  allowRoles("OWNER", "SUPERVISOR", "GUARD"),
+  getUnreadAnnouncementCount
+);
+
+router.post(
+  "/mark-read",
+  protect,
+  allowRoles("OWNER", "SUPERVISOR", "GUARD"),
+  markAnnouncementsRead
+);
+
 router.get(
   "/",
   protect,

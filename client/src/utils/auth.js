@@ -45,3 +45,13 @@ export const getRoleFromTokenString = (token) => {
   const payload = decodeJwtPayload(token);
   return payload?.role || null;
 };
+
+export const getUserIdFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  const payload = decodeJwtPayload(token);
+  if (!payload) return null;
+
+  return payload.id || null;
+};
