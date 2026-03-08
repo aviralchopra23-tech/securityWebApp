@@ -106,8 +106,13 @@
   transition: all 0.2s ease;
 }
 
+.owner-link:visited {
+  color: #475569;
+}
+
 .owner-link:hover {
   background: #f1f5f9;
+  color: #a10808;
 }
 
 .owner-link.active {

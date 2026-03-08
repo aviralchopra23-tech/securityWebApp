@@ -91,6 +91,15 @@ export default function OwnerPayPeriodReports() {
 
   const submissionMatchesLocation = (submission) => {
     if (selectedLocation === "all") return true;
+
+    // Supervisors are single-location users; filter them by assigned location.
+    if (
+      submission?.userId?.role === "SUPERVISOR" &&
+      submission?.userId?.assignedLocationId
+    ) {
+      return getShiftLocationKey(submission.userId.assignedLocationId) === selectedLocation;
+    }
+
     return (submission.shifts || []).some(
       (shift) => getShiftLocationKey(shift.locationId) === selectedLocation
     );
@@ -132,6 +141,87 @@ export default function OwnerPayPeriodReports() {
 
       {error && <p className="error-text">{error}</p>}
 
+      {/* latest closed period */}
+      <div className="period-section">
+        <h3 className="day-title">Latest Closed Pay Period</h3>
+        {report.current ? (
+          <>
+            <p className="period-label">
+              {formatDisplayDate(report.current.start)} - {formatDisplayDate(report.current.end)}
+            </p>
+
+            <div className="latest-closed-layout">
+              <div className="latest-submissions-column">
+                {(report.current.submissions || []).filter(submissionMatchesLocation).length > 0 ? (
+                  <div className="submitted-scroll latest-submitted-scroll">
+                    {(report.current.submissions || []).filter(submissionMatchesLocation).map((s) => {
+                      const submissionKey = `current-${s._id}`;
+                      const isExpanded = expandedSubmissionKey === submissionKey;
+                      const visibleShifts = filterSubmissionShifts(s);
+                      return (
+                        <div key={s._id} className="day-card">
+                          <p>
+                            <strong>User:</strong>{" "}
+                            {s.userId ? `${s.userId.firstName} ${s.userId.lastName} (${s.userId.role})` : "Deleted User"}
+                          </p>
+                          <p>
+                            <strong>Total Hours:</strong>{" "}
+                            {typeof s.totalHours === "number" ? s.totalHours.toFixed(2) : "0.00"}
+                          </p>
+                          <button
+                            type="button"
+                            className={`details-toggle ${isExpanded ? "expanded" : ""}`}
+                            onClick={() => toggleSubmissionDetails(submissionKey)}
+                          >
+                            {isExpanded ? "Hide Shifts" : "View Shifts"}
+                          </button>
+                          {isExpanded && (
+                            <div className="details-content">
+                              {visibleShifts.length > 0 ? (
+                                visibleShifts.map((sh, idx2) => (
+                                  <div key={idx2} className="shift-row">
+                                    <span className="time-badge">
+                                      {formatShiftDate(sh.date)} {formatShiftTime(sh.startTime)} - {formatShiftTime(sh.endTime)}
+                                    </span>
+                                    <span className="guard-name">
+                                      {typeof sh.hoursWorked === "number" ? sh.hoursWorked.toFixed(2) : "0.00"} hrs | {formatShiftLocation(sh.locationId)}
+                                    </span>
+                                  </div>
+                                ))
+                              ) : (
+                                <p className="no-shifts">No shift data.</p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="no-shifts">No submissions for selected location.</p>
+                )}
+              </div>
+
+              <div className="latest-pending-column">
+                <div className="pending-card latest-pending-card">
+                  {report.current.pending.length > 0 ? (
+                    report.current.pending.map((u) => (
+                      <div key={u._id} className="pending-user">
+                        {u.firstName} {u.lastName} ({u.role})
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-shifts">All users have submitted</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <p>Loading current period...</p>
+        )}
+      </div>
+
       {/* previous periods */}
       <div className="period-section">
         <h3 className="day-title">Previous Pay Periods</h3>
@@ -149,7 +239,7 @@ export default function OwnerPayPeriodReports() {
                   className="period-toggle"
                   onClick={() => togglePreviousPeriod(periodKey)}
                 >
-                  {formatDisplayDate(p.start)} → {formatDisplayDate(p.end)}
+                  {formatDisplayDate(p.start)} - {formatDisplayDate(p.end)}
                 </button>
 
                 {isPeriodExpanded && (
@@ -186,10 +276,10 @@ export default function OwnerPayPeriodReports() {
                                   visibleShifts.map((sh, idx2) => (
                                     <div key={idx2} className="shift-row">
                                       <span className="time-badge">
-                                        {formatShiftDate(sh.date)} {formatShiftTime(sh.startTime)} → {formatShiftTime(sh.endTime)}
+                                        {formatShiftDate(sh.date)} {formatShiftTime(sh.startTime)} - {formatShiftTime(sh.endTime)}
                                       </span>
                                       <span className="guard-name">
-                                        {typeof sh.hoursWorked === "number" ? sh.hoursWorked.toFixed(2) : "0.00"} hrs • {formatShiftLocation(sh.locationId)}
+                                        {typeof sh.hoursWorked === "number" ? sh.hoursWorked.toFixed(2) : "0.00"} hrs | {formatShiftLocation(sh.locationId)}
                                       </span>
                                     </div>
                                   ))
@@ -207,87 +297,6 @@ export default function OwnerPayPeriodReports() {
               </div>
             );
           })
-        )}
-      </div>
-
-      {/* latest closed period */}
-      <div className="period-section">
-        <h3 className="day-title">Latest Closed Pay Period</h3>
-        {report.current ? (
-          <>
-            <p className="period-label">
-              {formatDisplayDate(report.current.start)} → {formatDisplayDate(report.current.end)}
-            </p>
-
-            <div className="latest-closed-layout">
-              <div className="latest-submissions-column">
-                {(report.current.submissions || []).filter(submissionMatchesLocation).length > 0 ? (
-                  <div className="submitted-scroll latest-submitted-scroll">
-                    {(report.current.submissions || []).filter(submissionMatchesLocation).map((s) => {
-                      const submissionKey = `current-${s._id}`;
-                      const isExpanded = expandedSubmissionKey === submissionKey;
-                      const visibleShifts = filterSubmissionShifts(s);
-                      return (
-                        <div key={s._id} className="day-card">
-                          <p>
-                            <strong>User:</strong>{" "}
-                            {s.userId ? `${s.userId.firstName} ${s.userId.lastName} (${s.userId.role})` : "Deleted User"}
-                          </p>
-                          <p>
-                            <strong>Total Hours:</strong>{" "}
-                            {typeof s.totalHours === "number" ? s.totalHours.toFixed(2) : "0.00"}
-                          </p>
-                          <button
-                            type="button"
-                            className={`details-toggle ${isExpanded ? "expanded" : ""}`}
-                            onClick={() => toggleSubmissionDetails(submissionKey)}
-                          >
-                            {isExpanded ? "Hide Shifts" : "View Shifts"}
-                          </button>
-                          {isExpanded && (
-                            <div className="details-content">
-                              {visibleShifts.length > 0 ? (
-                                visibleShifts.map((sh, idx2) => (
-                                  <div key={idx2} className="shift-row">
-                                    <span className="time-badge">
-                                      {formatShiftDate(sh.date)} {formatShiftTime(sh.startTime)} → {formatShiftTime(sh.endTime)}
-                                    </span>
-                                    <span className="guard-name">
-                                      {typeof sh.hoursWorked === "number" ? sh.hoursWorked.toFixed(2) : "0.00"} hrs • {formatShiftLocation(sh.locationId)}
-                                    </span>
-                                  </div>
-                                ))
-                              ) : (
-                                <p className="no-shifts">No shift data.</p>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p className="no-shifts">No submissions for selected location.</p>
-                )}
-              </div>
-
-              <div className="latest-pending-column">
-                <div className="pending-card latest-pending-card">
-                  {report.current.pending.length > 0 ? (
-                    report.current.pending.map((u) => (
-                      <div key={u._id} className="pending-user">
-                        {u.firstName} {u.lastName} ({u.role})
-                      </div>
-                    ))
-                  ) : (
-                    <p className="no-shifts">All users have submitted</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <p>Loading current period...</p>
         )}
       </div>
     </div>

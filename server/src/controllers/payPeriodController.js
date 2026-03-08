@@ -317,7 +317,7 @@ exports.getOwnerPayPeriodReport = async (req, res, next) => {
       payPeriodStart: reviewStart,
       payPeriodEnd: reviewEnd,
     })
-        .populate("userId", "firstName lastName role")
+        .populate("userId", "firstName lastName role assignedLocationId assignedLocationIds")
         .populate("shifts.locationId", "name")
         .populate("paycheckCollectionLocationId", "name");
 
@@ -342,7 +342,7 @@ exports.getOwnerPayPeriodReport = async (req, res, next) => {
           payPeriodStart: p.start,
           payPeriodEnd: p.end,
         })
-          .populate("userId", "firstName lastName role")
+          .populate("userId", "firstName lastName role assignedLocationId assignedLocationIds")
           .populate("shifts.locationId", "name")
           .populate("paycheckCollectionLocationId", "name");
         previous.push({ start: p.start, end: p.end, submissions: subs });
@@ -350,7 +350,7 @@ exports.getOwnerPayPeriodReport = async (req, res, next) => {
     } else {
       // fallback: derive from submission history when PayPeriod collection is empty
       const olderSubs = await PayPeriodSubmission.find({ payPeriodEnd: { $lt: reviewStart } })
-        .populate("userId", "firstName lastName role")
+        .populate("userId", "firstName lastName role assignedLocationId assignedLocationIds")
         .populate("shifts.locationId", "name")
         .populate("paycheckCollectionLocationId", "name")
         .sort({ payPeriodStart: -1 });

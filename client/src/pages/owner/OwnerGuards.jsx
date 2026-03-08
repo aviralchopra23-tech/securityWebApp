@@ -10,6 +10,7 @@ export default function OwnerGuards() {
   const navigate = useNavigate();
 
   const [guards, setGuards] = useState([]);
+  const [selectedLocationId, setSelectedLocationId] = useState("ALL");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -39,6 +40,25 @@ export default function OwnerGuards() {
     return names.length ? names.join(", ") : "Not assigned";
   };
 
+  const locationOptions = guards
+    .flatMap((g) => g.assignedLocationIds || [])
+    .filter((loc) => loc && typeof loc === "object" && loc._id && loc.name)
+    .reduce((acc, loc) => {
+      if (!acc.some((item) => item._id === loc._id)) {
+        acc.push({ _id: loc._id, name: loc.name });
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const filteredGuards = selectedLocationId === "ALL"
+    ? guards
+    : guards.filter((g) =>
+      (g.assignedLocationIds || []).some(
+        (loc) => typeof loc === "object" && loc._id === selectedLocationId
+      )
+    );
+
   const handleDelete = async () => {
     if (!deleteTarget?._id || isDeleting) return;
 
@@ -64,9 +84,24 @@ export default function OwnerGuards() {
         <button className="btn-create" onClick={() => navigate("create")}>Create Guard</button>
       </div>
 
+      <div className="guards-filter-row">
+        <label htmlFor="guard-location-filter" className="guards-filter-label">Filter by location</label>
+        <select
+          id="guard-location-filter"
+          className="guards-filter-select"
+          value={selectedLocationId}
+          onChange={(e) => setSelectedLocationId(e.target.value)}
+        >
+          <option value="ALL">All locations</option>
+          {locationOptions.map((loc) => (
+            <option key={loc._id} value={loc._id}>{loc.name}</option>
+          ))}
+        </select>
+      </div>
+
       {/* LIST */}
       <ul className="guard-list">
-        {guards.map((g) => (
+        {filteredGuards.map((g) => (
           <li
             key={g._id}
             className="guard-item"
@@ -98,6 +133,10 @@ export default function OwnerGuards() {
           </li>
         ))}
       </ul>
+
+      {!filteredGuards.length && (
+        <p className="guards-empty">No guards found for this location.</p>
+      )}
 
       {deleteTarget && (
         <div className="guards-modal-backdrop" role="dialog" aria-modal="true" aria-label="Delete guard confirmation">

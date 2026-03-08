@@ -9,7 +9,7 @@
   padding-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   min-width: 0;
 }
 
@@ -31,13 +31,20 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 2px 0 4px;
+  margin: 2px 0 6px;
+  width: fit-content;
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
 }
 
 .owner-filter-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .owner-filter-select {
@@ -45,16 +52,23 @@
   max-width: 100%;
   padding: 8px 10px;
   font-size: 13px;
-  color: #1f2937;
+  font-weight: 600;
+  color: #0f172a;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   background: #ffffff;
 }
 
+.owner-filter-select:focus {
+  outline: none;
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.12);
+}
+
 .day-title {
   font-size: 16px;
   font-weight: 700;
-  color: #1f2937;
+  color: #0f172a;
   margin: 0 0 12px 0;
 }
 
@@ -63,8 +77,20 @@
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   padding: 14px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
   min-width: 0;
+  position: relative;
+}
+
+.period-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: #cbd5e1;
 }
 
 .period-label {
@@ -85,6 +111,7 @@
   border-radius: 12px;
   background: #ffffff;
   min-width: 0;
+  overflow: hidden;
 }
 
 .period-group:last-child {
@@ -103,22 +130,31 @@
   margin: 0;
   padding: 10px 12px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 0;
   background: #f8fafc;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
   overflow-wrap: anywhere;
 }
 
 .period-toggle:hover {
   background: #f1f5f9;
+  color: #7a0606;
+}
+
+.period-toggle:focus-visible {
+  outline: 2px solid #94a3b8;
+  outline-offset: -2px;
 }
 
 .no-shifts {
   font-size: 13px;
   color: #64748b;
   margin: 0;
-  padding: 8px 2px;
+  padding: 10px 12px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
 }
 
 .submitted-scroll {
@@ -148,6 +184,12 @@
   flex-direction: column;
   gap: 6px;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.day-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
 }
 
 .day-card p {
@@ -166,10 +208,10 @@
   align-self: flex-start;
   margin-top: 2px;
   padding: 6px 10px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #fca5a5;
   border-radius: 8px;
-  background: #f8fafc;
-  color: #1e40af;
+  background: #ffffff;
+  color: #b91c1c;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -177,13 +219,13 @@
 }
 
 .details-toggle:hover {
-  background: #eef2ff;
-  border-color: #bfdbfe;
+  background: #fff1f2;
+  border-color: #f87171;
 }
 
 .details-toggle.expanded {
-  background: #eef2ff;
-  border-color: #bfdbfe;
+  background: #fff1f2;
+  border-color: #f87171;
 }
 
 .details-content {
@@ -259,6 +301,15 @@
   overflow-y: auto;
 }
 
+.latest-pending-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.latest-pending-card::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
 @media (max-height: 700px) {
   .schedule-wrapper {
     gap: 16px;
@@ -283,6 +334,7 @@
   .owner-filter-row {
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
   }
 
   .owner-filter-select {

@@ -1,12 +1,16 @@
 import "../../styles/documents.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  deleteDocumentById,
+  getMyDocuments,
+  uploadMyDocuments,
+} from "../../api/documentsApi";
 
 export default function Documents() {
   const [documentType, setDocumentType] = useState("PASSPORT");
   const [note, setNote] = useState("");
   const [files, setFiles] = useState([]);
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
-  const uploadedUrlsRef = useRef([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -14,6 +18,11 @@ export default function Documents() {
     () => files.reduce((sum, file) => sum + file.size, 0),
     [files]
   );
+
+  const loadUploadedDocuments = async () => {
+    const data = await getMyDocuments();
+    setUploadedDocuments(Array.isArray(data?.documents) ? data.documents : []);
+  };
 
   const handleFileChange = (event) => {
     const nextFiles = Array.from(event.target.files || []);
@@ -31,46 +40,110 @@ export default function Documents() {
     setIsSubmitting(true);
     setMessage("");
 
-    // Placeholder until backend upload endpoint is added.
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    try {
+      const payloadFiles = await Promise.all(
+        files.map(
+          (file) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                resolve({
+                  name: file.name,
+                  size: file.size,
+                  mimeType: file.type || "application/octet-stream",
+                  dataUrl: String(reader.result || ""),
+                });
+              };
+              reader.onerror = () => reject(new Error(`Failed reading file: ${file.name}`));
+              reader.readAsDataURL(file);
+            })
+        )
+      );
 
-    const now = Date.now();
-    const nextDocuments = files.map((file, index) => ({
-      id: `${file.name}-${file.lastModified}-${now}-${index}`,
-      name: file.name,
-      size: file.size,
-      type: documentType,
-      note,
-      uploadedAt: new Date().toLocaleString(),
-      url: URL.createObjectURL(file),
-    }));
+      await uploadMyDocuments({
+        documentType,
+        note,
+        files: payloadFiles,
+      });
 
-    uploadedUrlsRef.current.push(...nextDocuments.map((doc) => doc.url));
-
-    setUploadedDocuments((prev) => [...nextDocuments, ...prev]);
-    setFiles([]);
-    setNote("");
-
-    setIsSubmitting(false);
-    setMessage("Documents uploaded successfully.");
+      await loadUploadedDocuments();
+      setFiles([]);
+      setNote("");
+      setMessage("Documents uploaded successfully.");
+    } catch (err) {
+      const msg = err?.response?.data?.message || err?.message || "Upload failed.";
+      setMessage(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleRemoveDocument = (documentId) => {
-    setUploadedDocuments((prev) => {
-      const target = prev.find((doc) => doc.id === documentId);
-      if (target?.url) {
-        URL.revokeObjectURL(target.url);
-        uploadedUrlsRef.current = uploadedUrlsRef.current.filter((url) => url !== target.url);
+  const handleRemoveDocument = async (documentId) => {
+    try {
+      await deleteDocumentById(documentId);
+      setUploadedDocuments((prev) => prev.filter((doc) => doc._id !== documentId));
+      setMessage("Document removed.");
+    } catch (err) {
+      const msg = err?.response?.data?.message || err?.message || "Failed to remove document.";
+      setMessage(msg);
+    }
+  };
+
+  const openDocument = (doc) => {
+    try {
+      const dataUrl = String(doc?.dataUrl || "");
+      if (!dataUrl.startsWith("data:")) {
+        setMessage("Document preview is unavailable.");
+        return;
       }
-      return prev.filter((doc) => doc.id !== documentId);
-    });
+
+      const parts = dataUrl.split(",");
+      if (parts.length < 2) {
+        setMessage("Document preview is unavailable.");
+        return;
+      }
+
+      const meta = parts[0] || "";
+      const base64 = parts[1] || "";
+      const mimeMatch = /data:(.*?);base64/.exec(meta);
+      const mimeType = mimeMatch?.[1] || doc?.mimeType || "application/octet-stream";
+
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i += 1) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      const blob = new Blob([bytes], { type: mimeType });
+      const blobUrl = URL.createObjectURL(blob);
+      const opened = window.open(blobUrl, "_blank", "noopener,noreferrer");
+
+      if (!opened) {
+        URL.revokeObjectURL(blobUrl);
+        setMessage("Popup blocked. Please allow popups for this site to view documents in a new tab.");
+        return;
+      }
+
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 60 * 1000);
+    } catch (err) {
+      console.error(err);
+      setMessage("Failed to open document.");
+    }
   };
 
   useEffect(() => {
-    return () => {
-      uploadedUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
-      uploadedUrlsRef.current = [];
+    const load = async () => {
+      try {
+        await loadUploadedDocuments();
+      } catch (err) {
+        const msg = err?.response?.data?.message || err?.message || "Failed to load documents.";
+        setMessage(msg);
+      }
     };
+
+    load();
+
+    return undefined;
   }, []);
 
   return (
@@ -181,28 +254,27 @@ export default function Documents() {
           ) : (
             <ul className="documents-uploaded-list">
               {uploadedDocuments.map((doc) => (
-                <li key={doc.id} className="documents-uploaded-item">
+                <li key={doc._id} className="documents-uploaded-item">
                   <div className="documents-uploaded-main">
-                    <p className="documents-uploaded-name">{doc.name}</p>
+                    <p className="documents-uploaded-name">{doc.originalName}</p>
                     <p className="documents-uploaded-meta">
-                      {doc.type} • {(doc.size / 1024).toFixed(1)} KB • {doc.uploadedAt}
+                      {doc.documentType} • {(Number(doc.sizeBytes || 0) / 1024).toFixed(1)} KB • {new Date(doc.createdAt).toLocaleString()}
                     </p>
                     {doc.note ? <p className="documents-uploaded-note">{doc.note}</p> : null}
                   </div>
 
                   <div className="documents-uploaded-actions">
-                    <a
+                    <button
+                      type="button"
                       className="documents-action-link"
-                      href={doc.url}
-                      target="_blank"
-                      rel="noreferrer"
+                      onClick={() => openDocument(doc)}
                     >
                       View
-                    </a>
+                    </button>
                     <button
                       type="button"
                       className="documents-action-remove"
-                      onClick={() => handleRemoveDocument(doc.id)}
+                      onClick={() => handleRemoveDocument(doc._id)}
                     >
                       Remove
                     </button>

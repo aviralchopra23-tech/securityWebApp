@@ -17,6 +17,8 @@ import OwnerGuards from "./pages/owner/OwnerGuards";
 import OwnerCreateGuard from "./pages/owner/OwnerCreateGuard";
 import OwnerGuardDetails from "./pages/owner/OwnerGuardDetails";
 import OwnerAnnouncements from "./pages/owner/OwnerAnnouncements";
+import OwnerDocs from "./pages/owner/OwnerDocs";
+import OwnerUserDocuments from "./pages/owner/OwnerUserDocuments";
 
 /* ================= SUPERVISOR ================= */
 import SupervisorLayout from "./pages/supervisor/SupervisorLayout";
@@ -81,6 +83,8 @@ export default function App() {
             path="pay-period-reports"
             element={<OwnerPayPeriodReports />}
           />
+          <Route path="docs" element={<OwnerDocs />} />
+          <Route path="docs/:userId" element={<OwnerUserDocuments />} />
 
         </Route>
 

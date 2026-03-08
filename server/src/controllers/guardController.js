@@ -161,9 +161,27 @@ const enforcePrevPeriodOnlyIfPending = async (res, userId, shiftStartDate, sessi
 
 /* ================= LOCATION SCOPE HELPERS ================= */
 
-const assertLocationAllowedForActor = () => {
-  // GUARD/SUPERVISOR: no location restriction for shift entry.
-  // Any authenticated actor in allowed roles may add/edit using any valid location.
+const assertLocationAllowedForActor = (req, res, locationId) => {
+  // Supervisors are restricted to their single assigned location.
+  // Guards can still submit shifts for any location they worked at.
+  const role = String(req?.user?.role || "").toUpperCase();
+  if (role !== "SUPERVISOR") return true;
+
+  const assignedLocationId = req?.user?.assignedLocationId
+    ? String(req.user.assignedLocationId)
+    : null;
+
+  if (!assignedLocationId) {
+    res.status(400).json({ message: "Supervisor does not have an assigned location." });
+    return false;
+  }
+
+  if (String(locationId) !== assignedLocationId) {
+    res.status(403).json({
+      message: "Supervisors can only add or edit shifts for their assigned location.",
+    });
+    return false;
+  }
 
   return true;
 };
@@ -464,7 +482,7 @@ const submitPayPeriod = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Not authorized" });
 
-    const { id: userId, role } = req.user;
+    const { id: userId, role, assignedLocationId } = req.user;
     const { paycheckCollectionLocationId } = req.body;
 
     if (!paycheckCollectionLocationId) {
@@ -472,6 +490,17 @@ const submitPayPeriod = async (req, res) => {
     }
     if (!mongoose.Types.ObjectId.isValid(paycheckCollectionLocationId)) {
       return res.status(400).json({ message: "Invalid paycheckCollectionLocationId" });
+    }
+
+    if (role === "SUPERVISOR") {
+      if (!assignedLocationId) {
+        return res.status(400).json({ message: "Supervisor does not have an assigned location." });
+      }
+      if (String(paycheckCollectionLocationId) !== String(assignedLocationId)) {
+        return res.status(403).json({
+          message: "Supervisors must submit pay periods to their assigned location.",
+        });
+      }
     }
 
     await session.withTransaction(async () => {

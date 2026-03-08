@@ -1,0 +1,130 @@
+.owner-user-docs-page {
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.owner-user-docs-header {
+  border: 1px solid #d5deea;
+  border-radius: 14px;
+  padding: 14px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+}
+
+.owner-user-docs-title {
+  margin: 0;
+  color: #0f2343;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.owner-user-docs-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #5c6d86;
+}
+
+.owner-user-docs-back {
+  border: 1px solid #c0ccd9;
+  color: #1d3557;
+  text-decoration: none;
+  border-radius: 9px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #ffffff;
+}
+
+.owner-user-docs-back:hover {
+  background: #f3f7fc;
+}
+
+.owner-user-docs-info,
+.owner-user-docs-error {
+  margin: 0;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.owner-user-docs-error {
+  color: #b42318;
+}
+
+.owner-user-docs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.owner-user-docs-item {
+  border: 1px solid #d8e1ec;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfdff 100%);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.owner-user-docs-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.owner-user-docs-meta {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #52647c;
+}
+
+.owner-user-docs-note {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #334155;
+}
+
+.owner-user-docs-view {
+  border: 1px solid #2b4d78;
+  background: #f3f8ff;
+  color: #1f3f67;
+  border-radius: 9px;
+  padding: 7px 12px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.owner-user-docs-view:hover {
+  background: #e8f1ff;
+}
+
+@media (max-width: 720px) {
+  .owner-user-docs-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .owner-user-docs-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

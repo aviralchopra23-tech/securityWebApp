@@ -85,6 +85,14 @@ export default function OwnerLayout() {
           </Link>
 
           <Link
+            to="/owner/docs"
+            className={getLinkClass("/owner/docs")}
+            onClick={closeMenu}
+          >
+            Docs
+          </Link>
+
+          <Link
             to="/owner/announcements"
             className={getLinkClass("/owner/announcements")}
             onClick={closeMenu}
