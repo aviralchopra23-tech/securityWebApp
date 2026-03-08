@@ -25,6 +25,19 @@
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
 }
 
+.schedule-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.schedule-top-action {
+  width: auto;
+  min-width: 132px;
+  margin: 0;
+}
+
 /* Title */
 .scheduleTitle {
   font-size: 2.8rem;
@@ -211,6 +224,49 @@
   background: none;
   -webkit-text-fill-color: initial;
   text-align: left;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.schedule-container.schedule-supervisor .scheduleTitle::before {
+  content: "Weekly Overview";
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #9f1239;
+}
+
+.schedule-container.schedule-supervisor .scheduleTitle::after {
+  content: "";
+  width: 44px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7a0606, #b91c1c);
+}
+
+.schedule-container.schedule-supervisor .schedule-header {
+  position: relative;
+  align-items: center;
+  padding: 12px 12px 10px;
+  margin: -4px -4px 10px;
+  border: 1px solid #f3d5d5;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(185, 28, 28, 0.1), transparent 42%),
+    linear-gradient(180deg, #fff7f7 0%, #fffdfd 100%);
+}
+
+.schedule-container.schedule-supervisor .schedule-top-action {
+  width: auto;
+  max-width: none;
+  min-width: 132px;
+  height: 34px;
+  margin: 0;
+  padding: 0 12px;
+  box-shadow: 0 6px 14px rgba(122, 6, 6, 0.18);
 }
 
 .schedule-container.schedule-supervisor .schedule-subtitle {
@@ -340,6 +396,13 @@
   box-shadow: none;
 }
 
+.schedule-container.schedule-supervisor .btn-action.schedule-top-action {
+  width: auto;
+  max-width: none;
+  min-width: 132px;
+  margin: 0;
+}
+
 @media (max-width: 900px) {
   .schedule-container.schedule-supervisor {
     padding: 12px;
@@ -356,6 +419,21 @@
 }
 
 @media (max-width: 560px) {
+  .schedule-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .schedule-container.schedule-supervisor .schedule-header {
+    padding: 10px;
+    margin: 0 0 8px;
+  }
+
+  .schedule-top-action,
+  .schedule-container.schedule-supervisor .schedule-top-action {
+    width: 100%;
+  }
+
   .schedule-container.schedule-supervisor {
     padding: 8px;
   }

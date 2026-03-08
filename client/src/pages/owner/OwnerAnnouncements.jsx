@@ -76,7 +76,7 @@ export default function OwnerAnnouncements() {
   };
 
   return (
-    <div className="owner-content">
+    <div className="owner-content owner-announcements-page">
       <h2>Announcements</h2>
 
       {/* CREATE ANNOUNCEMENT */}

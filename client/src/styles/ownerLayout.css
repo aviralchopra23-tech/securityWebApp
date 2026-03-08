@@ -132,13 +132,13 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.9)),
-    url("../assets/king.png");
+  background-image: url("../assets/king.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: min(62vw, 760px);
-  opacity: 0.22;
+  background-size: min(50vw, 620px);
+  opacity: 0.16;
+  mix-blend-mode: normal;
+  filter: grayscale(1) contrast(0.55) brightness(1.14) blur(0.6px);
   pointer-events: none;
   z-index: 0;
 }

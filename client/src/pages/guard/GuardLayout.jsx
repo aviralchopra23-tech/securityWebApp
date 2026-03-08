@@ -138,6 +138,10 @@ export default function GuardLayout() {
             )}
           </NavLink>
 
+          <NavLink to="/guard/documents" className="nav-link" onClick={() => setIsNavOpen(false)}>
+            Documents
+          </NavLink>
+
           {/* LOGOUT BUTTON */}
           <button
             onClick={() => {

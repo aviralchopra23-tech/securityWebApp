@@ -7,7 +7,7 @@
    PAGE WRAPPER
 =============================== */
 
-.owner-content {
+.owner-announcements-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -17,18 +17,29 @@
    PAGE TITLE
 =============================== */
 
-.owner-content h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #111827; /* FIX: visible on light background */
-  margin-bottom: 4px;
+.owner-announcements-page h2 {
+  font-size: 22px;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  padding: 13px 14px;
+  border: 1px solid #d7dce3;
+  border-radius: 12px;
+  letter-spacing: 0.005em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 4px 12px rgba(15, 23, 42, 0.04);
+  background:
+    radial-gradient(circle at 14% 24%, rgba(15, 23, 42, 0.06), transparent 46%),
+    linear-gradient(105deg, rgba(15, 23, 42, 0.04) 0%, rgba(255, 255, 255, 0.97) 44%),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
 /* ===============================
    CARD (Create + List)
 =============================== */
 
-.owner-card {
+.owner-announcements-page .owner-card {
   background: #ffffff; /* FIX: enterprise light surface */
   border: 1px solid #e5e7eb;
   border-radius: 10px;
@@ -41,7 +52,7 @@
 
 /* Card titles */
 
-.owner-card h3 {
+.owner-announcements-page .owner-card h3 {
   font-size: 15px;
   font-weight: 600;
   color: #111827;
@@ -51,7 +62,7 @@
    INPUTS
 =============================== */
 
-.owner-input {
+.owner-announcements-page .owner-input {
   width: 100%;
   padding: 9px 12px;
 
@@ -63,11 +74,11 @@
   border-radius: 6px;
 }
 
-.owner-input::placeholder {
+.owner-announcements-page .owner-input::placeholder {
   color: #9ca3af;
 }
 
-.owner-input:focus {
+.owner-announcements-page .owner-input:focus {
   outline: none;
   border-color: #eb1a1a;
   box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);
@@ -77,7 +88,7 @@
    SCOPE / LOCATION SELECT
 =============================== */
 
-.owner-scope {
+.owner-announcements-page .owner-scope {
   display: flex;
   gap: 24px;
 
@@ -85,7 +96,7 @@
   color: #374151;
 }
 
-.owner-locations {
+.owner-announcements-page .owner-locations {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -96,7 +107,7 @@
   border-radius: 8px;
 }
 
-.owner-locations label {
+.owner-announcements-page .owner-locations label {
   font-size: 13px;
   color: #374151;
 }
@@ -105,7 +116,7 @@
    PRIMARY ACTION
 =============================== */
 
-.owner-btn {
+.owner-announcements-page .owner-btn {
   align-self: flex-start;
 
   padding: 9px 18px;
@@ -122,11 +133,11 @@
   transition: background 0.15s ease, box-shadow 0.15s ease;
 }
 
-.owner-btn:hover {
+.owner-announcements-page .owner-btn:hover {
   background: #6b2b2b;
 }
 
-.owner-btn:disabled {
+.owner-announcements-page .owner-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -135,7 +146,7 @@
    ANNOUNCEMENT CONTENT
 =============================== */
 
-.owner-card p {
+.owner-announcements-page .owner-card p {
   font-size: 13px;
   color: #374151;
   line-height: 1.6;
@@ -145,7 +156,7 @@
    META ROW
 =============================== */
 
-.owner-meta {
+.owner-announcements-page .owner-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -159,19 +170,19 @@
 =============================== */
 
 /* Red radio buttons in scope selector */
-.owner-scope input[type="radio"] {
+.owner-announcements-page .owner-scope input[type="radio"] {
   accent-color: #7a0606; /* red */
   cursor: pointer;
 }
 
 /* Red radio buttons */
-.owner-scope input[type="radio"] {
+.owner-announcements-page .owner-scope input[type="radio"] {
   accent-color: #eb1a1a;
   cursor: pointer;
 }
 
 /* Meta icons spacing */
-.owner-meta span {
+.owner-announcements-page .owner-meta span {
   display: flex;
   align-items: center;
   gap: 6px; /* space between icon and text */
@@ -179,7 +190,7 @@
   color: #6b7280;
 }
 
-.owner-locations input[type="checkbox"] {
+.owner-announcements-page .owner-locations input[type="checkbox"] {
   accent-color: #eb1a1a; /* same red as radio buttons */
   cursor: pointer;
 }

@@ -121,10 +121,10 @@ export default function SupervisorPayPeriods() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="schedulePage">
+    <div className="schedulePage pay-period-page">
       <div className="scheduleWrapper">
         <h2 className="scheduleTitle">
-          My Pay Period {currentSubmitted && <span className="status-badge submitted">Submitted</span>}
+          My Pay Period
         </h2>
 
         {prevUnsubmitted && prevPayPeriod && (

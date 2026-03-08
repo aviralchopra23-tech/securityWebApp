@@ -134,10 +134,10 @@ export default function GuardPayPeriods() {
   const ppEndLabel = new Date(effectivePayPeriod.payPeriodEnd).toLocaleDateString();
 
   return (
-    <div className="schedulePage">
+    <div className="schedulePage pay-period-page">
       <div className="scheduleWrapper">
         <h2 className="scheduleTitle">
-          Pay Period {displayedSubmitted && <span className="status-badge submitted">Submitted</span>}
+          Pay Period
         </h2>
 
         {prevUnsubmitted && prevPayPeriod && (

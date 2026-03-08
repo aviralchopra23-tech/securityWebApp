@@ -28,6 +28,7 @@ import GuardSchedule from "./pages/guard/GuardSchedule";
 
 /* ================= SHARED ================= */
 import Announcements from "./pages/shared/Announcements";
+import Documents from "./pages/shared/Documents";
 
 /* ================= PAY PERIODS ================= */
 import GuardPayPeriods from "./pages/guard/GuardPayPeriods";
@@ -93,6 +94,7 @@ export default function App() {
             path="announcements"
             element={<SupervisorAnnouncements canCreate />}
           />
+          <Route path="documents" element={<Documents />} />
           <Route path="pay-periods" element={<SupervisorPayPeriods />} />
 
           <Route path="pay-periods/add-shift" element={<AddShiftEntry />} />
@@ -118,6 +120,7 @@ export default function App() {
             path="announcements"
             element={<Announcements canCreate={false} />}
           />
+          <Route path="documents" element={<Documents />} />
         </Route>
 
       </Routes>

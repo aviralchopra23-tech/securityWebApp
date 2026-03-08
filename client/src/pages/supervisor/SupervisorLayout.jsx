@@ -125,6 +125,10 @@ export default function SupervisorLayout() {
               </span>
             )}
           </NavLink>
+          <NavLink to="/supervisor/documents" className="nav-link" onClick={() => setIsNavOpen(false)}>
+            <span className="nav-label-full">Documents</span>
+            <span className="nav-label-short">Docs</span>
+          </NavLink>
 
           <button
             onClick={() => {

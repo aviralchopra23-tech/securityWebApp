@@ -22,20 +22,32 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding: 13px 14px;
+  border: 1px solid #efc9c9;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 4px 14px rgba(185, 28, 28, 0.05);
+  background:
+    radial-gradient(circle at 14% 24%, rgba(185, 28, 28, 0.09), transparent 44%),
+    linear-gradient(105deg, rgba(185, 28, 28, 0.06) 0%, rgba(255, 255, 255, 0.97) 42%),
+    linear-gradient(180deg, #fff9f9 0%, #fffefe 100%);
 }
 
 .scheduleTitle {
   margin: 0;
   font-size: 24px;
   line-height: 1.2;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
+  letter-spacing: 0.005em;
   color: #7a0606;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .headerSubtitle {
   margin: 0;
-  color: #64748b;
+  color: #55657a;
   font-size: 13px;
+  line-height: 1.45;
 }
 
 .scheduleInfo {
@@ -317,6 +329,10 @@
 
   .scheduleTitle {
     font-size: 21px;
+  }
+
+  .headerBlock {
+    padding: 12px;
   }
 
   .headerSubtitle,

@@ -15,6 +15,28 @@ const DAYS = [
   { key: "SUN", label: "Sunday" }
 ];
 
+const GUARD_COLOR_PALETTE = [
+  "#b91c1c",
+  "#c2410c",
+  "#a16207",
+  "#0f766e",
+  "#0369a1",
+  "#1d4ed8",
+  "#6d28d9",
+  "#be185d",
+  "#047857",
+  "#7c2d12"
+];
+
+function getStableGuardColor(guard) {
+  const key = guard?._id || `${guard?.firstName || ""} ${guard?.lastName || ""}`.trim() || "unknown";
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  return GUARD_COLOR_PALETTE[hash % GUARD_COLOR_PALETTE.length];
+}
+
 export default function SharedScheduleView({
   variant = "",
   canCreate = false,
@@ -66,13 +88,15 @@ export default function SharedScheduleView({
     return (
       <div className={`schedule-container ${variant ? `schedule-${variant}` : ""}`.trim()}>
         <div className="schedule-card">
-          <h2 className="scheduleTitle">Schedule</h2>
+          <div className="schedule-header">
+            <h2 className="scheduleTitle">Schedule</h2>
+            {(canEdit || canCreate) && (
+              <button className="btn-action schedule-top-action" onClick={() => navigate(editPath)}>
+                {canEdit ? "Edit Schedule" : createButtonLabel}
+              </button>
+            )}
+          </div>
           <p className="no-schedule-message">{emptyMessage}</p>
-          {canCreate && (
-            <button className="btn-action" onClick={() => navigate(editPath)}>
-              {createButtonLabel}
-            </button>
-          )}
           {error && <p className="error-text">{error}</p>}
         </div>
       </div>
@@ -91,7 +115,14 @@ export default function SharedScheduleView({
   return (
     <div className={`schedule-container ${variant ? `schedule-${variant}` : ""}`.trim()}>
       <div className="schedule-card">
-        <h2 className="scheduleTitle">Current Schedule</h2>
+        <div className="schedule-header">
+          <h2 className="scheduleTitle">Schedule</h2>
+          {(canEdit || canCreate) && (
+            <button className="btn-action schedule-top-action" onClick={() => navigate(editPath)}>
+              {canEdit ? "Edit Schedule" : createButtonLabel}
+            </button>
+          )}
+        </div>
         <p className="schedule-subtitle">
           <strong>Valid:</strong>{" "}
           {new Date(schedule.validFrom).toLocaleDateString()} →{" "}
@@ -106,16 +137,11 @@ export default function SharedScheduleView({
                 <p className="no-shifts">No shifts assigned.</p>
               ) : (
                 shiftsByDay[d.key].map((shift, idx) => (
-                  <div
-                    key={idx}
-                    className={`shift-row guard-${
-                      shift.userId?._id?.slice(-1) || "x"
-                    }`}
-                  >
+                  <div key={idx} className="shift-row" style={{ borderLeftColor: getStableGuardColor(shift.userId) }}>
                     <div className="shift-time">
                       {shift.startTime} → {shift.endTime}
                     </div>
-                    <div className="shift-guard">
+                    <div className="shift-guard" style={{ color: getStableGuardColor(shift.userId) }}>
                       {shift.userId?.firstName} {shift.userId?.lastName}
                     </div>
                   </div>
@@ -124,12 +150,6 @@ export default function SharedScheduleView({
             </div>
           ))}
         </div>
-
-        {(canEdit || canCreate) && (
-          <button className="btn-action" onClick={() => navigate(editPath)}>
-            {canEdit ? "Edit Schedule" : createButtonLabel}
-          </button>
-        )}
       </div>
     </div>
   );
