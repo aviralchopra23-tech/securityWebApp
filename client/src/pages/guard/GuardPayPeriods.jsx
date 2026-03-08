@@ -13,7 +13,6 @@ import "../../styles/GuardSchedule.css";
 export default function GuardPayPeriods() {
   const [shifts, setShifts] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [collectionLocation, setCollectionLocation] = useState("");
   const [editingShift, setEditingShift] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -74,11 +73,10 @@ export default function GuardPayPeriods() {
 
   const handleSubmit = async () => {
     setError(""); setSuccess("");
-    if (!collectionLocation) { setError("Please select a paycheck collection location."); return; }
     try {
-      await submitPayPeriod({ paycheckCollectionLocationId: collectionLocation });
+      await submitPayPeriod();
       setSuccess("✅ Pay period submitted successfully.");
-      setShowSubmitConfirm(false); setCollectionLocation("");
+      setShowSubmitConfirm(false);
       await refreshStatus();
       setShifts([]);
     } catch (err) {
@@ -164,14 +162,6 @@ export default function GuardPayPeriods() {
             )}
           </div>
         ))}
-
-        <div className="inputGroupConnected">
-          <label>Paycheck Collection Location</label>
-          <select value={collectionLocation} onChange={e => setCollectionLocation(e.target.value)} disabled={isDisabled}>
-            <option value="">Select location</option>
-            {locations.map(l => <option key={l._id} value={l._id}>{l.name}</option>)}
-          </select>
-        </div>
 
         <button className="btnPrimary submit" onClick={() => setShowSubmitConfirm(true)} disabled={!canSubmit}>
           Submit Pay Period

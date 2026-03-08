@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getOwnerPayPeriodReport } from "../../api/payPeriodApi";
 import "../../styles/ownerPayPeriodReports.css";
 
 export default function OwnerPayPeriodReports() {
   const [report, setReport] = useState({ previous: [], current: null, next: null });
   const [error, setError] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("all");
   const [expandedSubmissionKey, setExpandedSubmissionKey] = useState(null);
   const [expandedPreviousPeriodKey, setExpandedPreviousPeriodKey] = useState(null);
 
@@ -57,6 +58,51 @@ export default function OwnerPayPeriodReports() {
     return String(locationValue);
   };
 
+  const getShiftLocationKey = (locationValue) => {
+    if (!locationValue) return "no-location";
+    if (typeof locationValue === "object") {
+      return String(locationValue._id || locationValue.name || "no-location");
+    }
+    return String(locationValue);
+  };
+
+  const locationOptions = useMemo(() => {
+    const optionsMap = new Map();
+
+    const addFromSubmissions = (submissions = []) => {
+      submissions.forEach((submission) => {
+        (submission.shifts || []).forEach((shift) => {
+          const key = getShiftLocationKey(shift.locationId);
+          const label = formatShiftLocation(shift.locationId);
+          if (!optionsMap.has(key)) {
+            optionsMap.set(key, label);
+          }
+        });
+      });
+    };
+
+    (report.previous || []).forEach((period) => addFromSubmissions(period.submissions || []));
+    addFromSubmissions(report.current?.submissions || []);
+
+    return Array.from(optionsMap.entries())
+      .map(([value, label]) => ({ value, label }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [report]);
+
+  const submissionMatchesLocation = (submission) => {
+    if (selectedLocation === "all") return true;
+    return (submission.shifts || []).some(
+      (shift) => getShiftLocationKey(shift.locationId) === selectedLocation
+    );
+  };
+
+  const filterSubmissionShifts = (submission) => {
+    if (selectedLocation === "all") return submission.shifts || [];
+    return (submission.shifts || []).filter(
+      (shift) => getShiftLocationKey(shift.locationId) === selectedLocation
+    );
+  };
+
   const toggleSubmissionDetails = (submissionKey) => {
     setExpandedSubmissionKey((prev) => (prev === submissionKey ? null : submissionKey));
   };
@@ -69,6 +115,21 @@ export default function OwnerPayPeriodReports() {
     <div className="schedule-wrapper owner-no-divider">
       <h2 className="schedule-title">Pay Period Dashboard</h2>
 
+      <div className="owner-filter-row">
+        <label htmlFor="owner-location-filter" className="owner-filter-label">Location</label>
+        <select
+          id="owner-location-filter"
+          className="owner-filter-select"
+          value={selectedLocation}
+          onChange={(e) => setSelectedLocation(e.target.value)}
+        >
+          <option value="all">All locations</option>
+          {locationOptions.map((loc) => (
+            <option key={loc.value} value={loc.value}>{loc.label}</option>
+          ))}
+        </select>
+      </div>
+
       {error && <p className="error-text">{error}</p>}
 
       {/* previous periods */}
@@ -80,6 +141,7 @@ export default function OwnerPayPeriodReports() {
           report.previous.map((p, idx) => {
             const periodKey = `previous-${p.start?.toISOString?.() || idx}-${p.end?.toISOString?.() || ""}`;
             const isPeriodExpanded = expandedPreviousPeriodKey === periodKey;
+            const filteredSubmissions = (p.submissions || []).filter(submissionMatchesLocation);
             return (
               <div key={idx} className="period-group">
                 <button
@@ -93,11 +155,14 @@ export default function OwnerPayPeriodReports() {
                 {isPeriodExpanded && (
                   p.submissions.length === 0 ? (
                     <p className="no-shifts">No submissions</p>
+                  ) : filteredSubmissions.length === 0 ? (
+                    <p className="no-shifts">No submissions for selected location.</p>
                   ) : (
                     <div className="submitted-scroll">
-                      {p.submissions.map((s) => {
+                      {filteredSubmissions.map((s) => {
                         const submissionKey = `prev-${p.start?.toISOString?.() || idx}-${s._id}`;
                         const isExpanded = expandedSubmissionKey === submissionKey;
+                        const visibleShifts = filterSubmissionShifts(s);
                         return (
                           <div key={s._id} className="day-card">
                             <p>
@@ -108,10 +173,6 @@ export default function OwnerPayPeriodReports() {
                               <strong>Total Hours:</strong>{" "}
                               {typeof s.totalHours === "number" ? s.totalHours.toFixed(2) : "0.00"}
                             </p>
-                            <p>
-                              <strong>Paycheck Collection Location:</strong>{" "}
-                              {s.paycheckCollectionLocationId?.name || "Not provided"}
-                            </p>
                             <button
                               type="button"
                               className={`details-toggle ${isExpanded ? "expanded" : ""}`}
@@ -121,8 +182,8 @@ export default function OwnerPayPeriodReports() {
                             </button>
                             {isExpanded && (
                               <div className="details-content">
-                                {s.shifts && s.shifts.length > 0 ? (
-                                  s.shifts.map((sh, idx2) => (
+                                {visibleShifts.length > 0 ? (
+                                  visibleShifts.map((sh, idx2) => (
                                     <div key={idx2} className="shift-row">
                                       <span className="time-badge">
                                         {formatShiftDate(sh.date)} {formatShiftTime(sh.startTime)} → {formatShiftTime(sh.endTime)}
@@ -160,11 +221,12 @@ export default function OwnerPayPeriodReports() {
 
             <div className="latest-closed-layout">
               <div className="latest-submissions-column">
-                {report.current.submissions.length > 0 ? (
+                {(report.current.submissions || []).filter(submissionMatchesLocation).length > 0 ? (
                   <div className="submitted-scroll latest-submitted-scroll">
-                    {report.current.submissions.map((s) => {
+                    {(report.current.submissions || []).filter(submissionMatchesLocation).map((s) => {
                       const submissionKey = `current-${s._id}`;
                       const isExpanded = expandedSubmissionKey === submissionKey;
+                      const visibleShifts = filterSubmissionShifts(s);
                       return (
                         <div key={s._id} className="day-card">
                           <p>
@@ -175,10 +237,6 @@ export default function OwnerPayPeriodReports() {
                             <strong>Total Hours:</strong>{" "}
                             {typeof s.totalHours === "number" ? s.totalHours.toFixed(2) : "0.00"}
                           </p>
-                          <p>
-                            <strong>Paycheck Collection Location:</strong>{" "}
-                            {s.paycheckCollectionLocationId?.name || "Not provided"}
-                          </p>
                           <button
                             type="button"
                             className={`details-toggle ${isExpanded ? "expanded" : ""}`}
@@ -188,8 +246,8 @@ export default function OwnerPayPeriodReports() {
                           </button>
                           {isExpanded && (
                             <div className="details-content">
-                              {s.shifts && s.shifts.length > 0 ? (
-                                s.shifts.map((sh, idx2) => (
+                              {visibleShifts.length > 0 ? (
+                                visibleShifts.map((sh, idx2) => (
                                   <div key={idx2} className="shift-row">
                                     <span className="time-badge">
                                       {formatShiftDate(sh.date)} {formatShiftTime(sh.startTime)} → {formatShiftTime(sh.endTime)}
@@ -209,7 +267,7 @@ export default function OwnerPayPeriodReports() {
                     })}
                   </div>
                 ) : (
-                  <p className="no-shifts">No submissions</p>
+                  <p className="no-shifts">No submissions for selected location.</p>
                 )}
               </div>
 

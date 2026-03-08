@@ -37,7 +37,7 @@ const payPeriodSubmissionSchema = new mongoose.Schema(
     paycheckCollectionLocationId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Location",
-      required: true,
+      required: false,
     },
 
     submittedAt: { type: Date, default: Date.now },

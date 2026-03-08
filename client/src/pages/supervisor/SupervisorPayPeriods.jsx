@@ -8,7 +8,6 @@ import "../../styles/schedule.css";
 export default function SupervisorPayPeriods() {
   const [shifts, setShifts] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [collectionLocation, setCollectionLocation] = useState("");
   const [editingShift, setEditingShift] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -62,12 +61,11 @@ export default function SupervisorPayPeriods() {
 
   const handleSubmit = async () => {
     setError(""); setSuccess("");
-    if (!collectionLocation) { setError("Please select a paycheck collection location."); return; }
     try {
-      await submitPayPeriod({ date: new Date(), paycheckCollectionLocationId: collectionLocation });
+      await submitPayPeriod({ date: new Date() });
       setSuccess("Pay period submitted successfully.");
       refreshStatus();
-      setShowSubmitConfirm(false); setCollectionLocation("");
+      setShowSubmitConfirm(false);
     } catch (err) {
       console.error("submit error", err);
       setError(err.response?.data?.message || err.message || "Submission failed");
@@ -159,14 +157,6 @@ export default function SupervisorPayPeriods() {
             )}
           </div>
         ))}
-
-        <div className="inputGroupConnected">
-          <label>Paycheck Collection Location</label>
-          <select value={collectionLocation} onChange={e => setCollectionLocation(e.target.value)} disabled={isSubmitDisabled}>
-            <option value="">Select location</option>
-            {locations.map(l => <option key={l._id} value={l._id}>{l.name}</option>)}
-          </select>
-        </div>
 
         <button className="btnPrimary submit" onClick={() => setShowSubmitConfirm(true)} disabled={isSubmitDisabled || shifts.length === 0}>
           Submit Pay Period

@@ -88,10 +88,8 @@ export const deleteShiftEntry = async (shiftId) => {
 ============================= */
 export const submitPayPeriod = async ({ paycheckCollectionLocationId } = {}) => {
   try {
-    if (!paycheckCollectionLocationId) {
-      throw { message: "paycheckCollectionLocationId is required" };
-    }
-    const res = await api.post("/guards/submit", { paycheckCollectionLocationId });
+    const payload = paycheckCollectionLocationId ? { paycheckCollectionLocationId } : {};
+    const res = await api.post("/guards/submit", payload);
     return res.data;
   } catch (err) {
     console.error("Error submitting pay period:", err);

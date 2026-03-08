@@ -60,85 +60,93 @@ export default function Login() {
 
   return (
     <div className="loginPage">
-      <div className="loginCard" role="dialog" aria-labelledby="login-title">
-        {/* Security Header */}
-        <div className="securityHeader">
-          <div className="securityBadge">
-            <img src={king} alt="GuardLink Logo" className="logoImage" />
-
-          </div>
-          <h2 id="login-title" className="loginTitle">
-            KS<span>L</span>
-          </h2>
-
-          <p className="loginSubtitle">
-            Secure access to scheduling and workforce management
-          </p>
-        </div>
-
-        {error && (
-          <div className="loginError" role="alert">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="loginForm" noValidate>
-          <div className="formGroup">
-            <label htmlFor="email">Email address</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="name@company.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={loading}
-              autoComplete="username"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-            />
-          </div>
-
-          <div className="formGroup">
-            <label htmlFor="password">Password</label>
-            <div className="passwordWrapper">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={loading}
-                autoComplete="current-password"
-              />
-              <button
-                type="button"
-                className="toggleBtn"
-                onClick={() => setShowPassword((v) => !v)}
-                disabled={loading}
-                aria-label={
-                  showPassword ? "Hide password" : "Show password"
-                }
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
+      <div className="loginShell" role="dialog" aria-labelledby="login-title">
+        <section className="loginFormPanel">
+          <div className="loginBrandRow">
+            <div className="securityBadge">
+              <img src={king} alt="KSL Logo" className="logoImage" />
+            </div>
+            <div>
+              <p className="brandName">KSL Security</p>
+              <p className="brandTag">Workforce Portal</p>
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="loginBtn"
-            disabled={loading || !email || !password}
-          >
-            {loading ? "Authenticating…" : "Sign In Securely"}
-          </button>
-        </form>
+          <div className="securityHeader">
+            <p className="formEyebrow">Welcome back</p>
+            <h2 id="login-title" className="loginTitle">Sign in</h2>
+            <p className="loginSubtitle">Use your work account credentials.</p>
+          </div>
 
-        <p className="loginFooter">
-          🔐 Role-based access control enforced • All actions are audited
-        </p>
+          {error && (
+            <div className="loginError" role="alert">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="loginForm" noValidate>
+            <div className="formGroup">
+              <label htmlFor="email">Email address</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+                autoComplete="username"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+            </div>
+
+            <div className="formGroup">
+              <label htmlFor="password">Password</label>
+              <div className="passwordWrapper">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="toggleBtn"
+                  onClick={() => setShowPassword((v) => !v)}
+                  disabled={loading}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="loginBtn"
+              disabled={loading || !email || !password}
+            >
+              {loading ? "Authenticating…" : "Sign in"}
+            </button>
+          </form>
+
+          <p className="loginFooter">🔐 Role-based access control enforced • All actions are audited</p>
+        </section>
+
+        <aside className="loginVisualPanel" aria-hidden="true">
+          <div className="visualOverlay" />
+          <div className="visualContent">
+            <img src={king} alt="" className="visualLogo" />
+            <p className="visualHeadline">Security Operations Management</p>
+            <p className="visualSubline">Scheduling, pay periods, and announcements in one secure portal.</p>
+          </div>
+        </aside>
       </div>
     </div>
   );
