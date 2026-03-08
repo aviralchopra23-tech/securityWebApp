@@ -360,7 +360,21 @@
 
   .loginPage::before,
   .loginPage::after {
+    display: block;
+  }
+
+  .loginPage::before {
     display: none;
+  }
+
+  .loginPage::after {
+    width: 260px;
+    height: 260px;
+    right: -120px;
+    top: -90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(122, 6, 6, 0.16), transparent 68%);
+    opacity: 0.65;
   }
 
   .loginShell {
@@ -375,7 +389,24 @@
   }
 
   .loginFormPanel {
+    position: relative;
     padding: 20px 18px;
+  }
+
+  .loginFormPanel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: url("../assets/king.png") center 56% / 74% no-repeat;
+    opacity: 0.14;
+    filter: grayscale(0.2) contrast(1.05);
+    pointer-events: none;
+  }
+
+  .loginFormPanel > * {
+    position: relative;
+    z-index: 1;
   }
 
   .loginBrandRow {
@@ -384,20 +415,11 @@
   }
 
   .securityBadge {
-    width: 48px;
-    height: 48px;
-    border: none;
-    background: transparent;
-    box-shadow: none;
+    display: none;
   }
 
   .logoImage {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 4px;
+    display: none;
   }
 
   .brandName {
