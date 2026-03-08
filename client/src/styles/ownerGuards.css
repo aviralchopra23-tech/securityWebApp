@@ -1,9 +1,9 @@
 .guards-page {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   color: #111827;
-  width: 100%;
 }
 
 .guards-title {
@@ -13,15 +13,24 @@
   margin: 0;
 }
 
+.guards-page .guards-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
 .guards-page .section-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-  margin: 2px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin: 0;
 }
 
 .guards-page .validation-warning {
-  margin: -2px 2px 2px;
+  margin: 2px 2px 0;
   font-size: 12px;
   font-weight: 600;
   color: #b91c1c;
@@ -39,7 +48,9 @@
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
 }
 
-.guards-page input {
+.guards-page input,
+.guards-page select,
+.guards-page textarea {
   background-color: #ffffff;
   color: #111827;
   border: 1px solid #d1d5db;
@@ -47,6 +58,7 @@
   height: 34px;
   padding: 0 10px;
   font-size: 13px;
+  box-shadow: none;
   box-sizing: border-box;
 }
 
@@ -54,7 +66,9 @@
   color: #9ca3af;
 }
 
-.guards-page input:focus {
+.guards-page input:focus,
+.guards-page select:focus,
+.guards-page textarea:focus {
   outline: none;
   border-color: #94a3b8;
   box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.18);
@@ -88,6 +102,14 @@
   color: #111827;
 }
 
+.guards-page input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  accent-color: #7a0606;
+}
+
 .guards-page .guard-list {
   list-style: none;
   padding: 0;
@@ -98,6 +120,7 @@
 }
 
 .guards-page .guard-item {
+  position: relative;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -107,9 +130,30 @@
   gap: 10px;
   align-items: center;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
 }
 
-/* When editing, make the guard-item a column */
+.guards-page .guard-item:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.guards-page .guard-item:focus-visible {
+  outline: 2px solid #94a3b8;
+  outline-offset: 2px;
+}
+
+.guards-page .guard-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: #cbd5e1;
+}
+
 .guards-page .guard-item.guard-item-editing {
   display: flex;
   flex-direction: column;
@@ -118,8 +162,24 @@
 
 .guards-page .guard-info {
   font-size: 14px;
-  font-weight: 500;
   color: #111827;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.guards-page .guard-primary {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.guards-page .guard-location-line {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
 }
 
 .guards-page .edit-block-single {
@@ -129,60 +189,48 @@
   width: 100%;
 }
 
-.guards-page .edit-block-single .action-group.edit-actions {
-  flex-wrap: nowrap;
-  width: auto;
-}
-
-/* Action buttons */
 .guards-page .action-group {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
   gap: 8px;
-  margin-top: 0;
+  align-items: center;
 }
 
 .guards-page .action-group.edit-actions {
   justify-content: flex-start;
-  align-self: flex-start;
 }
 
-.guards-page input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  margin: 0;
-  accent-color: #7a0606;
-}
-
-/* Buttons */
 .guards-page .btn-edit,
 .guards-page .btn-save,
 .guards-page .btn-cancel,
 .guards-page .btn-delete,
 .guards-page .btn-create {
+  margin: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
   height: 34px;
+  min-width: 92px;
   padding: 0 12px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
-  line-height: 1;
   cursor: pointer;
-  box-sizing: border-box;
-  white-space: nowrap;
-  margin: 0;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.guards-page .edit-actions .btn-save,
-.guards-page .edit-actions .btn-cancel {
-  flex: 0 0 auto;
-  width: auto;
-  min-width: 88px;
+.guards-page .btn-create {
+  border: 1px solid #7a0606;
+  background: #7a0606;
+  color: #ffffff;
+}
+
+.guards-page .btn-create:hover {
+  background: #600505;
+  border-color: #600505;
 }
 
 .guards-page .btn-edit,
@@ -209,22 +257,7 @@
 
 .guards-page .btn-delete:hover {
   background: #fff1f2;
-  border-color: #fca5a5;
-  color: #b91c1c;
-}
-
-.guards-page .btn-create {
-  border: 1px solid #7a0606;
-  background: #7a0606;
-  color: #ffffff;
-  min-width: 112px;
-  padding: 0 16px;
-}
-
-.guards-page .btn-create:hover {
-  background: #600505;
-  border-color: #600505;
-  color: #ffffff;
+  border-color: #f87171;
 }
 
 .guards-modal-backdrop {
@@ -283,28 +316,31 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 900px) {
-  .guards-page .form-row {
-    grid-template-columns: 1fr;
-  }
-
+@media (max-width: 980px) {
   .guards-page .guard-item {
     grid-template-columns: 1fr;
   }
 
   .guards-page .action-group {
     width: 100%;
+    justify-content: flex-start;
     flex-wrap: wrap;
   }
 }
 
 @media (max-width: 560px) {
+  .guards-page .btn-create,
   .guards-page .btn-edit,
   .guards-page .btn-save,
   .guards-page .btn-cancel,
-  .guards-page .btn-delete,
-  .guards-page .btn-create {
+  .guards-page .btn-delete {
     width: 100%;
+    min-width: 0;
+  }
+
+  .guards-page .guards-header-row {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .guards-modal-actions {

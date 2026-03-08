@@ -11,7 +11,11 @@ import OwnerLocations from "./pages/owner/OwnerLocations";
 import OwnerUsers from "./pages/owner/OwnerUsers";
 import OwnerLocationDetails from "./pages/owner/OwnerLocationDetails";
 import OwnerSupervisors from "./pages/owner/OwnerSupervisors";
+import OwnerCreateSupervisor from "./pages/owner/OwnerCreateSupervisor";
+import OwnerSupervisorDetails from "./pages/owner/OwnerSupervisorDetails";
 import OwnerGuards from "./pages/owner/OwnerGuards";
+import OwnerCreateGuard from "./pages/owner/OwnerCreateGuard";
+import OwnerGuardDetails from "./pages/owner/OwnerGuardDetails";
 import OwnerAnnouncements from "./pages/owner/OwnerAnnouncements";
 
 /* ================= SUPERVISOR ================= */
@@ -64,7 +68,11 @@ export default function App() {
 
           <Route path="users" element={<OwnerUsers />}>
             <Route path="supervisors" element={<OwnerSupervisors />} />
+            <Route path="supervisors/create" element={<OwnerCreateSupervisor />} />
+            <Route path="supervisors/:supervisorId" element={<OwnerSupervisorDetails />} />
             <Route path="guards" element={<OwnerGuards />} />
+            <Route path="guards/create" element={<OwnerCreateGuard />} />
+            <Route path="guards/:guardId" element={<OwnerGuardDetails />} />
           </Route>
 
           {/* 📢 Owner Announcements */}

@@ -44,8 +44,18 @@ export const getSupervisors = async () => {
   return res.data;
 };
 
+export const getSupervisorById = async (id) => {
+  const res = await api.get(`/users/supervisors/${id}`);
+  return res.data;
+};
+
 export const getGuards = async () => {
   const res = await api.get("/users/guards");
+  return res.data;
+};
+
+export const getGuardById = async (id) => {
+  const res = await api.get(`/users/guards/${id}`);
   return res.data;
 };
 

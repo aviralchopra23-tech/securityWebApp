@@ -1,0 +1,223 @@
+.supervisor-details-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.supervisor-details-page .details-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.supervisor-details-page .btn-back,
+.supervisor-details-page .btn-edit,
+.supervisor-details-page .btn-save,
+.supervisor-details-page .btn-cancel {
+  box-sizing: border-box;
+  height: 34px;
+  min-width: 88px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.supervisor-details-page .btn-back {
+  background: #1f2937;
+  color: #f8fafc;
+  border-color: #374151;
+}
+
+.supervisor-details-page .btn-back:hover {
+  background: #111827;
+}
+
+.supervisor-details-page .btn-edit,
+.supervisor-details-page .btn-save,
+.supervisor-details-page .btn-cancel {
+  background: #ffffff;
+  color: #334155;
+}
+
+.supervisor-details-page .btn-edit:hover,
+.supervisor-details-page .btn-save:hover,
+.supervisor-details-page .btn-cancel:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.supervisor-details-page .edit-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.supervisor-details-page .details-card,
+.supervisor-details-page .edit-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+}
+
+.supervisor-details-page .details-card {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.supervisor-details-page .photo-wrap {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8fafc;
+  aspect-ratio: 3 / 4;
+  max-height: 300px;
+}
+
+.supervisor-details-page .photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.supervisor-details-page .no-photo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.supervisor-details-page .details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.supervisor-details-page .field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.supervisor-details-page .field span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.supervisor-details-page .field strong {
+  font-size: 14px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.supervisor-details-page .edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.supervisor-details-page .edit-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.supervisor-details-page .edit-grid label span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.supervisor-details-page .edit-grid label.span-2 {
+  grid-column: 1 / -1;
+}
+
+.supervisor-details-page .edit-grid input {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.supervisor-details-page .edit-grid select {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 13px;
+  background: #ffffff;
+}
+
+.supervisor-details-page .edit-grid input:focus {
+  outline: none;
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.18);
+}
+
+.supervisor-details-page .edit-grid select:focus {
+  outline: none;
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.18);
+}
+
+.supervisor-details-page .validation-warning {
+  margin: 10px 2px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+@media (max-width: 900px) {
+  .supervisor-details-page .details-card {
+    grid-template-columns: 1fr;
+  }
+
+  .supervisor-details-page .photo-wrap {
+    aspect-ratio: 16 / 9;
+    max-height: none;
+  }
+
+  .supervisor-details-page .details-grid,
+  .supervisor-details-page .edit-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .supervisor-details-page .details-header-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .supervisor-details-page .btn-back {
+    width: auto;
+    min-width: 72px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .supervisor-details-page .edit-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .supervisor-details-page .edit-actions .btn-save,
+  .supervisor-details-page .edit-actions .btn-cancel {
+    width: 100%;
+    min-width: 0;
+  }
+}

@@ -6,7 +6,9 @@ const { allowRoles } = require("../middleware/roleMiddleware");
 
 const {
   getSupervisors,
+  getSupervisorById,
   getGuards,
+  getGuardById,
   updateUser,
   deleteUser,
   createSupervisor,
@@ -19,8 +21,14 @@ const {
 // List supervisors
 router.get("/supervisors", protect, allowRoles("OWNER"), getSupervisors);
 
+// Get one supervisor
+router.get("/supervisors/:id", protect, allowRoles("OWNER"), getSupervisorById);
+
 // List guards
 router.get("/guards", protect, allowRoles("OWNER"), getGuards);
+
+// Get one guard
+router.get("/guards/:id", protect, allowRoles("OWNER"), getGuardById);
 
 // Update user (guard or supervisor)
 router.put("/:id", protect, allowRoles("OWNER"), updateUser);

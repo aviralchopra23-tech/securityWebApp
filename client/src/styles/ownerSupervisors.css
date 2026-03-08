@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   color: #111827;
 }
 
@@ -13,45 +13,27 @@
   margin: 0;
 }
 
+.supervisors-page .supervisors-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
 .supervisors-page .section-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-  margin: 2px 0 0;
-}
-
-.supervisors-page .validation-warning {
-  margin: -2px 2px 2px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #b91c1c;
-}
-
-.supervisors-page .edit-row .validation-warning.edit-warning {
-  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #64748b;
   margin: 0;
 }
 
-.supervisors-page .form-row {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
-}
-
-.supervisors-page .stacked-buttons {
-  grid-template-columns: 1fr;
-}
-
-.supervisors-page .button-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
+.supervisors-page .validation-warning {
+  margin: 2px 2px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b91c1c;
 }
 
 .supervisors-page input,
@@ -81,24 +63,47 @@
 }
 
 .supervisors-page .btn-create,
-.supervisors-page .btn-assign {
-  height: 36px;
-  min-width: 96px;
-  padding: 0 16px;
-  border-radius: 9px;
+.supervisors-page .btn-delete,
+.supervisors-page .btn-cancel,
+.supervisors-page .btn-save {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 34px;
+  min-width: 92px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.supervisors-page .btn-create {
   border: 1px solid #7a0606;
   background: #7a0606;
   color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.supervisors-page .btn-create:hover,
-.supervisors-page .btn-assign:hover {
-  background: #9b0a0a;
-  border-color: #9b0a0a;
+.supervisors-page .btn-create:hover {
+  background: #600505;
+  border-color: #600505;
+}
+
+.supervisors-page .btn-delete {
+  border: 1px solid #fca5a5;
+  background: #ffffff;
+  color: #b91c1c;
+}
+
+.supervisors-page .btn-delete:hover {
+  background: #fff1f2;
+  border-color: #f87171;
 }
 
 .supervisors-page .supervisor-list {
@@ -111,6 +116,7 @@
 }
 
 .supervisors-page .supervisor-item {
+  position: relative;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -122,14 +128,36 @@
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
 }
 
+.supervisors-page .supervisor-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: #cbd5e1;
+}
+
+.supervisors-page .clickable-supervisor {
+  cursor: pointer;
+}
+
+.supervisors-page .clickable-supervisor:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.07);
+  transform: translateY(-1px);
+}
+
 .supervisors-page .supervisor-info {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: #111827;
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  padding-left: 4px;
 }
 
 .supervisors-page .assigned-badge {
@@ -144,45 +172,6 @@
 .supervisors-page .action-group {
   display: flex;
   gap: 8px;
-}
-
-.supervisors-page .action-group .btn-edit,
-.supervisors-page .action-group .btn-delete,
-.supervisors-page .btn-save,
-.supervisors-page .btn-cancel {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  box-sizing: border-box;
-  appearance: none;
-  -webkit-appearance: none;
-  height: 34px;
-  min-width: 88px;
-  padding: 0 12px;
-  background: #ffffff;
-  color: #374151;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.supervisors-page .action-group .btn-edit:hover,
-.supervisors-page .btn-save:hover,
-.supervisors-page .btn-cancel:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-  color: #111827;
-}
-
-.supervisors-page .action-group .btn-delete:hover {
-  background: #fff1f2;
-  border-color: #fca5a5;
-  color: #b91c1c;
 }
 
 .supervisors-modal-backdrop {
@@ -241,51 +230,29 @@
   box-sizing: border-box;
 }
 
-.supervisors-page .assign-form {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  align-items: center;
-}
-
-.supervisors-page .assign-form .btn-assign {
-  justify-self: start;
-}
-
-.supervisors-page .edit-row {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) auto auto;
-  gap: 8px;
-  align-items: center;
-}
-
 @media (max-width: 980px) {
-  .supervisors-page .form-row,
-  .supervisors-page .assign-form,
-  .supervisors-page .edit-row {
-    grid-template-columns: 1fr;
-  }
-
   .supervisors-page .supervisor-item {
     grid-template-columns: 1fr;
   }
 
   .supervisors-page .action-group {
     width: 100%;
-    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 }
 
 @media (max-width: 560px) {
   .supervisors-page .btn-create,
-  .supervisors-page .btn-assign,
-  .supervisors-page .action-group .btn-edit,
   .supervisors-page .action-group .btn-delete,
   .supervisors-page .btn-save,
   .supervisors-page .btn-cancel {
     width: 100%;
     min-width: 0;
+  }
+
+  .supervisors-page .supervisors-header-row {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .supervisors-modal-actions {
@@ -299,81 +266,3 @@
     min-width: 0;
   }
 }
-
-/* CREATE SUPERVISOR - smaller, responsive inputs */
-.supervisors-page .form-row.stacked-buttons {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-}
-
-/* ASSIGN SUPERVISOR - balanced columns */
-.supervisors-page .form-row.assign-form {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  align-items: center;
-}
-
-/* Optional: button alignment */
-.supervisors-page .form-row.stacked-buttons .button-wrapper,
-.supervisors-page .form-row.assign-form button {
-  justify-self: start;
-}
-
-.supervisors-page .form-row.assign-form {
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* smaller inputs */
-  gap: 10px;
-  align-items: center;
-}
-
-.supervisors-page .form-row.assign-form button {
-  justify-self: start; /* keep the assign button aligned left */
-}
-
-.supervisors-page .form-row.assign-form select {
-  max-width: 180px;  /* limit the length */
-}
-
-.supervisors-page .form-row.assign-form button {
-  max-width: 120px;  /* keep button smaller too */
-}
-
-/* FORCE compact assign layout */
-.supervisors-page .form-row.assign-form {
-  display: flex;              /* switch from grid to flex */
-  gap: 6px;                   /* small spacing between items */
-  align-items: center;
-  flex-wrap: wrap;            /* keeps responsiveness */
-}
-
-.supervisors-page .form-row.assign-form select {
-  width: 170px;               /* fixed width so they don’t stretch */
-}
-
-.supervisors-page .form-row.assign-form .btn-assign {
-  width: 100px;
-}
-
-/* Red-themed buttons for Create and Assign, similar to Delete/Edit style */
-.supervisors-page .btn-create,
-.supervisors-page .btn-assign {
-  background: #ffffff;        /* white background */
-  color: #b91c1c;            /* red text */
-  border: 1px solid #fca5a5; /* light red border */
-  border-radius: 8px;
-  height: 34px;
-  min-width: 96px;
-  padding: 0 12px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.supervisors-page .btn-create:hover,
-.supervisors-page .btn-assign:hover {
-  background: #fff1f2;        /* light red hover background */
-  border-color: #f87171;      /* stronger red border on hover */
-  color: #b91c1c;             /* red text stays */
-}
-
-
