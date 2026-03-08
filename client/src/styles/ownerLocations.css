@@ -22,13 +22,24 @@
 
 .location-form {
   display: grid;
-  grid-template-columns: 1fr 1.5fr auto;
+  grid-template-columns: 1fr 1.3fr 1fr auto;
   gap: 12px;
   background: #ffffff;
   padding: 14px;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.location-image-input {
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.location-image-selected {
+  margin: -6px 2px 0;
+  font-size: 13px;
+  color: #334155;
 }
 
 .location-form input {
@@ -177,9 +188,14 @@
 .edit-form {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
+}
+
+.edit-image-selected {
+  grid-column: 1 / -1;
+  margin-top: -2px;
 }
 
 .edit-form input {
@@ -205,7 +221,8 @@
 }
 
 .edit-buttons .location-btn-save,
-.edit-buttons .location-btn-cancel {
+.edit-buttons .location-btn-cancel,
+.edit-buttons .location-btn-remove-image {
   width: 92px;
   min-width: 92px;
   height: 36px;
@@ -251,6 +268,20 @@
 .location-btn-cancel:hover {
   background: #f8fafc;
   border-color: #94a3b8;
+}
+
+.location-btn-remove-image {
+  width: 92px;
+  min-width: 92px;
+  padding: 0;
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #b91c1c;
+}
+
+.location-btn-remove-image:hover {
+  background: #ffe4e6;
+  border-color: #fca5a5;
 }
 
 /* ==============================

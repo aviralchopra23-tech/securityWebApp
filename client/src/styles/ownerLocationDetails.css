@@ -8,12 +8,39 @@
 /* ================= HEADER ================= */
 .owner-location-header {
   margin-bottom: 24px;
+  padding: 20px 22px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #dbe3ed;
 }
 
 .owner-location-header h2 {
   font-size: 22px;
   font-weight: 700;
   color: #020308;
+  margin: 0;
+}
+
+.owner-location-header p {
+  margin: 8px 0 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+.owner-location-header.has-image {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.owner-location-header.has-image h2,
+.owner-location-header.has-image p {
+  color: #f8fafc;
 }
 
 /* ================= INPUTS ================= */
@@ -36,6 +63,9 @@
   margin-bottom: 28px;
   padding-bottom: 16px;
   border-bottom: 1px solid #e5e7eb;
+  background: rgba(255, 255, 255, 0.74);
+  border-radius: 12px;
+  padding: 14px 16px 16px;
 }
 
 .owner-location-section:last-child {
@@ -129,10 +159,13 @@
 }
 
 .guard-list-item {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 4px;
   padding: 10px 0;
   border-bottom: 1px solid #e5e7eb;
+  align-items: start;
+  justify-items: start;
 }
 
 .guard-list-item:last-child {
@@ -140,14 +173,21 @@
 }
 
 .guard-name {
+  display: block;
   font-size: 14px;
   font-weight: 600;
   color: #020308;
+  line-height: 1.35;
+  text-align: left;
 }
 
 .guard-email {
+  display: block;
   font-size: 13px;
   color: #475569;
+  line-height: 1.35;
+  text-align: left;
+  word-break: break-word;
 }
 
 /* ================= STATES ================= */

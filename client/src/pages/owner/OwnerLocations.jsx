@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getLocations,
@@ -11,10 +11,14 @@ import "../../styles/ownerLocations.css";
 export default function OwnerLocations() {
   const [locations, setLocations] = useState([]);
   const [locForm, setLocForm] = useState({ name: "", address: "" });
+  const [locationImage, setLocationImage] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", address: "" });
+  const [editLocationImage, setEditLocationImage] = useState(null);
+  const [removeEditImage, setRemoveEditImage] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const imageInputRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -31,35 +35,117 @@ export default function OwnerLocations() {
     loadLocations();
   }, []);
 
+  const fileToDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("Failed to read image file"));
+      reader.readAsDataURL(file);
+    });
+
   const handleCreateLocation = async (e) => {
     e.preventDefault();
     try {
-      await createLocation(locForm);
+      let imageDataUrl;
+      if (locationImage) {
+        imageDataUrl = await fileToDataUrl(locationImage);
+      }
+
+      await createLocation({
+        ...locForm,
+        ...(imageDataUrl ? { imageDataUrl } : {}),
+      });
       setLocForm({ name: "", address: "" });
+      setLocationImage(null);
+      if (imageInputRef.current) imageInputRef.current.value = "";
       loadLocations();
     } catch (err) {
       console.error("Failed to create location:", err);
+      alert(err?.response?.data?.message || "Failed to create location.");
     }
+  };
+
+  const handleLocationImageChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    if (!file) {
+      setLocationImage(null);
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file.");
+      if (imageInputRef.current) imageInputRef.current.value = "";
+      setLocationImage(null);
+      return;
+    }
+
+    if (file.size > 1024 * 1024) {
+      alert("Image must be 1MB or smaller.");
+      if (imageInputRef.current) imageInputRef.current.value = "";
+      setLocationImage(null);
+      return;
+    }
+
+    setLocationImage(file);
   };
 
   const startEdit = (location) => {
     setEditingId(location._id);
     setEditForm({ name: location.name, address: location.address });
+    setEditLocationImage(null);
+    setRemoveEditImage(false);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setEditForm({ name: "", address: "" });
+    setEditLocationImage(null);
+    setRemoveEditImage(false);
   };
 
   const saveEdit = async (id) => {
     try {
-      await updateLocation(id, editForm);
+      const payload = { ...editForm };
+      if (editLocationImage) {
+        payload.imageDataUrl = await fileToDataUrl(editLocationImage);
+      } else if (removeEditImage) {
+        payload.imageDataUrl = "";
+      }
+
+      await updateLocation(id, payload);
       setEditingId(null);
+      setEditLocationImage(null);
+      setRemoveEditImage(false);
       loadLocations();
     } catch (err) {
       console.error("Failed to update location:", err);
+      alert(err?.response?.data?.message || "Failed to update location.");
     }
+  };
+
+  const handleEditLocationImageChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    if (!file) {
+      setEditLocationImage(null);
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file.");
+      e.target.value = "";
+      setEditLocationImage(null);
+      return;
+    }
+
+    if (file.size > 1024 * 1024) {
+      alert("Image must be 1MB or smaller.");
+      e.target.value = "";
+      setEditLocationImage(null);
+      return;
+    }
+
+    setRemoveEditImage(false);
+    setEditLocationImage(file);
   };
 
   const handleDelete = async () => {
@@ -100,8 +186,22 @@ export default function OwnerLocations() {
           }
           required
         />
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/*"
+          aria-label="Location image"
+          className="location-image-input"
+          onChange={handleLocationImageChange}
+        />
         <button type="submit">Create</button>
       </form>
+
+      {locationImage && (
+        <p className="location-image-selected">
+          Selected image: <strong>{locationImage.name}</strong>
+        </p>
+      )}
 
       {/* LOCATION LIST */}
       <ul className="location-list">
@@ -125,6 +225,13 @@ export default function OwnerLocations() {
                   placeholder="Address"
                   required
                 />
+                <input
+                  type="file"
+                  accept="image/*"
+                  aria-label="Edit location image"
+                  className="location-image-input"
+                  onChange={handleEditLocationImageChange}
+                />
                 <div className="edit-buttons">
                   <button
                     type="button"
@@ -140,7 +247,36 @@ export default function OwnerLocations() {
                   >
                     Cancel
                   </button>
+                  {(l.imageDataUrl || editLocationImage) && (
+                    <button
+                      type="button"
+                      className="location-btn-remove-image"
+                      onClick={() => {
+                        setEditLocationImage(null);
+                        setRemoveEditImage(true);
+                      }}
+                    >
+                      Remove
+                    </button>
+                  )}
                 </div>
+                {editingId === l._id && (
+                  <p className="location-image-selected edit-image-selected">
+                    {editLocationImage && (
+                      <>
+                        Selected image: <strong>{editLocationImage.name}</strong>
+                      </>
+                    )}
+                    {!editLocationImage && removeEditImage && (
+                      <strong>Image will be removed when you save.</strong>
+                    )}
+                    {!editLocationImage && !removeEditImage && l.imageDataUrl && (
+                      <>
+                        Current image exists. Choose a new image or click <strong>Remove Image</strong>.
+                      </>
+                    )}
+                  </p>
+                )}
               </div>
             ) : (
               <>

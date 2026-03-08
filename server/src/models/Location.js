@@ -5,6 +5,7 @@ const locationSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true, trim: true },
     address: { type: String, required: true, trim: true },
+    imageDataUrl: { type: String, default: "" },
 
     // Exactly ONE supervisor per location
     supervisorId: {

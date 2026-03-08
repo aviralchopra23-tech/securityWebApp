@@ -27,12 +27,21 @@ export default function OwnerLocationDetails() {
   if (!data) return <p className="owner-error">Unable to load location</p>;
 
   const { location, guards } = data;
+  const headerStyle = location.imageDataUrl
+    ? {
+        backgroundImage: `linear-gradient(120deg, rgba(15, 23, 42, 0.46), rgba(15, 23, 42, 0.2)), url(${location.imageDataUrl})`,
+      }
+    : undefined;
 
   return (
     <div className="owner-location-wrapper">
       {/* ================= HEADER ================= */}
-      <div className="owner-location-header">
+      <div
+        className={`owner-location-header${location.imageDataUrl ? " has-image" : ""}`}
+        style={headerStyle}
+      >
         <h2>{location.name}</h2>
+        {location.address && <p>{location.address}</p>}
       </div>
 
       {/* ================= DETAILS ================= */}
@@ -65,7 +74,6 @@ export default function OwnerLocationDetails() {
                 <span className="guard-name">
                   {g.firstName} {g.lastName}
                 </span>
-                <span className="guard-email">{g.email}</span>
               </li>
             ))}
           </ul>

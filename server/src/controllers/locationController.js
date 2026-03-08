@@ -1,12 +1,32 @@
 const Location = require("../models/Location");
 const User = require("../models/User");
 
+const normalizeImageDataUrl = (value) => {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  const isImageDataUrl = /^data:image\/[a-zA-Z0-9.+-]+;base64,/.test(trimmed);
+  if (!isImageDataUrl) return undefined;
+  if (trimmed.length > 2_000_000) return undefined;
+  return trimmed;
+};
+
 // CREATE location
 exports.createLocation = async (req, res) => {
   try {
-    const { name, address } = req.body;
+    const { name, address, imageDataUrl } = req.body;
 
-    const location = await Location.create({ name, address });
+    const normalizedImage = normalizeImageDataUrl(imageDataUrl);
+
+    if (imageDataUrl !== undefined && normalizedImage === undefined) {
+      return res.status(400).json({ message: "Invalid image format" });
+    }
+
+    const location = await Location.create({
+      name,
+      address,
+      imageDataUrl: normalizedImage ?? "",
+    });
 
     res.status(201).json(location);
   } catch (err) {
@@ -94,7 +114,7 @@ exports.getLocationDetails = async (req, res) => {
 exports.updateLocation = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, address } = req.body;
+    const { name, address, imageDataUrl } = req.body;
 
     const location = await Location.findById(id);
     if (!location) {
@@ -103,6 +123,14 @@ exports.updateLocation = async (req, res) => {
 
     location.name = name ?? location.name;
     location.address = address ?? location.address;
+
+    if (imageDataUrl !== undefined) {
+      const normalizedImage = normalizeImageDataUrl(imageDataUrl);
+      if (normalizedImage === undefined) {
+        return res.status(400).json({ message: "Invalid image format" });
+      }
+      location.imageDataUrl = normalizedImage;
+    }
 
     await location.save();
 
